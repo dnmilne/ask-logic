@@ -1,0 +1,131 @@
+{
+  "title" : "Visitor Feedback",
+  "completionMessage" : "Great, thank you for this!\n\nIf you ever need to chat again, then please jump on [our forums](http://link.poscomp.org/l/dk) and we’ll be in touch!",
+  "fields" : [ {
+    "id" : "qVisitorId",
+    "text" : "What is your Visitor ID?",
+    "hidden" : true,
+    "optional" : false,
+    "length" : "SHORT",
+    "type" : "freetext"
+  }, {
+    "id" : "qSessionId",
+    "text" : "What is your Session ID?",
+    "hidden" : true,
+    "optional" : false,
+    "length" : "SHORT",
+    "type" : "freetext"
+  }, {
+    "id" : "qGender",
+    "text" : "What gender are you?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Male"
+    }, {
+      "name" : "Female"
+    }, {
+      "name" : "More options"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qGender2",
+    "text" : "What best describes you?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Transgender or Transexual (FtM)"
+    }, {
+      "name" : "Transgender or Transexual (MtF)"
+    }, {
+      "name" : "Genderqueer"
+    }, {
+      "name" : "Androgynous"
+    }, {
+      "name" : "None of these options describe me"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qPostcode",
+    "text" : "What is your postcode?",
+    "hidden" : false,
+    "optional" : false,
+    "range" : {
+      "min" : 4,
+      "max" : 4,
+      "type" : "digits"
+    },
+    "type" : "numeric"
+  }, {
+    "id" : "qForumMember",
+    "text" : "Are you a member of the ReachOut forums",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qMoodBefore",
+    "text" : "How did you feel **before** you started chatting with us today?",
+    "hidden" : false,
+    "optional" : false,
+    "type" : "mood"
+  }, {
+    "id" : "qMoodNow",
+    "text" : "How do you feel **now**?",
+    "hidden" : false,
+    "optional" : false,
+    "type" : "mood"
+  }, {
+    "id" : "qWorthwhile",
+    "text" : "Did you find this chat session worthwhile? Did you get the help you needed?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qSuggestions",
+    "text" : "We are very sorry about that. Do you have any suggestions about what we could have done better?",
+    "hidden" : false,
+    "optional" : true,
+    "length" : "LONG",
+    "type" : "freetext"
+  } ],
+  "fieldRules" : [ {
+    "triggers" : [ {
+      "questionId" : "qGender",
+      "condition" : "is",
+      "value" : "More options"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qGender2"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qWorthwhile",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qSuggestions"
+    } ]
+  } ],
+  "createdAt" : 1418101347337,
+  "modifiedAt" : 1418101347337,
+  "deleted" : false
+}

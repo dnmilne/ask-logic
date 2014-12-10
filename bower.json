@@ -1,0 +1,30 @@
+{
+  "name": "ask-logic",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "latest",
+    "underscore": "latest"
+  },
+  "devDependencies": {
+    "angular-mocks": "latest",
+    "angular-resource": "latest"
+  },
+  "main": "ask-logic.js",
+  "authors": [
+    "David Milne <david.milne@sydney.edu.au>"
+  ],
+  "description": "An angular module for processing ask survey schemas.",
+  "keywords": [
+    "angular",
+    "ask",
+    "survey"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/dnmilne/ask-logic",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

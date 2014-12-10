@@ -1,0 +1,785 @@
+{
+  "title" : "Reachout Chat script",
+  "completionMessage" : "Great, keep up the good work!\n\nYou can safely close this window now",
+  "fields" : [ {
+    "id" : "pIntro",
+    "text" : "Intro & Consent",
+    "notes" : "Use this script when you start chatting with a visitor. \n\n**Please follow this, and don't take shortcuts.** You can word-smith the individual statements if you like, but they all need to be said to the visitor to satisfy ethics.",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "qVisitorId",
+    "text" : "Visitor ID",
+    "hidden" : true,
+    "optional" : false,
+    "length" : "SHORT",
+    "type" : "freetext"
+  }, {
+    "id" : "qSessionId",
+    "text" : "Session ID",
+    "hidden" : true,
+    "optional" : false,
+    "length" : "SHORT",
+    "type" : "freetext"
+  }, {
+    "id" : "qLaunch",
+    "text" : "Did visitor launch immediately into a question?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iHiWithoutQuestion",
+    "notes" : "``h1``\n\n > Hi there! =) Before we start chatting, can I just check, how old are you?",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iHiWithQuestion",
+    "notes" : "``h2``\n\n > I’ll help you out with that real soon. First can I just check, how old are you?",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "qAge",
+    "text" : "Visitors age",
+    "hidden" : false,
+    "optional" : false,
+    "range" : {
+      "min" : 1,
+      "max" : 3,
+      "type" : "digits"
+    },
+    "type" : "numeric"
+  }, {
+    "id" : "iUnderage",
+    "notes" : "``ageUnder``\n\n> I’m really sorry, but I’m not allowed to chat to anyone under 14.  If you need to chat with someone, you can call Kids Helpline on 1800 55 1800. Sorry!\n\n*Follow this with a shortened link to **Kids Helpline***",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iOverage",
+    "notes" : "``ageOver``\n\n> I’m really sorry, but this service is really aimed at 14-25 year olds. If you are in crisis or urgently need help, you’ll find better help at Lifeline. They have a chat service that runs between 8pm and 4am, or you can call them any time at 13 11 14.\n\n*Follow this with a shortened link to **Lifeline***",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iConsentCheck1",
+    "notes" : "``consentCheck1``\n\n> Ok, great. I also need you to read something real quick:\n\n*Follow this with a shortened link to **the information sheet**. Make sure this gets followed before continuing.*",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iConsentCheck2",
+    "notes" : "``consentCheck2``\n\n> Basically, this chat thing is part of a research study we are doing with Sydney Uni. The link tells you what they are trying to do.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iConsentCheck3",
+    "notes" : "``consentCheck3``\n\n> So, are you ok with sharing your chat session with these guys, and filling in a short survey afterwards? They will treat your information very carefully and sensitively, and they won’t have any details about who you are. We can still chat even if you don’t want to be part of the study. ",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "qConsentGiven",
+    "text" : "Is visitor ok to participate in study?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iConsentNo",
+    "notes" : "``consentNo``\n\n> Ok, no worries. I’ll make sure this chat stays between us, and you won’t need to fill in that survey.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iConsentYes",
+    "notes" : "``consentYes``\n\n> Great! If at any point you feel uncomfortable about being in the study, just let me know.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pMainChat",
+    "text" : "Main chat session",
+    "notes" : "All right! You are pretty much on your own, until it comes time to close the chat, or if you start to feel that the visitor is in crisis.",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "iHelpNoQuestion",
+    "text" : "``help1\n\n> So, what can I help you with?",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iHelpWithQuestion",
+    "text" : "``help2\n\n> So, back to your original question...",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "qInCrisis",
+    "text" : "Has the visitor said anything that indicates they are in crisis?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qConsentRevoked",
+    "text" : "Has the visitor indicated that they no-longer want to be part of the study?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iConsentRevoked",
+    "text" : "``consentRevoked``\n\n> Ok, no worries. I’ll make sure this chat stays between us.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pClosing",
+    "text" : "Closing chat",
+    "notes" : "Follow this script to finish up a normal (non-crisis) chat session.",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "iSurvey",
+    "notes" : "``survey``\n\n> Before you go, would you mind completing a short survey for me? It will only take a minute or so. It’s just so we can measure how the chat went, and see what we can improve on.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iThanks",
+    "notes" : "``thanks``\n\n> Thanks for chatting with me today. I hope I was able to help you out. If you ever need to chat again, just swing by our forums:\n\n*Follow this with a shortened link to the ReachOutForum",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pEscalation",
+    "text" : "Escalation",
+    "notes" : "Follow this script if it becomes clear that the visitor is in crisis, and needs to be referred to some other organisation or emergency service.",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "qAtRisk",
+    "text" : "Do you think the visitor is in imminent risk of serious harm?",
+    "notes" : "Ask any questions you need (gently) to figure this out",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes",
+      "description" : "I think they have the means and a plan to harm themselves or others"
+    }, {
+      "name" : "No",
+      "description" : "I think they are distressed but do not have any immediate plan to harm themselves or others"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iEncourage",
+    "notes" : "``encourage``\n\n> You are doing the right thing by looking for help and I want you to get the best help possible.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "qService",
+    "text" : "What service is most appropriate for this visitor?",
+    "notes" : "Ask any questions you need (gently) to figure out what service is most appropriate.",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Suicide Callback Service",
+      "description" : "for suicide ideation"
+    }, {
+      "name" : "1800 RESPECT",
+      "description" : "for sexual assault/domestic violence"
+    }, {
+      "name" : "Councelling Online",
+      "description" : "for drug and alcohol abuse"
+    }, {
+      "name" : "Mensline",
+      "description" : "for general help for Men"
+    }, {
+      "name" : "Kidsline (kids)",
+      "description" : "for general help for children"
+    }, {
+      "name" : "Kidsline (teens)",
+      "description" : "for general help for young adults (under 25)"
+    }, {
+      "name" : "Lifeline",
+      "description" : "for anyone else"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iScbs",
+    "notes" : "``scbs``\n\n> I think it is best if you talk to Suicide Call Back Service. They have counsellors online right now that can webchat with you or you can give them a call at 1300 659 467.\n\n*Follow this with a shortened link to **Suicide Call Back Service** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRespect",
+    "notes" : "``respect``\n\n> I think it is best if you talk to 1800 RESPECT. They have counsellors online right now that you can webchat with, or you can call them on 1800 737 732.\n\n*Follow this with a shortened link to **1800 RESPECT** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iDrugs",
+    "notes" : "``drugs``\n\n> I think it is best if you talk to Counselling Online. They have people you can webchat with right now, or you can call them any time on 1800 888 236.\n\n*Follow this with a shortened link to **Counselling Online** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iMensline",
+    "notes" : "``men``\n\n> I think it is best if you talk to Mensline. They have counsellors that you can chat to online (by text or video), or you can give them a call on 1300 78 99 78\n\n*Follow this with a shortened link to **Mensline** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iKids",
+    "notes" : "``kids``\n\n> I think it is best if you talk to Kids Line. You can call any time on 1300 78 99 78, or you can web chat with them most days from 12pm to 10pm\n\n*Follow this with a shortened link to **Kidsline (kids)** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iTeens",
+    "notes" : "``teens``\n\n> I think it is best if you talk to Kids Line (please don't be put off by the name, they talk to anyone under 25!). You can call any time on 1300 78 99 78, or you can web chat with them most days from 12pm to 10pm\n\n*Follow this with a shortened link to **Kidsline (teens)** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iLifeline",
+    "notes" : "``lifeline``\n\n> I think it is best if you talk to Lifeline. You can call them any time on  13 11 14, or you can chat to them online every evening between 8pm and 4am. \n\n*Follow this with a shortened link to **Lifeline chat** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRiskSelfReferral",
+    "notes" : "``riskSelfReferral``\n\n> I’m really worried about you and I don’t want you to die. You need to call 000 or go to the emergency department at your nearest hospital. Is that something you can do? \n\n",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "qCalled000",
+    "text" : "Did visitor call 000",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iRiskReferral",
+    "notes" : "``riskReferral``\n\n> I’m really worried and I want to make sure you get the help you deserve. Would it be easier if I called emergency services for you? Can you please give me your name, address and phone number so I can get them out to help you? How does that sound?",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "qGaveDetails",
+    "text" : "Has visitor given you their details?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "iRiskReferred",
+    "notes" : "``riskReferred``\n\n> Ok, I've given those details to 000. You should get a call from them very soon.\n\n*Use the existing ReachOut.com escalation processes to engage an external agency - 000.*",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRiskNoncompliant",
+    "notes" : "``riskNoncompliant``\n\n> If you are not up for giving that info to me, I’m going to have to pass on your IP address to emergency services because I’m really concerned about you and I want to make sure you are safe.\n\n*Give visitor time to call 000 or give you their details. *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRiskReported",
+    "notes" : "``riskReported``\n\n> I'm really worried about you! I've passed on your IP address to emergency services. Please look after yourself until they arrive.\n\n*Use the existing ReachOut.com escalation processes to engage the police telecommunications department in the relevant state, using the visitor’s IP address *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRiskClosing1",
+    "notes" : "``riskClosing1``\n\n> You've bravely taken the step towards us now keep going. Take the next step to ``REFERRED_SERVICE``. They are the people who can help you best.",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRiskClosing2",
+    "notes" : "``riskClosing2``\n\n> Think about the ways that you will keep safe and promise yourself that before you attempt anything to harm yourself, you will contact ``REFERRED_SERVICE``\n\n*Follow this with a shortened link to **Reachout Keep Safe** *",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "iRiskClosing3",
+    "notes" : "``riskClosing3``\n\n> You are not alone, contact ``REFERRED_SERVICE``\n\n*If they’re still engaging, keep repeating the same simple messages*",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pFeedback",
+    "text" : "Post-chat survey",
+    "notes" : "Fill in this survey once the chat has been concluded",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "qWorthwhile",
+    "text" : "Was talking to this visitor a good use of your time?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qNotWorthwhileReason",
+    "text" : "How come?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Visitor didn't take chat seriously."
+    }, {
+      "name" : "Visitor didn't have anything specific to ask about."
+    }, {
+      "name" : "Visitor didn't respond well to my advice/recommendations."
+    }, {
+      "name" : "Visitor just wanted help with an assignment."
+    } ],
+    "allowOther" : true,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qDistress",
+    "text" : "Did the visitor seem distressed at any point?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Extremely distressed"
+    }, {
+      "name" : "Mildly distressed"
+    }, {
+      "name" : "Not at all distressed"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qTopics",
+    "text" : "What topics did you talk about?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Tough times"
+    }, {
+      "name" : "Wellbeing"
+    }, {
+      "name" : "Getting involved"
+    } ],
+    "allowOther" : true,
+    "type" : "multichoice"
+  }, {
+    "id" : "qToughTimesTopics",
+    "text" : "What **tough times** topics did you talk about?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Something's not right"
+    }, {
+      "name" : "Mental health issues"
+    }, {
+      "name" : "Physical health"
+    }, {
+      "name" : "Alcohol and other drugs"
+    }, {
+      "name" : "Bullying, abuse and violence"
+    }, {
+      "name" : "Loss and grief"
+    }, {
+      "name" : "Getting help"
+    } ],
+    "allowOther" : true,
+    "type" : "multichoice"
+  }, {
+    "id" : "qWellbeingTopics",
+    "text" : "What **wellbeing** topics did you talk about?",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Mental fitness"
+    }, {
+      "name" : "Personal identity"
+    }, {
+      "name" : "School, uni and study"
+    }, {
+      "name" : "Goals and motivation"
+    }, {
+      "name" : "Being independent"
+    }, {
+      "name" : "Social skills"
+    }, {
+      "name" : "Staying fit and healthy"
+    }, {
+      "name" : "Friends and family"
+    }, {
+      "name" : "Sex and relationships"
+    } ],
+    "allowOther" : true,
+    "type" : "multichoice"
+  }, {
+    "id" : "qToolFeedback",
+    "text" : "Did this conversation reveal anything great or frustrating about the chat tool or cheat sheet?",
+    "hidden" : false,
+    "optional" : true,
+    "length" : "LONG",
+    "type" : "freetext"
+  } ],
+  "fieldRules" : [ {
+    "triggers" : [ {
+      "questionId" : "qLaunch",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iHiWithQuestion"
+    }, {
+      "action" : "show",
+      "fieldId" : "iHelpWithQuestion"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qLaunch",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iHiWithoutQuestion"
+    }, {
+      "action" : "show",
+      "fieldId" : "iHelpNoQuestion"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qLaunch",
+      "condition" : "is",
+      "value" : "Yes"
+    }, {
+      "questionId" : "qLaunch",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "operator" : "or",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qAge"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qAge",
+      "condition" : "lessThan",
+      "value" : 14
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iUnderage"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qAge",
+      "condition" : "greaterThan",
+      "value" : 25
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iOverage"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qAge",
+      "condition" : "greaterThan",
+      "value" : 13
+    }, {
+      "questionId" : "qAge",
+      "condition" : "lessThan",
+      "value" : 26
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iConsentCheck1"
+    }, {
+      "action" : "show",
+      "fieldId" : "iConsentCheck2"
+    }, {
+      "action" : "show",
+      "fieldId" : "iConsentCheck3"
+    }, {
+      "action" : "show",
+      "fieldId" : "qConsentGiven"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qConsentGiven",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iConsentNo"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qConsentGiven",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iConsentYes"
+    }, {
+      "action" : "show",
+      "fieldId" : "qConsentRevoked"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qConsentGiven",
+      "condition" : "is",
+      "value" : "No"
+    }, {
+      "questionId" : "qConsentRevoked",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "operator" : "or",
+    "actions" : [ {
+      "action" : "hide",
+      "fieldId" : "iSurvey"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qConsentRevoked",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iConsentRevoked"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qAtRisk",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iEncourage"
+    }, {
+      "action" : "show",
+      "fieldId" : "qService"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "Suicide Callback Service"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iScbs"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "1800 RESPECT"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iRespect"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "Councelling Online"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iDrugs"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "Mensline"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iMensline"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "Kidsline (kids)"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iKids"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "Kidsline (teens)"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iTeens"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qService",
+      "condition" : "is",
+      "value" : "Lifeline"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iLifeline"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qAtRisk",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iRiskSelfReferral"
+    }, {
+      "action" : "show",
+      "fieldId" : "qCalled000"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qCalled000",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iRiskReferral"
+    }, {
+      "action" : "show",
+      "fieldId" : "qGaveDetails"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qGaveDetails",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iRiskReferred"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qGaveDetails",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iRiskNoncompliant"
+    }, {
+      "action" : "show",
+      "fieldId" : "iRiskReported"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qWorthwhile",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qNotWorthwhileReason"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qWorthwhile",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qDistress"
+    }, {
+      "action" : "show",
+      "fieldId" : "qTopics"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTopics",
+      "condition" : "contains",
+      "value" : "Tough times"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qToughTimesTopics"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTopics",
+      "condition" : "contains",
+      "value" : "Wellbeing"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qWellbeingTopics"
+    } ]
+  } ],
+  "pageRules" : [ {
+    "triggers" : [ {
+      "questionId" : "qAge",
+      "condition" : "lessThan",
+      "value" : 14
+    }, {
+      "questionId" : "qAge",
+      "condition" : "greaterThan",
+      "value" : 26
+    } ],
+    "operator" : "or",
+    "actions" : [ {
+      "action" : "skipToEnd"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qInCrisis",
+      "condition" : "is",
+      "value" : "Yes"
+    } ],
+    "actions" : [ {
+      "action" : "skipTo",
+      "pageId" : "pEscalation"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qInCrisis",
+      "condition" : "is",
+      "value" : "No"
+    } ],
+    "actions" : [ {
+      "action" : "skip",
+      "pageId" : "pEscalation"
+    } ]
+  } ],
+  "createdAt" : 1418106177594,
+  "modifiedAt" : 1418106177594,
+  "deleted" : false
+}
