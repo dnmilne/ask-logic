@@ -34,6 +34,7 @@ The source code of [ask-bootstrap]() provides fairly clean examples of how to us
 Within a controller, set up a `schema` object to store your ask schema. Below we construct it in place, but you are more likely to retrieve it from a server, or load it from a file.
 
     scope.schema = {
+      "id" : "simpleTestSurvey",
 	  "title" : "Simple test survey",
 	  "fields" : [ {
 	    "id" : "qName",
@@ -82,9 +83,13 @@ Within a controller, set up a `schema` object to store your ask schema. Below we
 	  } ]
 	}
 
-Also set up a `response` object, that will store a user's response to this survey. This is just a blank object, unless you want some of the fields to be pre-populated.
+Also set up a `response` object, that will store a user's response to this survey. 
 
-    scope.response = {} ;    
+    scope.response = {
+    	id: "qpwek2l3jk3",
+    	surveyId: "simpleTestSurvey",
+    	respondentId: "dave@dave.com"
+    } ;  
 
 Finally, use the `SurveyStates` service to construct a `state` variable. 
 
@@ -93,31 +98,37 @@ Finally, use the `SurveyStates` service to construct a `state` variable.
 
 ###Keeping the state informed	
 
-This state object needs to be kept informed of what is going on. It doesn't listen for changes automatically. 
+The `state` needs to be kept informed of what is going on. It doesn't listen for changes automatically. 
 
-* Whenever an answer to a question field changes, you should make sure the response object stores the updated answer, and then call `state.handleAnswerChanged(fieldId)`.
+* Whenever an answer to a question field changes, you should make sure the `response`  stores the updated answer, and then call `state.handleAnswerChanged(fieldId)`.
 * Whenever the user wants to continue to the next page or complete the survey, you should call 
 `state.handleContinue()`. 
 * Whenever the user wants to step back to a previous page, you should call
 `state.handleBack()`. 
 
-The state object assumes the schema is immutable, and will never change. If you do change it, then you should create a new state object. 
+The state object assumes the `schema` is immutable, and will never change. If you do change it, then you should create a new state object. 
 
 
 ###Managing the response
 
-The response object stores the users' progress through the survey; their answers to questions and (for multi-page surveys) the page they are on. So, the process of answering fields should produce a response object like this:
+The response object stores a user's progress through the survey; their answers to questions and (for multi-page surveys) the page they are on. So, the process of answering fields should build up a response object like this:
 
 	{
+		id: "qpwek2l3jk3",
+    	surveyId: "simpleTestSurvey",
+    	respondentId: "dave@dave.com",
 		answers: {
 			"qName":{text:"Dave"},
 			"qHappy":{choice:"Yes"}
 		},
+		tags: ["cohort_1"]
 		pageIndex: 0,
 		completed: false
 	}
 
 The `answers` are a simple map of field ids to answer objects. You are expected to manipulate them directly, so you will probably want them wired to the text inputs, radio buttons and whatnot. 
+
+The `tags` are a simple array of string tags, which you are also free to modify directly. 
 
 You should never directly modify any other part of the response object, however. The state object will take care of that. 
 
@@ -126,7 +137,7 @@ You should never directly modify any other part of the response object, however.
 
 The `state` provides a list of `fields`, which are clones of the `schema.fields` but with a few extra properties:
 
- * `field.visible` is set to **false** if the field is not part of the current page, or if it has been hidden by a field rule. The idea is that your survey page should contain ALL fields, and use `ng-hide` to hide the ones that aren't currently visible.
+ * `field.visible` is set to **false** if the field is not part of the current page, or if it has been hidden by a field rule. The idea is that, to present the survey, you do an `ng-repeat` over all fields, and use `ng-if` or `ng-show` to only present the visible ones. 
  * `field.answered` is set to **true** if the field has been satisfactorily answered.
  * `field.missing` is set to **true** if one has attempted to continue, but has not satisfactorily answered this (mandatory) question. The idea is that you should visibly flag such fields to the user.
  * `field.pageIndex` indicates which page this field is shown with. This is an index into the `scope.pages` array described in the next section.  
@@ -147,10 +158,9 @@ Each entry of in the array is a field (with `type=pagebreak`), along with a few 
 
 The index of the current page is also stored in `scope.response.pageIndex`
 
-
 ###Extra notes
 
-* The `state` is not a singleton. A new instance is create every time `SurveyStates.init()` is called. This means that you can happily display multiple surveys to the user at once, and have separate `response` and `state` objects for each. 
+* The `state` is not a singleton. A new instance is created every time `SurveyStates.init()` is called. This means that you can happily display multiple surveys to the user at once, and have separate `response` and `state` objects for each. 
 
 * The `state` never manipulates the `schema`, and assumes it is immutable. If the `schema` changes, then the `state` object will be invalid and bugs are likely. It might be a good idea to set up a watch on the `schema`, and recreate the `state` whenever it changes. 
 
