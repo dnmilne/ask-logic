@@ -328,6 +328,7 @@ var AskLogic = angular.module('ask-logic', [])
 			var r = {
 				triggers:[],
 				actions:rule.actions,
+				operator:rule.operator,
 				index:ruleIndex
 			} 
 

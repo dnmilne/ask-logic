@@ -74,6 +74,40 @@ describe('chatScript', function() {
 			expect(state.fieldsById["iConsentCheck3"].visible).toEqual(true) ;
 
 		})
+
+
+		it ("Should manage page rules in response to qAge question", function() {
+
+			var response = {
+				answers:{
+					qLaunch: {choice:"No"}
+				}
+			} ;
+			var state = SurveyStates.init(schema, response) ;
+
+			response.answers["qAge"] = {number:12} ;
+			state.handleAnswerChanged("qAge") ;
+			state.handleContinue() ;
+			expect(response.completed).toEqual(true) ;
+
+			state.handleBack() ;
+			expect(response.pageIndex).toEqual(0) ;
+
+			response.answers["qAge"] = {number:28} ;
+			state.handleAnswerChanged("qAge") ;
+			state.handleContinue() ;
+			expect(response.completed).toEqual(true) ;
+
+			state.handleBack() ;
+			expect(response.pageIndex).toEqual(0) ;
+
+			response.answers["qAge"] = {number:20} ;
+			state.handleAnswerChanged("qAge") ;
+			state.handleContinue() ;
+			expect(response.completed).toEqual(false) ;
+			expect(response.pageIndex).toEqual(0) ;
+
+		})
 	}) ;
 
 });
