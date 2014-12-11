@@ -27,7 +27,7 @@ We assume you are working within an angular app.
 
 ##Usage
 
-The source code of [ask-bootstrap]() provides fairly clean examples of how to use `ask-logic`. We recommend copying this, and modifying to suit.
+The source code of [ask-bootstrap](http://github.com/dnmilne/ask-bootstrap) provides fairly clean examples of how to use `ask-logic`. We recommend copying this, and modifying to suit.
 
 ###Setting up the schema, response, and state 
 
@@ -94,6 +94,7 @@ Also set up a `response` object, that will store a user's response to this surve
 Finally, use the `SurveyStates` service to construct a `state` variable. 
 
 	scope.state = SurveyStates.init(schema, response) ;
+	
 
 
 ###Keeping the state informed	
@@ -108,12 +109,13 @@ The `state` needs to be kept informed of what is going on. It doesn't listen for
 * If the entire `response` object changes (i.e. because you retrieved it from a server), you should call
 `state.handleResponseUpdated(response)`. You should only call this when you clobber the `response` entirely. Use the methods above to handle incremental changes to it. 
 
-The state object assumes the `schema` is immutable, and will never change. If you do change it, then you should create a new state object. 
+The `state` assumes the `schema` is immutable, and will never change. If the `schema` changes, then the `state` object will be invalid and bugs are likely. It might be a good idea to set up a watch on the `schema`, and recreate the `state` whenever it changes. 
 
+* **note:** `state` is not a singleton. A new instance is created every time `SurveyStates.init()` is called. This means that you can happily display multiple surveys to the user at once, and have separate `response` and `state` objects for each. 
 
 ###Managing the response
 
-The response object stores a user's progress through the survey; their answers to questions and (for multi-page surveys) the page they are on. So, the process of answering fields should build up a response object like this:
+The `response` stores a user's progress through the survey; their answers to questions and (for multi-page surveys) the page they are on. So, the process of answering fields should build up a response object like this:
 
 	{
 		id: "qpwek2l3jk3",
@@ -149,7 +151,7 @@ For each field, you will want to inspect the `field.type` variable to display th
 
 ###Managing pages
 
-Page breaks are special fields that you probably always want to hide. These define where the survey should be split into multiple pages. 
+Pagebreaks are special fields that define where the survey should be split into multiple pages. 
 
 `state.pages` provides an array of these pagebreak fields. If there are any fields specified before the first pagebreak in the schema, then a new (untitled) pagebreak field will be added to the start of this array. 
 
@@ -158,15 +160,7 @@ Each entry of in the array is a field (with `type=pagebreak`), along with a few 
 * `page.pageIndex` is the index of this page in the `state.pages` array
 * `page.current` is set to **true** if the user is currently on this page
 
-The index of the current page is also stored in `response.pageIndex`, and for convenience the current page is stored in `state.page`
-
-###Extra notes
-
-* The `state` is not a singleton. A new instance is created every time `SurveyStates.init()` is called. This means that you can happily display multiple surveys to the user at once, and have separate `response` and `state` objects for each. 
-
-* The `state` never manipulates the `schema`, and assumes it is immutable. If the `schema` changes, then the `state` object will be invalid and bugs are likely. It might be a good idea to set up a watch on the `schema`, and recreate the `state` whenever it changes. 
-
-
+The index of the user's current page is also stored in `response.pageIndex`, and for convenience the current page is stored in `state.page`
 
 
 
