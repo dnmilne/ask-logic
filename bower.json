@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "latest",
-    "underscore": "latest"
+    "lodash": "latest"
   },
   "devDependencies": {
     "angular-mocks": "latest",

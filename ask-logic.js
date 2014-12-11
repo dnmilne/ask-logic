@@ -303,17 +303,11 @@ var AskLogic = angular.module('ask-logic', [])
 
 		_.each(schema.fieldRules, function(rule, ruleIndex) {
 
-			var r = {
-				triggers:[],
-				actions:rule.actions,
-				operator:rule.operator,
-				index:ruleIndex
-			} 
+			var r = _.cloneDeep(rule) ;
+			r.index = ruleIndex ;
 
-			_.each(rule.triggers, function(trigger) {
-				var t = _.clone(trigger) ;
-				t.fieldRuleIndex = ruleIndex ;
-				r.triggers.push(t) ;
+			_.each(r.triggers, function(trigger) {
+				trigger.fieldRuleIndex = ruleIndex ;
 			}) ;
 
 			this.fieldRules.push(r) ;
@@ -325,17 +319,11 @@ var AskLogic = angular.module('ask-logic', [])
 
 		_.each(schema.pageRules, function(rule, ruleIndex) {
 
-			var r = {
-				triggers:[],
-				actions:rule.actions,
-				operator:rule.operator,
-				index:ruleIndex
-			} 
+			var r = _.cloneDeep(rule) ;
+			r.index = ruleIndex ;
 
-			_.each(rule.triggers, function(trigger) {
-				var t = _.clone(trigger) ;
-				t.pageRuleIndex = ruleIndex ;
-				r.triggers.push(t) ;
+			_.each(r.triggers, function(trigger) {
+				trigger.pageRuleIndex = ruleIndex ;
 			}) ;
 
 			this.pageRules.push(r) ;
@@ -350,7 +338,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 		_.each(schema.fields, function (field) {
 
-			var f = _.clone(field) ;
+			var f = _.cloneDeep(field) ;
 
 			var p ;
 

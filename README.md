@@ -9,7 +9,7 @@ Using this module directly is only necessary if you want full control over how y
 This requires
 
  * [AngularJS](http://angularjs.org/)
- * [Underscore.js](http://underscorejs.org/)
+ * [Lo-Dash](http://lodash.com)
 
 But that's handled automatically if you install via bower.
 
@@ -21,7 +21,7 @@ We assume you are working within an angular app.
 
 2. Include `ask-logic.js`, which should be located in `bower_components/ask-logic/`
 
-3. Include the dependency`underscore-min.js` (`bower_components/underscore`)
+3. Include the dependency`lodash.min.js` (`bower_components/lodash/dist/`)
 
 4. Add `ask-logic` as a module dependency to your app
 
