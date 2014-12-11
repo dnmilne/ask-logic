@@ -140,7 +140,7 @@ The `state` provides a list of `fields`, which are clones of the `schema.fields`
  * `field.visible` is set to **false** if the field is not part of the current page, or if it has been hidden by a field rule. The idea is that, to present the survey, you do an `ng-repeat` over all fields, and use `ng-if` or `ng-show` to only present the visible ones. 
  * `field.answered` is set to **true** if the field has been satisfactorily answered.
  * `field.missing` is set to **true** if one has attempted to continue, but has not satisfactorily answered this (mandatory) question. The idea is that you should visibly flag such fields to the user.
- * `field.pageIndex` indicates which page this field is shown with. This is an index into the `scope.pages` array described in the next section.  
+ * `field.pageIndex` indicates which page this field is shown with. This is an index into the `state.pages` array described in the next section.  
 
 For each field, you will want to inspect the `field.type` variable to display the appropriate widget (text input, radio buttons, etc). You will also probably want to ignore any fields with `field.type=='pagebreak'` since these get treated a bit differently (below). 
 
@@ -156,7 +156,7 @@ Each entry of in the array is a field (with `type=pagebreak`), along with a few 
 * `page.pageIndex` is the index of this page in the `state.pages` array
 * `page.current` is set to **true** if the user is currently on this page
 
-The index of the current page is also stored in `scope.response.pageIndex`
+The index of the current page is also stored in `response.pageIndex`, and for convenience the current page is stored in `state.page`
 
 ###Extra notes
 

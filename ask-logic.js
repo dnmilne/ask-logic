@@ -244,7 +244,6 @@ var AskLogic = angular.module('ask-logic', [])
             else
                 return 'sw' ;
         }
-
 	}
 
 
@@ -404,6 +403,13 @@ var AskLogic = angular.module('ask-logic', [])
 							f.relevantTriggers.push(trigger) ;
 					}) ;
 				}) ;
+
+				_.each(this.pageRules, function(rule) {
+					_.each(rule.triggers, function(trigger) {
+						if (trigger.questionId == f.id)
+							f.relevantTriggers.push(trigger) ;
+					}) ;
+				}) ;
 			} ;
 
 
@@ -485,6 +491,40 @@ var AskLogic = angular.module('ask-logic', [])
 
 	}
 
+	SurveyState.prototype.handleBack = function() {
+
+		this.response.completed = false ;
+
+		if (this.response.pageIndex == 0) {
+			return ;
+		}
+
+		var prevUnskippedPage ;
+
+		for (var i = this.response.pageIndex - 1 ; i>=0 ; i--) {
+
+			var p = this.pages[i] ;
+
+			var skipState = _.find(p.pageRuleStates, function (state) {
+				return state == 'skip' ;
+			}) ;
+
+			if (!skipState) {
+				prevUnskippedPage = p ;
+				break ;
+			}
+		}
+
+		if (prevUnskippedPage) {
+			this.response.pageIndex = prevUnskippedPage.pageIndex ;
+		} else {
+			//this should never happen, but if it does then just jump to first page
+			this.response.pageIndex = 0 ;
+		}
+
+		this.handleCurrentPageChanged() ;
+	}
+
 	SurveyState.prototype.handleCurrentPageChanged = function() {
 
 		if (this.response.pageIndex == null) {
@@ -493,6 +533,8 @@ var AskLogic = angular.module('ask-logic', [])
 			else
 				this.response.pageIndex = 0 ;
 		}
+
+		this.page = this.pages[this.response.pageIndex] ;
 
 		_.each(this.pages, function(page, pageIndex) {
 			page.current = (pageIndex == this.response.pageIndex) ;
@@ -551,6 +593,9 @@ var AskLogic = angular.module('ask-logic', [])
 	}
 
 	SurveyState.prototype.handleTriggerStateChanged = function(trigger) {
+
+		//console.log("trigger state changed") ;
+		//console.log(trigger);
 
 		var ruleType, rule ;
 
@@ -629,6 +674,9 @@ var AskLogic = angular.module('ask-logic', [])
 	}
 
 	SurveyState.prototype.handlePageRuleStateChanged = function(rule) {
+
+		//console.log("rule state changed")
+		//console.log(rule) ;
 
 		//identify earliest effected page, which is the next page after the last trigger
 		var earliestEffectedPageIndex ;

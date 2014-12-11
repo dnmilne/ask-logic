@@ -1,0 +1,110 @@
+{
+  "title" : "Gender and Parenthood",
+  "fields" : [ {
+    "id" : "qGender",
+    "text" : "Gender",
+    "hidden" : false,
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Male"
+    }, {
+      "name" : "Female"
+    }, {
+      "name" : "I'd rather not say"
+    } ],
+    "allowOther" : false,
+    "type" : "singlechoice"
+  }, {
+    "id" : "qDependents",
+    "text" : "Number of dependents",
+    "hidden" : false,
+    "optional" : false,
+    "type" : "numeric"
+  }, {
+    "id" : "pMales",
+    "text" : "For men",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "iMales",
+    "text" : "This is where we ask questions for all men",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pFathers",
+    "text" : "For fathers",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "iFathers",
+    "text" : "This is where we ask questions for all fathers",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pFemales",
+    "text" : "For women",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "iFemales",
+    "text" : "This is where we ask questions for all women",
+    "hidden" : false,
+    "type" : "instruction"
+  }, {
+    "id" : "pMothers",
+    "text" : "For mothers",
+    "hidden" : false,
+    "type" : "pageBreak"
+  }, {
+    "id" : "iMothers",
+    "text" : "This is where we ask questions for all mothers",
+    "hidden" : false,
+    "type" : "instruction"
+  } ],
+  "pageRules" : [ {
+    "triggers" : [ {
+      "questionId" : "qGender",
+      "condition" : "is",
+      "value" : "I'd rather not say"
+    } ],
+    "actions" : [ {
+      "action" : "skipToEnd"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qGender",
+      "condition" : "is",
+      "value" : "Male"
+    } ],
+    "actions" : [ {
+      "action" : "skip",
+      "pageId" : "pFemales"
+    }, {
+      "action" : "skip",
+      "pageId" : "pMothers"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qGender",
+      "condition" : "is",
+      "value" : "Female"
+    } ],
+    "actions" : [ {
+      "action" : "skipTo",
+      "pageId" : "pFemales"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qDependents",
+      "condition" : "equal",
+      "value" : 0
+    } ],
+    "actions" : [ {
+      "action" : "skip",
+      "pageId" : "pMothers"
+    }, {
+      "action" : "skip",
+      "pageId" : "pFathers"
+    } ]
+  } ]
+}
