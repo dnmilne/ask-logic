@@ -100,11 +100,13 @@ Finally, use the `SurveyStates` service to construct a `state` variable.
 
 The `state` needs to be kept informed of what is going on. It doesn't listen for changes automatically. 
 
-* Whenever an answer to a question field changes, you should make sure the `response`  stores the updated answer, and then call `state.handleAnswerChanged(fieldId)`.
+* Whenever an answer to a question field changes, you should make sure `response`  stores the updated answer, and then call `state.handleAnswerChanged(fieldId)`.
 * Whenever the user wants to continue to the next page or complete the survey, you should call 
 `state.handleContinue()`. 
 * Whenever the user wants to step back to a previous page, you should call
 `state.handleBack()`. 
+* If the entire `response` object changes (i.e. because you retrieved it from a server), you should call
+`state.handleResponseUpdated(response)`. You should only call this when you clobber the `response` entirely. Use the methods above to handle incremental changes to it. 
 
 The state object assumes the `schema` is immutable, and will never change. If you do change it, then you should create a new state object. 
 

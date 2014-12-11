@@ -64,7 +64,10 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isFreetextAnswered(answer) {
 
-		if (!answer.text == null)
+		if (answer.text == null)
+			return false ;
+
+		if (answer.text.trim().length == 0)
 			return false ;
 
 		return true ;
@@ -97,7 +100,7 @@ var AskLogic = angular.module('ask-logic', [])
 					return isFreetextAnswered(answer) ;
 				case 'mood' :
 					return isMoodAnswered(answer) ;
-			} 
+			}
 
 			return false ;
 		} 
@@ -283,21 +286,6 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function SurveyState(schema, response) {
 
-		//this.schema = schema ;
-
-		//initialize response object. Don't clone it.
-		if (!response.answers)
-			response.answers = {} ;
-
-		if (!response.pageIndex)
-			response.pageIndex = 0 ;
-
-		if (response.completed == null)
-			response.completed = false ;
-		
-		this.response = response ;
-		
-
 		//clone all field rules into array, attaching additional information
 		this.fieldRules = [] ;
 
@@ -380,8 +368,7 @@ var AskLogic = angular.module('ask-logic', [])
 			if (f.isQuestion) {
 
 				//if we don't have an answer object for this question field, then initialize an empty one
-				if (!this.response.answers[f.id])
-					this.response.answers[f.id] = {} ;
+				
 
 				//identify any relevant fieldRuleTriggers
 				f.relevantTriggers = [] ;
@@ -408,6 +395,32 @@ var AskLogic = angular.module('ask-logic', [])
 
 		}, this) ;
 
+
+		this.handleResponseUpdated(response) ;
+	}
+
+	SurveyState.prototype.handleResponseUpdated = function(response) {
+
+		if (!response.answers)
+			response.answers = {} ;
+
+		if (!response.pageIndex)
+			response.pageIndex = 0 ;
+
+		if (response.completed == null) {
+			if (response.pageIndex >= this.pages.length)
+				response.completed = true ;
+			else
+				response.completed = false ;
+		}
+
+		//add placeholder answers for all questions
+		_.each(this.fields, function (field) {
+			if (!response.answers[field.id])
+				response.answers[field.id] = {} ;
+		}) ;
+
+		this.response = response ;
 
 		//check state of triggers for all answers
 		_.each(this.response.answers, function(answer, answerIndex) {
@@ -438,6 +451,9 @@ var AskLogic = angular.module('ask-logic', [])
 				return ;
 
 			if (field.answered)
+				return ;
+
+			if (field.hidden)
 				return ;
 
 			if (field.optional)
@@ -656,8 +672,13 @@ var AskLogic = angular.module('ask-logic', [])
 			} ;
 
 			//if a field gets hidden, wipe any answers to it
-			if (field.fieldRuleState == "hide") 
-				this.response.answers[field.id] == {} ;
+			if (field.fieldRuleState == "hide") {
+				if (AnswerStates.isAnswered(field, this.response.answers[field.id])) {
+					//console.log("Recursively clearing answer to " + field.id) ;
+					this.response.answers[field.id] = {} ;
+					this.handleAnswerChanged(field.id) ;
+				}
+			}
 
 			this.updateVisibility(field) ;
 
