@@ -666,6 +666,10 @@ var AskLogic = angular.module('ask-logic', [])
 					field.fieldRuleState = "show" ;
 			} ;
 
+			//if a field gets hidden, wipe any answers to it
+			if (field.fieldRuleState == "hide") 
+				this.response.answers[field.id] == {} ;
+
 			this.updateVisibility(field) ;
 
 			//console.log("  - " + field.fieldRuleState) ;
