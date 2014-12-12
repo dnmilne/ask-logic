@@ -16,6 +16,19 @@ describe('genderAndParenthood', function() {
 
 	}) ;
 
+	it ("Should inject blank answers for question fields", function() {
+
+		var response = {} ;
+		var state = SurveyStates.init(schema, response) ;
+
+		expect(response.answers.qGender).toBeTruthy() ;
+		expect(response.answers.qDependents).toBeTruthy() ;
+
+		expect(response.answers.pMales).toBeUndefined() ;
+		expect(response.answers.iMales).toBeUndefined() ;
+
+	}) ;
+
 	it("Should handle no gender (skip to end)", function() {
 
 		//can skip right to end if user doesn't give a gender,

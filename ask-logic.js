@@ -416,6 +416,10 @@ var AskLogic = angular.module('ask-logic', [])
 
 		//add placeholder answers for all questions
 		_.each(this.fields, function (field) {
+
+			if (!field.isQuestion)
+				return ;
+
 			if (!response.answers[field.id])
 				response.answers[field.id] = {} ;
 		}) ;
