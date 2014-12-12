@@ -2,8 +2,8 @@
   "title" : "Gender and Parenthood",
   "fields" : [ {
     "id" : "qGender",
-    "text" : "Gender",
     "hidden" : false,
+    "question" : "Gender",
     "optional" : false,
     "choices" : [ {
       "name" : "Male"
@@ -16,49 +16,49 @@
     "type" : "singlechoice"
   }, {
     "id" : "qDependents",
-    "text" : "Number of dependents",
     "hidden" : false,
+    "question" : "Number of dependents",
     "optional" : false,
     "type" : "numeric"
   }, {
     "id" : "pMales",
-    "text" : "For men",
     "hidden" : false,
+    "title" : "Men",
     "type" : "pageBreak"
   }, {
     "id" : "iMales",
-    "text" : "This is where we ask questions for all men",
     "hidden" : false,
+    "text" : "This is where we ask questions for all men",
     "type" : "instruction"
   }, {
     "id" : "pFathers",
-    "text" : "For fathers",
     "hidden" : false,
+    "title" : "Fathers",
     "type" : "pageBreak"
   }, {
     "id" : "iFathers",
-    "text" : "This is where we ask questions for all fathers",
     "hidden" : false,
+    "text" : "This is where we ask questions for all fathers",
     "type" : "instruction"
   }, {
     "id" : "pFemales",
-    "text" : "For women",
     "hidden" : false,
+    "title" : "Women",
     "type" : "pageBreak"
   }, {
     "id" : "iFemales",
-    "text" : "This is where we ask questions for all women",
     "hidden" : false,
+    "text" : "This is where we ask questions for all women",
     "type" : "instruction"
   }, {
     "id" : "pMothers",
-    "text" : "For mothers",
     "hidden" : false,
+    "title" : "Mothers",
     "type" : "pageBreak"
   }, {
     "id" : "iMothers",
-    "text" : "This is where we ask questions for all mothers",
     "hidden" : false,
+    "text" : "This is where we ask questions for all mothers",
     "type" : "instruction"
   } ],
   "pageRules" : [ {
@@ -106,5 +106,8 @@
       "action" : "skip",
       "pageId" : "pFathers"
     } ]
-  } ]
+  } ],
+  "createdAt" : 1418345263027,
+  "modifiedAt" : 1418345263027,
+  "deleted" : false
 }

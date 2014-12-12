@@ -34,28 +34,31 @@ The source code of [ask-bootstrap](http://github.com/dnmilne/ask-bootstrap) prov
 Within a controller, set up a `schema` object to store your ask schema. Below we construct it in place, but you are more likely to retrieve it from a server, or load it from a file.
 
     scope.schema = {
-      "id" : "simpleTestSurvey",
 	  "title" : "Simple test survey",
 	  "fields" : [ {
 	    "id" : "qName",
-	    "text" : "What is your name?",
+	    "question" : "What is your name?",
+	    "optional" : false,
 	    "length" : "SHORT",
 	    "type" : "freetext"
 	  }, {
 	    "id" : "qHappy",
-	    "text" : "Are you happy?",
-	    "choices" : [ {"name" : "Yes"}, {"name" : "No"} ],
+	    "question" : "Are you happy?",
+	    "optional" : false,
+	    "choices" : [ {
+	      "name" : "Yes"
+	    }, {
+	      "name" : "No"
+	    } ],
 	    "allowOther" : false,
 	    "type" : "singlechoice"
 	  }, {
 	    "id" : "iGood",
 	    "text" : "Good for you!",
-	    "hidden" : false,
 	    "type" : "instruction"
 	  }, {
 	    "id" : "qBadReason",
-	    "text" : "Oh no! How come?",
-	    "hidden" : false,
+	    "question" : "Oh no! How come?",
 	    "optional" : false,
 	    "length" : "LONG",
 	    "type" : "freetext"
@@ -80,7 +83,7 @@ Within a controller, set up a `schema` object to store your ask schema. Below we
 	      "action" : "show",
 	      "fieldId" : "qBadReason"
 	    } ]
-	  } ]
+	  } ],
 	}
 
 Also set up a `response` object, that will store a user's response to this survey. 

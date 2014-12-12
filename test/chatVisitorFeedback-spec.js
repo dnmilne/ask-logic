@@ -24,8 +24,8 @@ describe('chatVisitorFeedback', function() {
 			var state = SurveyStates.init(schema, response) ;
 
 			expect(state.fields.length).toEqual(10) ;
-			expect(state.fieldsById["qGender"].text).toEqual("What gender are you?") ;
-			expect(state.fieldsById["qGender2"].text).toEqual("What best describes you?") ;
+			expect(state.fieldsById["qGender"].question).toEqual("What gender are you?") ;
+			expect(state.fieldsById["qGender2"].question).toEqual("What best describes you?") ;
 			expect(state.fieldsById["qGender"].relevantTriggers.length).toEqual(1) ;
 			expect(state.fieldsById["qWorthwhile"].relevantTriggers.length).toEqual(1) ;
 		})
