@@ -2,19 +2,21 @@ describe('genderAndParenthood', function() {
 
 	var SurveyStates ;
 
-	beforeEach(function() {
+	beforeEach(module('ask-logic', function($provide) {
 
-		module('ask-logic') ;
+	  $provide.value('$log', console);
 
-		inject(function ($injector) {
-			SurveyStates = $injector.get('SurveyStates') ;
-		}) ;
+	  jasmine.getJSONFixtures().fixturesPath='base/test/schemas';
+	  schema = getJSONFixture('genderAndParenthood.json') ;
 
-		jasmine.getJSONFixtures().fixturesPath='base/test/schemas';
+	})) ;
 
-		schema = getJSONFixture('genderAndParenthood.json') ;
+	beforeEach(
 
-	}) ;
+	 	inject(function ($injector) {
+	        SurveyStates = $injector.get('SurveyStates') ;
+		}) 
+	);
 
 	it ("Should inject blank answers for question fields", function() {
 
@@ -33,7 +35,6 @@ describe('genderAndParenthood', function() {
 
 		//can skip right to end if user doesn't give a gender,
 		//and then skip right back to start if they ask to go back
-
 		var response = {
 			answers:{
 				qGender:{choice:"I'd rather not say"},

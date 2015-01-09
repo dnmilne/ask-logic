@@ -19,9 +19,8 @@ module.exports = function(config) {
       'bower_components/lodash/dist/lodash.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-resource/angular-resource.js',
-
       'ask-logic.js',
-      'test/**/*.js',
+      'test/*.js',
 
       {pattern: 'test/schemas/*.json', watched: true, served: true, included: false}
     ],

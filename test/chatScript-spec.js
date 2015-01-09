@@ -130,7 +130,6 @@ describe('chatScript', function() {
 			response.answers["qAge"] = {number:12} ;
 			state.handleAnswerChanged("qAge") ;
 			state.handleContinue() ;
-			debugger;
 			expect(response.completed).toEqual(true) ;
 
 			state.handleBack() ;

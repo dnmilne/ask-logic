@@ -35,7 +35,7 @@ var AskLogic = angular.module('ask-logic', [])
 })
 
 
-.factory('AnswerStates', function() {
+.factory('AnswerStates', ['$log', function($log) {
 
 
 	function isSinglechoiceAnswered(answer) {
@@ -85,32 +85,54 @@ var AskLogic = angular.module('ask-logic', [])
 
 		isAnswered : function(field, answer) {
 
-			if (!answer)
+			if (!field) {
+				console.warn("tried to check answer to nonexistent field") ;
 				return false ;
+			}
+
+			if (!answer) {
+				$log.warn("tried to check undefined answer to field " + field.id)
+				return false ;
+			}
+
+			var answered = false ;
 
 			switch(field.type) {
 
 				case 'singlechoice' :
-					return isSinglechoiceAnswered(answer) ;
+					answered = isSinglechoiceAnswered(answer) ;
+					break ;
 				case 'multichoice' :
-					return isMultichoiceAnswered(answer) ;
+					answered = isMultichoiceAnswered(answer) ;
+					break ;
 				case 'numeric' :
-					return isNumericAnswered(answer) ;
+					answered = isNumericAnswered(answer) ;
+					break ;
 				case 'freetext' :
-					return isFreetextAnswered(answer) ;
+					answered = isFreetextAnswered(answer) ;
+					break ;
 				case 'mood' :
-					return isMoodAnswered(answer) ;
+					answered = isMoodAnswered(answer) ;
+					break ;
+				default :
+					$log.warn("cannot check answer of unknown field type " + field.type + " (" + field.id + ")") ;
+
 			}
 
-			return false ;
+			if (answered)
+				$log.debug(field.id + " IS answered") ;
+			else
+				$log.debug(field.id + " IS NOT answered") ;
+
+			return answered ;
 		} 
 	}
-})
+}])
 
 
 
 
-.factory('TriggerStates', ['Normalizer', function(Normalizer) {
+.factory('TriggerStates', ['$log','Normalizer', function($log, Normalizer) {
 
 	function isSinglechoiceTriggerFired(trigger, answer) {
 
@@ -255,21 +277,36 @@ var AskLogic = angular.module('ask-logic', [])
 
 		isFired : function (trigger, field, answer) {
 
+			var fired = false ;
+
 			switch(field.type) {
 
 				case 'singlechoice' :
-					return isSinglechoiceTriggerFired(trigger, answer) ;
+					fired = isSinglechoiceTriggerFired(trigger, answer) ;
+					break ;
 				case 'multichoice' :
-					return isMultichoiceTriggerFired(trigger, answer) ;
+					fired = isMultichoiceTriggerFired(trigger, answer) ;
+					break ;
 				case 'numeric' :
-					return isNumericTriggerFired(trigger, answer) ;
+					fired = isNumericTriggerFired(trigger, answer) ;
+					break ;
 				case 'freetext' :
-					return isFreetextTriggerFired(trigger, answer) ;
+					fired = isFreetextTriggerFired(trigger, answer) ;
+					break ;
 				case 'mood' : 
-					return isMoodTriggerFired(trigger, answer) ;
+					fired = isMoodTriggerFired(trigger, answer) ;
+					break ;
+				default :
+					$log.warn("could not identify fire state of trigger for field type " + field.type) ;
+					break ;
 			} 
 
-			return false ;
+			if (fired)
+				$log.debug("trigger " + JSON.stringify(trigger) + " IS fired") ;
+			else
+				$log.debug("trigger " + JSON.stringify(trigger) + " IS NOT fired") ;
+
+			return fired ;
 		} 
 	}
 }]) 
@@ -281,7 +318,7 @@ var AskLogic = angular.module('ask-logic', [])
 	Each SurveyState obj is instantiated with a schema and a response object, and provides methods to track what happens to the survey state 
 	(e.g current page, visible fields, etc). 
 */
-.factory('SurveyStates', ['TriggerStates', 'AnswerStates', function(TriggerStates, AnswerStates) {
+.factory('SurveyStates', ['$log','TriggerStates', 'AnswerStates', function($log, TriggerStates, AnswerStates) {
 
 
 	function SurveyState(schema, response) {
@@ -574,12 +611,17 @@ var AskLogic = angular.module('ask-logic', [])
 
 	SurveyState.prototype.handleAnswerChanged = function(fieldId) {
 
-		//console.log("Answer changed:" + fieldId) ;
+		$log.debug("answer changed for " + fieldId) ;
 
 		var field = this.fieldsById[fieldId] ;
 		var answer = this.response.answers[fieldId] ;
 
-		//console.log(this.response) ;
+		
+		if (field == undefined) {
+			$log.warn("Could not find field " + fieldId) ;
+			return ;
+		}
+
 
 		field.answered = AnswerStates.isAnswered(field, answer) ;
 
@@ -588,7 +630,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 		_.each(field.relevantTriggers, function(trigger) {
 
-			//console.log("checking trigger: " + trigger.fieldRuleIndex);
+			$log.debug("  checking trigger: " + trigger.fieldRuleIndex);
 
 			var triggerFired = TriggerStates.isFired(trigger, field, answer) ;
 
@@ -603,9 +645,8 @@ var AskLogic = angular.module('ask-logic', [])
 
 	SurveyState.prototype.handleTriggerStateChanged = function(trigger) {
 
-		//console.log("trigger state changed") ;
-		//console.log(trigger);
-
+		$log.debug("state changed for trigger: " + JSON.stringify(trigger)) ;
+		
 		var ruleType, rule ;
 
 		if (trigger.fieldRuleIndex != null) {
@@ -655,13 +696,15 @@ var AskLogic = angular.module('ask-logic', [])
 
 	SurveyState.prototype.handleFieldRuleStateChanged = function(rule) {
 
-		//console.log("fieldRule state changed to " + rule.fired) ;
+
+
+		$log.debug("field rule state changed to " + rule.fired) ;
 
 		_.each(rule.actions, function(action) {
 
 			var field = this.fieldsById[action.fieldId] ;
 
-			//console.log("  - handling action to " + action.action + " " + action.fieldId) ;
+			$log.debug("  - handling action to " + action.action + " " + action.fieldId) ;
 
 			if (action.action == 'show') {
 				if (rule.fired)
@@ -678,7 +721,9 @@ var AskLogic = angular.module('ask-logic', [])
 			//if a field gets hidden, wipe any answers to it
 			if (field.fieldRuleState == "hide") {
 				if (AnswerStates.isAnswered(field, this.response.answers[field.id])) {
-					//console.log("Recursively clearing answer to " + field.id) ;
+
+					$log.debug("Recursively clearing answer to " + field.id) ;
+
 					this.response.answers[field.id] = {} ;
 					this.handleAnswerChanged(field.id) ;
 				}
@@ -686,15 +731,13 @@ var AskLogic = angular.module('ask-logic', [])
 
 			this.updateVisibility(field) ;
 
-			//console.log("  - " + field.fieldRuleState) ;
-
 		}, this) ;
 	}
 
 	SurveyState.prototype.handlePageRuleStateChanged = function(rule) {
 
-		//console.log("rule state changed")
-		//console.log(rule) ;
+		$log.debug("page rule state changed to " + rule.fired) ;
+		$log.debug(rule) ;
 
 		//identify earliest effected page, which is the next page after the last trigger
 		var earliestEffectedPageIndex ;
@@ -706,8 +749,6 @@ var AskLogic = angular.module('ask-logic', [])
 
 		}, this) ;
 		earliestEffectedPageIndex ++ ;
-
-		//console.log("earliestEffectedPageIndex=" + earliestEffectedPageIndex) ;
 
 		_.each(rule.actions, function(action) {
 

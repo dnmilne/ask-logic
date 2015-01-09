@@ -2,18 +2,20 @@ describe('chatVisitorFeedback', function() {
 
 	var SurveyStates ;
 
-	beforeEach(function() {
 
-		module('ask-logic') ;
+	beforeEach(module('ask-logic', function($provide) {
+
+	  	$provide.value('$log', console);
+
+	  	jasmine.getJSONFixtures().fixturesPath='base/test/schemas';
+		schema = getJSONFixture('chatVisitorFeedback.json') ;
+	})) ;
+
+	beforeEach(function() {
 
 		inject(function ($injector) {
 			SurveyStates = $injector.get('SurveyStates') ;
 		}) ;
-
-		jasmine.getJSONFixtures().fixturesPath='base/test/schemas';
-
-		schema = getJSONFixture('chatVisitorFeedback.json') ;
-
 	}) ;
 
 	describe('initialization', function() {
@@ -46,6 +48,8 @@ describe('chatVisitorFeedback', function() {
 
 			expect(state.fieldRules.length).toEqual(2) ;
 		})
+
+		
 
 	}) ;
 
