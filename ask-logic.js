@@ -1,6 +1,7 @@
 var AskLogic = angular.module('ask-logic', [])
 
 
+
 .factory('Normalizer', function() {
 
 	var punct = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/g;
@@ -136,15 +137,19 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isSinglechoiceTriggerFired(trigger, answer) {
 
-		if (answer.choice == null)
+		$log.debug(" - checking single choice trigger " + JSON.stringify(trigger)) ;
+		$log.debug(" - - against " + JSON.stringify(answer)) ;
+
+		if (answer.choice == null) {
 			return false ;
+		}
 
 		switch(trigger.condition) {
 
 			case 'is' :
-				return Normalizer.normalize(answer.choice) == Normalizer.normalize(trigger.value) ;
+				return Normalizer.normalize(answer.choice) == Normalizer.normalize(trigger.choice) ;
 			case 'isNot' :
-				return Normalizer.normalize(answer.choice) != Normalizer.normalize(trigger.value) ;
+				return Normalizer.normalize(answer.choice) != Normalizer.normalize(trigger.choice) ;
 		}
 
 		return false ;
@@ -157,7 +162,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 		var normalizedChoices = Normalizer.normalizeAll(answer.choices) ;
 
-		var idx = normalizedChoices.indexOf(Normalizer.normalize(trigger.value)) ;
+		var idx = normalizedChoices.indexOf(Normalizer.normalize(trigger.choice)) ;
 
 		switch(trigger.condition) {
 			case 'contains' : 
@@ -177,11 +182,11 @@ var AskLogic = angular.module('ask-logic', [])
 		switch(trigger.condition) {
 
 			case 'equal' : 
-				return answer.number == trigger.value ;
+				return answer.number == trigger.number ;
 			case 'greaterThan' :
-				return answer.number > trigger.value ;
+				return answer.number > trigger.number ;
 			case 'lessThan' :
-				return answer.number < trigger.value ;
+				return answer.number < trigger.number ;
 
 		}
 
@@ -194,7 +199,7 @@ var AskLogic = angular.module('ask-logic', [])
 			return false ;
 
 		var answerText = Normalizer.normalize(answer.text) ;
-        var triggerText = Normalizer.normalize(trigger.value) ;
+        var triggerText = Normalizer.normalize(trigger.text) ;
 
 		switch(trigger.condition) {
 
@@ -220,13 +225,13 @@ var AskLogic = angular.module('ask-logic', [])
 		switch(trigger.condition) {
 
 			case 'is':
-				return areMoodsEqual(trigger.value, answer.mood) ;
+				return areMoodsEqual(trigger.mood, answer.mood) ;
 			case 'isNot':
-				return !areMoodsEqual(trigger.value, answer.mood) ;
+				return !areMoodsEqual(trigger.mood, answer.mood) ;
 			case 'isNear':
-				return areMoodsAdjacent(trigger.value, answer.mood) ;
+				return areMoodsAdjacent(trigger.mood, answer.mood) ;
 			case 'isSameQuadrant':
-				return getQuadrant(trigger.value) == getQuadrant(answer.mood) ;
+				return getQuadrant(trigger.mood) == getQuadrant(answer.mood) ;
 		}
 
 		return false ;
@@ -277,6 +282,10 @@ var AskLogic = angular.module('ask-logic', [])
 
 		isFired : function (trigger, field, answer) {
 
+
+			$log.debug("checking fire state of " + JSON.stringify(trigger)) ;
+			$log.debug(" - against " + JSON.stringify(answer)) ;
+
 			var fired = false ;
 
 			switch(field.type) {
@@ -302,9 +311,9 @@ var AskLogic = angular.module('ask-logic', [])
 			} 
 
 			if (fired)
-				$log.debug("trigger " + JSON.stringify(trigger) + " IS fired") ;
+				$log.debug(" - fired") ;
 			else
-				$log.debug("trigger " + JSON.stringify(trigger) + " IS NOT fired") ;
+				$log.debug(" - not fired") ;
 
 			return fired ;
 		} 

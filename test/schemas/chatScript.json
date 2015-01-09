@@ -461,7 +461,7 @@
     "triggers" : [ {
       "questionId" : "qLaunch",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -474,7 +474,7 @@
     "triggers" : [ {
       "questionId" : "qLaunch",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -487,11 +487,11 @@
     "triggers" : [ {
       "questionId" : "qLaunch",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     }, {
       "questionId" : "qLaunch",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "operator" : "or",
     "actions" : [ {
@@ -502,7 +502,7 @@
     "triggers" : [ {
       "questionId" : "qAge",
       "condition" : "lessThan",
-      "value" : 14
+      "number" : 14
     } ],
     "actions" : [ {
       "action" : "show",
@@ -512,7 +512,7 @@
     "triggers" : [ {
       "questionId" : "qAge",
       "condition" : "greaterThan",
-      "value" : 25
+      "number" : 25
     } ],
     "actions" : [ {
       "action" : "show",
@@ -522,11 +522,11 @@
     "triggers" : [ {
       "questionId" : "qAge",
       "condition" : "greaterThan",
-      "value" : 13
+      "number" : 13
     }, {
       "questionId" : "qAge",
       "condition" : "lessThan",
-      "value" : 26
+      "number" : 26
     } ],
     "operator" : "and",
     "actions" : [ {
@@ -546,7 +546,7 @@
     "triggers" : [ {
       "questionId" : "qConsentGiven",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -556,7 +556,7 @@
     "triggers" : [ {
       "questionId" : "qConsentGiven",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -569,11 +569,11 @@
     "triggers" : [ {
       "questionId" : "qConsentGiven",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     }, {
       "questionId" : "qConsentRevoked",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "operator" : "or",
     "actions" : [ {
@@ -584,7 +584,7 @@
     "triggers" : [ {
       "questionId" : "qConsentRevoked",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -594,7 +594,7 @@
     "triggers" : [ {
       "questionId" : "qAtRisk",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -607,7 +607,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "Suicide Callback Service"
+      "choice" : "Suicide Callback Service"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -617,7 +617,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "1800 RESPECT"
+      "choice" : "1800 RESPECT"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -627,7 +627,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "Councelling Online"
+      "choice" : "Councelling Online"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -637,7 +637,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "Mensline"
+      "choice" : "Mensline"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -647,7 +647,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "Kidsline (kids)"
+      "choice" : "Kidsline (kids)"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -657,7 +657,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "Kidsline (teens)"
+      "choice" : "Kidsline (teens)"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -667,7 +667,7 @@
     "triggers" : [ {
       "questionId" : "qService",
       "condition" : "is",
-      "value" : "Lifeline"
+      "choice" : "Lifeline"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -677,7 +677,7 @@
     "triggers" : [ {
       "questionId" : "qAtRisk",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -690,7 +690,7 @@
     "triggers" : [ {
       "questionId" : "qCalled000",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -703,7 +703,7 @@
     "triggers" : [ {
       "questionId" : "qGaveDetails",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -713,7 +713,7 @@
     "triggers" : [ {
       "questionId" : "qGaveDetails",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -726,7 +726,7 @@
     "triggers" : [ {
       "questionId" : "qWorthwhile",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -736,7 +736,7 @@
     "triggers" : [ {
       "questionId" : "qWorthwhile",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -749,7 +749,7 @@
     "triggers" : [ {
       "questionId" : "qTopics",
       "condition" : "contains",
-      "value" : "Tough times"
+      "choice" : "Tough times"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -759,7 +759,7 @@
     "triggers" : [ {
       "questionId" : "qTopics",
       "condition" : "contains",
-      "value" : "Wellbeing"
+      "choice" : "Wellbeing"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -770,11 +770,11 @@
     "triggers" : [ {
       "questionId" : "qAge",
       "condition" : "lessThan",
-      "value" : 14
+      "number" : 14
     }, {
       "questionId" : "qAge",
       "condition" : "greaterThan",
-      "value" : 26
+      "number" : 26
     } ],
     "operator" : "or",
     "actions" : [ {
@@ -784,7 +784,7 @@
     "triggers" : [ {
       "questionId" : "qInCrisis",
       "condition" : "is",
-      "value" : "Yes"
+      "choice" : "Yes"
     } ],
     "actions" : [ {
       "action" : "skipTo",
@@ -794,7 +794,7 @@
     "triggers" : [ {
       "questionId" : "qInCrisis",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "skip",

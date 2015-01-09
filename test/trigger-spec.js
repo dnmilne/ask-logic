@@ -25,7 +25,7 @@ describe('trigger-states', function() {
 
 		var answer = {choice:"Good"} ;
 
-		var trigger = {condition:"is", value:"good"} ;
+		var trigger = {condition:"is", choice:"good"} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toBeTruthy() ;
 
 		trigger.condition = "isNot" ;
@@ -47,16 +47,16 @@ describe('trigger-states', function() {
 
 		var answer = {choices:["Cereal","Fruit"]} ;
 
-		var trigger = {condition:'contains', value:'fruit'} ;
+		var trigger = {condition:'contains', choice:'fruit'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'contains', value:'toast'} ;
+		trigger = {condition:'contains', choice:'toast'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
-		trigger = {condition:'notContains', value:'fruit'} ;
+		trigger = {condition:'notContains', choice:'fruit'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
-		trigger = {condition:'notContains', value:'toast'} ;
+		trigger = {condition:'notContains', choice:'toast'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
 	})
@@ -70,22 +70,22 @@ describe('trigger-states', function() {
 
 		var answer = {number:5} ;
 
-		var trigger = {condition:'equal', value:5}
+		var trigger = {condition:'equal', number:5}
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'equal', value:4}
+		trigger = {condition:'equal', number:4}
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
-		trigger = {condition:'greaterThan', value:4}
+		trigger = {condition:'greaterThan', number:4}
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'greaterThan', value:5}
+		trigger = {condition:'greaterThan', number:5}
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
-		trigger = {condition:'lessThan', value:6}
+		trigger = {condition:'lessThan', number:6}
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'lessThan', value:5}
+		trigger = {condition:'lessThan', number:5}
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 	}) 
@@ -99,31 +99,31 @@ describe('trigger-states', function() {
 
 		var answer = {text:"David Milne"} ;
 
-		var trigger = {condition:'is', value:'david  milne'} ;
+		var trigger = {condition:'is', text:'david  milne'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'is', value:'dave'} ;
+		trigger = {condition:'is', text:'dave'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 
-		trigger = {condition:'isNot', value:'dave'} ;
+		trigger = {condition:'isNot', text:'dave'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'isNot', value:'david  milne'} ;
+		trigger = {condition:'isNot', text:'david  milne'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 
-		trigger = {condition:'contains', value:'milne'} ;
+		trigger = {condition:'contains', text:'milne'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'contains', value:'dave'} ;
+		trigger = {condition:'contains', text:'dave'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 
-		trigger = {condition:'startsWith', value:'david'} ;
+		trigger = {condition:'startsWith', text:'david'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		trigger = {condition:'startsWith', value:'dave'} ;
+		trigger = {condition:'startsWith', text:'dave'} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 	}) 
 
@@ -141,31 +141,31 @@ describe('trigger-states', function() {
 
 		var answer = {mood:satisfied} ;
 
-		var trigger = {condition:'is',value:satisfied} ;
+		var trigger = {condition:'is',mood:satisfied} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		var trigger = {condition:'isNot',value:satisfied} ;
+		var trigger = {condition:'isNot',mood:satisfied} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 
-		var trigger = {condition:'is',value:chill} ;
+		var trigger = {condition:'is',mood:chill} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
-		var trigger = {condition:'isNot',value:chill} ;
+		var trigger = {condition:'isNot',mood:chill} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
 
-		var trigger = {condition:'isNear',value:chill} ;
+		var trigger = {condition:'isNear',mood:chill} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		var trigger = {condition:'isNear',value:comfy} ;
+		var trigger = {condition:'isNear',mood:comfy} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 
-		var trigger = {condition:'isSameQuadrant',value:comfy} ;
+		var trigger = {condition:'isSameQuadrant',mood:comfy} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(true) ;
 
-		var trigger = {condition:'isSameQuadrant',value:depressed} ;
+		var trigger = {condition:'isSameQuadrant',mood:depressed} ;
 		expect(TriggerStates.isFired(trigger, field, answer)).toEqual(false) ;
 
 	})

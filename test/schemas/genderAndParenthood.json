@@ -65,7 +65,7 @@
     "triggers" : [ {
       "questionId" : "qGender",
       "condition" : "is",
-      "value" : "I'd rather not say"
+      "choice" : "I'd rather not say"
     } ],
     "actions" : [ {
       "action" : "skipToEnd"
@@ -74,7 +74,7 @@
     "triggers" : [ {
       "questionId" : "qGender",
       "condition" : "is",
-      "value" : "Male"
+      "choice" : "Male"
     } ],
     "actions" : [ {
       "action" : "skip",
@@ -87,7 +87,7 @@
     "triggers" : [ {
       "questionId" : "qGender",
       "condition" : "is",
-      "value" : "Female"
+      "choice" : "Female"
     } ],
     "actions" : [ {
       "action" : "skipTo",
@@ -97,7 +97,7 @@
     "triggers" : [ {
       "questionId" : "qDependents",
       "condition" : "equal",
-      "value" : 0
+      "number" : 0
     } ],
     "actions" : [ {
       "action" : "skip",

@@ -106,7 +106,7 @@
     "triggers" : [ {
       "questionId" : "qGender",
       "condition" : "is",
-      "value" : "More options"
+      "choice" : "More options"
     } ],
     "actions" : [ {
       "action" : "show",
@@ -116,7 +116,7 @@
     "triggers" : [ {
       "questionId" : "qWorthwhile",
       "condition" : "is",
-      "value" : "No"
+      "choice" : "No"
     } ],
     "actions" : [ {
       "action" : "show",
