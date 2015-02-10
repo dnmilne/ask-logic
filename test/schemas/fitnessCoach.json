@@ -1,0 +1,813 @@
+{
+  "title" : "Fitness Coach",
+  "fields" : [ {
+    "type" : "numeric",
+    "id" : "qStreak",
+    "hidden" : true,
+    "question" : "How many days in a row have you exercised",
+    "optional" : false
+  }, {
+    "type" : "numeric",
+    "id" : "qDaysTired",
+    "hidden" : true,
+    "question" : "How many days in the last week have you been too tired?",
+    "optional" : false
+  }, {
+    "type" : "numeric",
+    "id" : "qSickStreak",
+    "hidden" : true,
+    "question" : "How many days in a row have you been too sick?",
+    "optional" : false
+  }, {
+    "type" : "numeric",
+    "id" : "qDaysBusy",
+    "hidden" : true,
+    "question" : "How many days in the last week have you been too busy?",
+    "optional" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qGender",
+    "hidden" : true,
+    "question" : "What gender are you?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Male"
+    }, {
+      "name" : "Female"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "numeric",
+    "id" : "qStepsYesterday",
+    "hidden" : true,
+    "question" : "How many steps did you make yesterday?",
+    "optional" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qDifficulty",
+    "hidden" : true,
+    "question" : "How difficult was your exercise yesterday?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Easy"
+    }, {
+      "name" : "Moderate"
+    }, {
+      "name" : "Hard"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "instruction",
+    "id" : "iConsistencyMale",
+    "hidden" : false,
+    "text" : "Good morning, Mr. Consistent :)"
+  }, {
+    "type" : "instruction",
+    "id" : "iConsistencyFemale",
+    "hidden" : false,
+    "text" : "Good morning, Miss Consistent :)"
+  }, {
+    "type" : "singlechoice",
+    "id" : "qExerciseToday",
+    "hidden" : false,
+    "question" : "Do you feel like exercising today?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Yes"
+    }, {
+      "name" : "No"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qNoExerciseReason",
+    "hidden" : false,
+    "question" : "Oh no, how come?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Tired"
+    }, {
+      "name" : "Sick"
+    }, {
+      "name" : "Busy"
+    }, {
+      "name" : "Lazy"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qNoExerciseReasonWithStreak",
+    "hidden" : false,
+    "question" : "Oh no, you'll ruin your streak! How come?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "Tired"
+    }, {
+      "name" : "Sick"
+    }, {
+      "name" : "Busy"
+    }, {
+      "name" : "Lazy"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qTiredConfirm",
+    "hidden" : false,
+    "question" : "Some Light exercise will help you sleep better tonight. Are you sure you can't fit any in today?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "No way"
+    }, {
+      "name" : "Ok"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qTiredConsistentConfirm",
+    "hidden" : false,
+    "question" : "You've used that excuse a lot, sleepyhead. Come on, lets go for a walk today.",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "No way"
+    }, {
+      "name" : "Ok"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "instruction",
+    "id" : "iTiredConfirmed",
+    "hidden" : false,
+    "text" : "Ok, fine. Get to bed early tonight, ok? We're going for a walk tomorrow."
+  }, {
+    "type" : "instruction",
+    "id" : "iSickConfirmed",
+    "hidden" : false,
+    "text" : "Ok, you take it easy today. I'll check in with you tomorrow"
+  }, {
+    "type" : "instruction",
+    "id" : "iSickConsistentConfirmed",
+    "hidden" : false,
+    "text" : "Sick [[qSickStreak]] days in a row? This is pretty serious! See a doctor or something, ok? I'll check in on you tomorrow"
+  }, {
+    "type" : "singlechoice",
+    "id" : "qBusyConfirm",
+    "hidden" : false,
+    "question" : "You sure you can't fit in a walk, or take your work with you?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "No way"
+    }, {
+      "name" : "Ok"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "singlechoice",
+    "id" : "qBusyConsistentConfirm",
+    "hidden" : false,
+    "question" : "You've used that excuse [[qDaysBusy]] times in the last week. Sure you can't make time for me?",
+    "optional" : false,
+    "choices" : [ {
+      "name" : "No way"
+    }, {
+      "name" : "Ok"
+    } ],
+    "allowOther" : false
+  }, {
+    "type" : "instruction",
+    "id" : "iBusyConfirmed",
+    "hidden" : false,
+    "text" : "Ok, but set some time aside for me tomorrow. I'm feeling neglected =("
+  }, {
+    "type" : "instruction",
+    "id" : "iLazy",
+    "hidden" : false,
+    "text" : "Oh, come on. That's no excuse"
+  }, {
+    "type" : "instruction",
+    "id" : "iGoalEasy",
+    "hidden" : false,
+    "text" : "All right! Yesterday we did [[qStepsYesterday]] steps, piece of cake. Lets aim higher today (and avoid the cake)"
+  }, {
+    "type" : "instruction",
+    "id" : "iGoalModerate",
+    "hidden" : false,
+    "text" : "All right! Yesterday we did [[qStepsYesterday]] steps. A bit more today?"
+  }, {
+    "type" : "instruction",
+    "id" : "iGoalHard",
+    "hidden" : false,
+    "text" : "All right! Yesterday we did [[qStepsYesterday]] steps. Try for that again, but no worries if we do a bit less"
+  } ],
+  "fieldRules" : [ {
+    "triggers" : [ {
+      "questionId" : "qStreak",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    }, {
+      "questionId" : "qGender",
+      "condition" : "is",
+      "choice" : "Male"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iConsistencyMale"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qStreak",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    }, {
+      "questionId" : "qGender",
+      "condition" : "is",
+      "choice" : "Female"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iConsistencyFemale"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qExerciseToday",
+      "condition" : "is",
+      "choice" : "No"
+    }, {
+      "questionId" : "qStreak",
+      "condition" : "lessThan",
+      "number" : 3.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qNoExerciseReason"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qExerciseToday",
+      "condition" : "is",
+      "choice" : "No"
+    }, {
+      "questionId" : "qStreak",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qNoExerciseReasonWithStreak"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Tired"
+    }, {
+      "questionId" : "qDaysTired",
+      "condition" : "lessThan",
+      "number" : 3.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qTiredConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Tired"
+    }, {
+      "questionId" : "qDaysTired",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qTiredConsistentConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Sick"
+    }, {
+      "questionId" : "qSickStreak",
+      "condition" : "lessThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iSickConfirmed"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Sick"
+    }, {
+      "questionId" : "qSickStreak",
+      "condition" : "greaterThan",
+      "number" : 1.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iSickConsistentConfirmed"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Busy"
+    }, {
+      "questionId" : "qDaysBusy",
+      "condition" : "lessThan",
+      "number" : 3.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qBusyConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Busy"
+    }, {
+      "questionId" : "qDaysBusy",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qBusyConsistentConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Lazy"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iLazy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Tired"
+    }, {
+      "questionId" : "qDaysTired",
+      "condition" : "lessThan",
+      "number" : 3.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qTiredConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Tired"
+    }, {
+      "questionId" : "qDaysTired",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qTiredConsistentConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Sick"
+    }, {
+      "questionId" : "qSickStreak",
+      "condition" : "lessThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iSickConfirmed"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Sick"
+    }, {
+      "questionId" : "qSickStreak",
+      "condition" : "greaterThan",
+      "number" : 1.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iSickConsistentConfirmed"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Busy"
+    }, {
+      "questionId" : "qDaysBusy",
+      "condition" : "lessThan",
+      "number" : 3.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qBusyConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Busy"
+    }, {
+      "questionId" : "qDaysBusy",
+      "condition" : "greaterThan",
+      "number" : 2.0
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qBusyConsistentConfirm"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Lazy"
+    } ],
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iLazy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConfirm",
+      "condition" : "is",
+      "choice" : "No way"
+    }, {
+      "questionId" : "qTiredConsistentConfirm",
+      "condition" : "is",
+      "choice" : "No way"
+    } ],
+    "operator" : "or",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iTiredConfirmed"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConfirm",
+      "condition" : "is",
+      "choice" : "No way"
+    }, {
+      "questionId" : "qBusyConsistentConfirm",
+      "condition" : "is",
+      "choice" : "No way"
+    } ],
+    "operator" : "or",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iBusyConfirmed"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qExerciseToday",
+      "condition" : "is",
+      "choice" : "Yes"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConsistentConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConsistentConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Lazy"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Lazy"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Easy"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalEasy"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qExerciseToday",
+      "condition" : "is",
+      "choice" : "Yes"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConsistentConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConsistentConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Lazy"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Lazy"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Moderate"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalModerate"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qExerciseToday",
+      "condition" : "is",
+      "choice" : "Yes"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qTiredConsistentConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qBusyConsistentConfirm",
+      "condition" : "is",
+      "choice" : "Ok"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReason",
+      "condition" : "is",
+      "choice" : "Lazy"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  }, {
+    "triggers" : [ {
+      "questionId" : "qNoExerciseReasonWithStreak",
+      "condition" : "is",
+      "choice" : "Lazy"
+    }, {
+      "questionId" : "qDifficulty",
+      "condition" : "is",
+      "choice" : "Hard"
+    } ],
+    "operator" : "and",
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "iGoalHard"
+    } ]
+  } ],
+  "pageRules" : [ ],
+  "createdAt" : 1423547066706,
+  "modifiedAt" : 1423547066722,
+  "finalized" : false,
+  "deleted" : false
+}

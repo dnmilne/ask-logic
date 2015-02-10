@@ -2,6 +2,66 @@ var AskLogic = angular.module('ask-logic', [])
 
 
 
+
+.factory('PlaceholderResolver', ['$log', 'AnswerStates', function($log, AnswerStates) {
+
+	
+
+	return {
+
+		resolve: function(text, state, response) {
+
+
+			var placeholderRegex = /\[\[([^\]]+)\]\]/g;
+
+			var resolvedText = "" ;
+
+			var match = placeholderRegex.exec(text);
+			var index = 0 ;
+			while (match != null) {
+
+				$log.debug("found " + match[0] + "at " + match.index) ;
+
+			    resolvedText = resolvedText + text.substr(index,match.index-index) ;
+
+			    var questionId = match[1] ;
+			    $log.debug("Resolving placeholder [[" + questionId + "]]") ;
+
+			    var question = state.fieldsById[questionId] ;
+
+			    if (!question) {
+			    	$log.warn("Could not find question for placeholder " + questionId) ;
+			    	continue ;
+			    }
+
+            	var answer = response.answers[questionId] ;
+
+
+	            if (answer == null || !AnswerStates.isAnswered(question, answer)) {
+	                resolvedText = resolvedText + "`unansweredQuestion:" + questionId + "`" ;
+	                $log.warn("Could not find answer for placeholder " + questionId) ;
+	            } else {
+	                resolvedText = resolvedText + AnswerStates.answerAsString(question, answer) ;
+	            }
+
+            	index = match.index + match[0].length ;
+
+            	match = placeholderRegex.exec(text);
+
+			}
+
+			resolvedText = resolvedText + text.substr(index) ;
+
+			return resolvedText ;
+		}
+	}
+
+
+
+
+}])
+
+
 .factory('Normalizer', function() {
 
 	var punct = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/g;
@@ -82,12 +142,51 @@ var AskLogic = angular.module('ask-logic', [])
 		return true ;
 	}
 
+	function singlechoiceAsString(answer) {
+
+		return answer.choice ;
+	}
+
+	function multichoiceAsString(answer) {
+		
+		//TODO: this could be tidier.
+
+		if (!answer.choices || !answer.choices.length)
+			return "none" ;
+
+		return answer.choices.join(",") ;
+	}
+
+	function numericAsString(answer) {
+		if (!answer.number)
+			return "unknown" ;
+
+		return answer.number ;
+	}
+
+	function freetextAsString(answer) {
+		if (!answer.text)
+			return "" ;
+
+		return answer.text ;
+	}
+
+	function moodAsString(answer) {
+		if (!answer.mood)
+			return "nothing" ;
+
+		if (!answer.mood.name)
+			return "nothing" ;
+
+		return answer.mood.name ;
+	}
+
 	return {
 
 		isAnswered : function(field, answer) {
 
 			if (!field) {
-				console.warn("tried to check answer to nonexistent field") ;
+				$log.warn("tried to check answer to nonexistent field") ;
 				return false ;
 			}
 
@@ -126,7 +225,40 @@ var AskLogic = angular.module('ask-logic', [])
 				$log.debug(field.id + " IS NOT answered") ;
 
 			return answered ;
-		} 
+		},
+
+		answerAsString: function(field, answer) {
+
+			if (!field) {
+				$log.warn("tried to stringify answer to nonexistent field") ;
+				return null ;
+			}
+
+			if (!answer) {
+				$log.warn("tried to stringify undefined answer to field " + field.id)
+				return null ;
+			}
+
+			switch(field.type) {
+
+				case 'singlechoice' :
+					return singlechoiceAsString(answer) ;
+				case 'multichoice' :
+					return multichoiceAsString(answer) ;
+				case 'numeric' :
+					return numericAsString(answer) ;
+				case 'freetext' :
+					return freetextAsString(answer) ;
+				case 'mood' :
+					return moodAsString(answer) ;
+				default :
+					$log.warn("cannot stringify answer of unknown field type " + field.type + " (" + field.id + ")") ;
+
+			}
+
+			return null ;
+
+		}
 	}
 }])
 
