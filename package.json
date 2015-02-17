@@ -13,6 +13,7 @@
     "karma": "latest",
     "karma-chrome-launcher": "latest",
     "karma-jasmine": "latest",
-    "karma-jasmine-jquery": "latest"
+    "karma-jasmine-jquery": "latest",
+    "socket.io": "0.9.16"
   }
 }

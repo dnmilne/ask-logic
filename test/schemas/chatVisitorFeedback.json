@@ -1,129 +1,160 @@
 {
   "title" : "Visitor Feedback",
   "completionMessage" : "Great, thank you for this!\n\nIf you ever need to chat again, then please jump on [our forums](http://link.poscomp.org/l/dk) and we’ll be in touch!",
+  "tags" : null,
   "fields" : [ {
+    "type" : "freetext",
     "id" : "qVisitorId",
+    "notes" : null,
     "hidden" : true,
+    "tags" : null,
     "question" : "What is your Visitor ID?",
     "optional" : false,
-    "length" : "SHORT",
-    "type" : "freetext"
+    "length" : "SHORT"
   }, {
+    "type" : "freetext",
     "id" : "qSessionId",
+    "notes" : null,
     "hidden" : true,
+    "tags" : null,
     "question" : "What is your Session ID?",
     "optional" : false,
-    "length" : "SHORT",
-    "type" : "freetext"
+    "length" : "SHORT"
   }, {
+    "type" : "singlechoice",
     "id" : "qGender",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "What gender are you?",
     "optional" : false,
     "choices" : [ {
-      "name" : "Male"
+      "name" : "Male",
+      "description" : null
     }, {
-      "name" : "Female"
+      "name" : "Female",
+      "description" : null
     }, {
-      "name" : "More options"
+      "name" : "More options",
+      "description" : null
     } ],
-    "allowOther" : false,
-    "type" : "singlechoice"
+    "allowOther" : false
   }, {
+    "type" : "singlechoice",
     "id" : "qGender2",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "What best describes you?",
     "optional" : false,
     "choices" : [ {
-      "name" : "Transgender or Transexual (FtM)"
+      "name" : "Transgender or Transexual (FtM)",
+      "description" : null
     }, {
-      "name" : "Transgender or Transexual (MtF)"
+      "name" : "Transgender or Transexual (MtF)",
+      "description" : null
     }, {
-      "name" : "Genderqueer"
+      "name" : "Genderqueer",
+      "description" : null
     }, {
-      "name" : "Androgynous"
+      "name" : "Androgynous",
+      "description" : null
     }, {
-      "name" : "None of these options describe me"
+      "name" : "None of these options describe me",
+      "description" : null
     } ],
-    "allowOther" : false,
-    "type" : "singlechoice"
+    "allowOther" : false
   }, {
+    "type" : "numeric",
     "id" : "qPostcode",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "What is your postcode?",
     "optional" : false,
     "range" : {
       "min" : 4,
       "max" : 4,
       "type" : "digits"
-    },
-    "type" : "numeric"
+    }
   }, {
+    "type" : "singlechoice",
     "id" : "qForumMember",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "Are you a member of the ReachOut forums",
     "optional" : false,
     "choices" : [ {
-      "name" : "Yes"
+      "name" : "Yes",
+      "description" : null
     }, {
-      "name" : "No"
+      "name" : "No",
+      "description" : null
     } ],
-    "allowOther" : false,
-    "type" : "singlechoice"
+    "allowOther" : false
   }, {
+    "type" : "mood",
     "id" : "qMoodBefore",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "How did you feel **before** you started chatting with us today?",
-    "optional" : false,
-    "type" : "mood"
+    "optional" : false
   }, {
+    "type" : "mood",
     "id" : "qMoodNow",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "How do you feel **now**?",
-    "optional" : false,
-    "type" : "mood"
+    "optional" : false
   }, {
+    "type" : "singlechoice",
     "id" : "qWorthwhile",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "Did you find this chat session worthwhile? Did you get the help you needed?",
     "optional" : false,
     "choices" : [ {
-      "name" : "Yes"
+      "name" : "Yes",
+      "description" : null
     }, {
-      "name" : "No"
+      "name" : "No",
+      "description" : null
     } ],
-    "allowOther" : false,
-    "type" : "singlechoice"
+    "allowOther" : false
   }, {
+    "type" : "freetext",
     "id" : "qSuggestions",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "We are very sorry about that. Do you have any suggestions about what we could have done better?",
     "optional" : true,
-    "length" : "LONG",
-    "type" : "freetext"
+    "length" : "LONG"
   } ],
   "fieldRules" : [ {
-    "triggers" : [ {
+    "trigger" : {
       "questionId" : "qGender",
       "condition" : "is",
       "choice" : "More options"
-    } ],
+    },
     "actions" : [ {
       "action" : "show",
       "fieldId" : "qGender2"
     } ]
   }, {
-    "triggers" : [ {
+    "trigger" : {
       "questionId" : "qWorthwhile",
       "condition" : "is",
       "choice" : "No"
-    } ],
+    },
     "actions" : [ {
       "action" : "show",
       "fieldId" : "qSuggestions"
     } ]
   } ],
-  "createdAt" : 1418345229697,
-  "modifiedAt" : 1418345229697,
-  "deleted" : false
+  "pageRules" : [ ]
 }

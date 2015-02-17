@@ -1,81 +1,129 @@
 {
   "title" : "Gender and Parenthood",
+  "completionMessage" : null,
+  "tags" : null,
   "fields" : [ {
+    "type" : "singlechoice",
     "id" : "qGender",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "Gender",
     "optional" : false,
     "choices" : [ {
-      "name" : "Male"
+      "name" : "Male",
+      "description" : null
     }, {
-      "name" : "Female"
+      "name" : "Female",
+      "description" : null
     }, {
-      "name" : "I'd rather not say"
+      "name" : "I'd rather not say",
+      "description" : null
     } ],
-    "allowOther" : false,
-    "type" : "singlechoice"
+    "allowOther" : false
   }, {
+    "type" : "numeric",
     "id" : "qDependents",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "question" : "Number of dependents",
     "optional" : false,
-    "type" : "numeric"
+    "range" : null
   }, {
+    "type" : "pageBreak",
     "id" : "pMales",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "title" : "Men",
-    "type" : "pageBreak"
+    "text" : null
   }, {
+    "type" : "instruction",
     "id" : "iMales",
+    "notes" : null,
     "hidden" : false,
-    "text" : "This is where we ask questions for all men",
-    "type" : "instruction"
+    "tags" : null,
+    "text" : "This is where we ask questions for all men"
   }, {
+    "type" : "pageBreak",
     "id" : "pFathers",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "title" : "Fathers",
-    "type" : "pageBreak"
+    "text" : null
   }, {
+    "type" : "instruction",
     "id" : "iFathers",
+    "notes" : null,
     "hidden" : false,
-    "text" : "This is where we ask questions for all fathers",
-    "type" : "instruction"
+    "tags" : null,
+    "text" : "This is where we ask questions for all fathers"
   }, {
+    "type" : "pageBreak",
     "id" : "pFemales",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "title" : "Women",
-    "type" : "pageBreak"
+    "text" : null
   }, {
+    "type" : "instruction",
     "id" : "iFemales",
+    "notes" : null,
     "hidden" : false,
-    "text" : "This is where we ask questions for all women",
-    "type" : "instruction"
+    "tags" : null,
+    "text" : "This is where we ask questions for all women"
   }, {
+    "type" : "pageBreak",
     "id" : "pMothers",
+    "notes" : null,
     "hidden" : false,
+    "tags" : null,
     "title" : "Mothers",
-    "type" : "pageBreak"
+    "text" : null
   }, {
+    "type" : "instruction",
     "id" : "iMothers",
+    "notes" : null,
     "hidden" : false,
-    "text" : "This is where we ask questions for all mothers",
-    "type" : "instruction"
+    "tags" : null,
+    "text" : "This is where we ask questions for all mothers"
+  } ],
+  "fieldRules" : [ {
+    "trigger" : {
+      "or" : [ {
+        "questionId" : "qGender",
+        "condition" : "is",
+        "choice" : "Male"
+      }, {
+        "questionId" : "qGender",
+        "condition" : "is",
+        "choice" : "Female"
+      } ]
+    },
+    "actions" : [ {
+      "action" : "show",
+      "fieldId" : "qDependents"
+    } ]
   } ],
   "pageRules" : [ {
-    "triggers" : [ {
+    "trigger" : {
       "questionId" : "qGender",
       "condition" : "is",
       "choice" : "I'd rather not say"
-    } ],
+    },
     "actions" : [ {
-      "action" : "skipToEnd"
+      "action" : "skipToEnd",
+      "pageId" : null
     } ]
   }, {
-    "triggers" : [ {
+    "trigger" : {
       "questionId" : "qGender",
       "condition" : "is",
       "choice" : "Male"
-    } ],
+    },
     "actions" : [ {
       "action" : "skip",
       "pageId" : "pFemales"
@@ -84,21 +132,21 @@
       "pageId" : "pMothers"
     } ]
   }, {
-    "triggers" : [ {
+    "trigger" : {
       "questionId" : "qGender",
       "condition" : "is",
       "choice" : "Female"
-    } ],
+    },
     "actions" : [ {
       "action" : "skipTo",
       "pageId" : "pFemales"
     } ]
   }, {
-    "triggers" : [ {
+    "trigger" : {
       "questionId" : "qDependents",
       "condition" : "equal",
-      "number" : 0
-    } ],
+      "number" : 0.0
+    },
     "actions" : [ {
       "action" : "skip",
       "pageId" : "pMothers"
@@ -106,8 +154,5 @@
       "action" : "skip",
       "pageId" : "pFathers"
     } ]
-  } ],
-  "createdAt" : 1418345263027,
-  "modifiedAt" : 1418345263027,
-  "deleted" : false
+  } ]
 }

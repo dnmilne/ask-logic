@@ -3,24 +3,37 @@ describe('chatScript', function() {
 	var SurveyStates ;
 	var AnswerStates ;
 
-	beforeEach(function() {
+	beforeEach(module('ask-logic', function($provide) {
 
-		module('ask-logic') ;
+	  $provide.value('$log', console);
 
-		inject(function ($injector) {
-			SurveyStates = $injector.get('SurveyStates') ;
-			AnswerStates = $injector.get('AnswerStates') ;
-		}) ;
+	  jasmine.getJSONFixtures().fixturesPath='base/test/schemas';
+	  schema = getJSONFixture('chatScript.json') ;
 
-		jasmine.getJSONFixtures().fixturesPath='base/test/schemas';
+	})) ;
 
-		schema = getJSONFixture('chatScript.json') ;
-	}) ;
+
+	beforeEach(
+
+	 	inject(function ($injector) {
+	        SurveyStates = $injector.get('SurveyStates') ;
+	        AnswerStates = $injector.get('AnswerStates') ;
+		}) 
+	);
+
+
+	
+
+
 
 		it("Should manage field visibility in response to qLaunch question", function() {
 
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
+
+			console.log("BLAH!!") ;
+			console.log("qLaunch: ") ;
+			console.log(state.fieldsById["qLaunch"]) ;
 
 			expect(state.fieldsById["qLaunch"].visible).toEqual(true) ;
 			expect(state.fieldsById["iHiWithoutQuestion"].visible).toEqual(false) ; 
@@ -29,9 +42,11 @@ describe('chatScript', function() {
 
 			response.answers["qLaunch"] = {choice:"Yes"} ;
 			state.handleAnswerChanged("qLaunch") ;
+			
 			expect(state.fieldsById["iHiWithoutQuestion"].visible).toEqual(false) ; 
 			expect(state.fieldsById["iHiWithQuestion"].visible).toEqual(true) ; 
 			expect(state.fieldsById["qAge"].visible).toEqual(true) ;
+			
 
 			response.answers["qLaunch"] = {choice:"No"} ;
 			state.handleAnswerChanged("qLaunch") ;
@@ -39,7 +54,7 @@ describe('chatScript', function() {
 			expect(state.fieldsById["iHiWithQuestion"].visible).toEqual(false) ; 
 			expect(state.fieldsById["qAge"].visible).toEqual(true) ;
 		}) 
-
+		
 
 		it("Should manage field visibility in response to qAge question", function() {
 
@@ -75,6 +90,7 @@ describe('chatScript', function() {
 
 		})
 
+		
 
 		it ("Should clear answers (recursively) for fields that get hidden by field rules", function() {
 
@@ -118,6 +134,8 @@ describe('chatScript', function() {
 
 		})
 
+
+
 		it ("Should manage page rules in response to qAge question", function() {
 
 			var response = {
@@ -150,5 +168,7 @@ describe('chatScript', function() {
 			expect(response.pageIndex).toEqual(0) ;
 
 		})
+
+
 
 });

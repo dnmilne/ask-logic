@@ -267,6 +267,138 @@ var AskLogic = angular.module('ask-logic', [])
 
 .factory('TriggerStates', ['$log','Normalizer', function($log, Normalizer) {
 
+	function getQuestionIdsForTrigger(trigger) {
+
+		if (trigger.questionId != undefined && trigger.questionId != null) {
+			return [trigger.questionId] ;
+		}
+
+		if (trigger.and != undefined || trigger.and != null) {
+			
+			var questionIds = [] ;
+
+			_.each(trigger.and, function(subTrigger) {
+				questionIds = _.union(questionIds, getQuestionIdsForTrigger(subTrigger)) ;
+			}) ;
+
+			return questionIds ;
+		}
+		
+		if (trigger.or != undefined || trigger.or != null) {
+
+			var questionIds = [] ;
+
+			_.each(trigger.or, function(subTrigger) {
+				questionIds = _.union(questionIds, getQuestionIdsForTrigger(subTrigger)) ;
+			}) ;
+
+			return questionIds ;
+		}
+
+		$log.warn("could not identify type of trigger") ;
+		return [] ;
+
+	}
+
+
+	function isTriggerFired(trigger, state) {
+
+		$log.debug(" - checking trigger " + JSON.stringify(trigger)) ;
+
+		if (trigger.questionId != undefined || trigger.questionId != null) 
+			return isQuestionTriggerFired(trigger, state) ;
+
+		if (trigger.and != undefined || trigger.and != null)
+			return isAndTriggerFired(trigger, state) ;
+
+		if (trigger.or != undefined || trigger.or != null)
+			return isOrTriggerFired(trigger, state) ;
+
+		$log.warn("could not identify type of trigger") ;
+		return false ;
+	}
+
+	function isAndTriggerFired(trigger, state) {
+
+		//$log.debug(" - checking AND trigger " + JSON.stringify(trigger)) ;
+		
+
+		var fired = true ;
+
+		_.each(trigger.and, function(subTrigger) {
+			if (!isTriggerFired(subTrigger, state)) {
+				fired = false ;
+				return false ;
+			}
+		}) ;
+
+		return fired ;
+	}
+
+	function isOrTriggerFired(trigger, state) {
+
+		//$log.debug(" - checking OR trigger " + JSON.stringify(trigger)) ;
+		
+		var fired = false ;
+
+		_.each(trigger.or, function(subTrigger) {
+			if (isTriggerFired(subTrigger, state)) {
+				fired = true ;
+				return false ;
+			}
+		}) ;
+
+		return fired ;
+	}
+
+	function isQuestionTriggerFired(trigger, state) {
+
+		$log.debug("checking fire state of " + JSON.stringify(trigger)) ;
+	
+		var field = state.fieldsById[trigger.questionId] ;
+
+		if (field == null) {
+			$log.warn("Could not identify field \"" + trigger.questionId + "\"") ;
+			return false ;
+		}
+
+		var answer = state.response.answers[trigger.questionId] ;
+		if (answer == null)
+			return false ;
+
+		var fired = false ;
+
+		switch(field.type) {
+
+			case 'singlechoice' :
+				fired = isSinglechoiceTriggerFired(trigger, answer) ;
+				break ;
+			case 'multichoice' :
+				fired = isMultichoiceTriggerFired(trigger, answer) ;
+				break ;
+			case 'numeric' :
+				fired = isNumericTriggerFired(trigger, answer) ;
+				break ;
+			case 'freetext' :
+				fired = isFreetextTriggerFired(trigger, answer) ;
+				break ;
+			case 'mood' : 
+				fired = isMoodTriggerFired(trigger, answer) ;
+				break ;
+			default :
+				$log.warn("could not identify fire state of trigger for field type " + field.type) ;
+				break ;
+		} 
+
+		if (fired)
+			$log.debug(" - fired") ;
+		else
+			$log.debug(" - not fired") ;
+
+		return fired ;
+
+	}
+
 	function isSinglechoiceTriggerFired(trigger, answer) {
 
 		$log.debug(" - checking single choice trigger " + JSON.stringify(trigger)) ;
@@ -412,43 +544,27 @@ var AskLogic = angular.module('ask-logic', [])
 
 	return {
 
-		isFired : function (trigger, field, answer) {
+		isFired : function (trigger, state, response) {
 
 
-			$log.debug("checking fire state of " + JSON.stringify(trigger)) ;
-			$log.debug(" - against " + JSON.stringify(answer)) ;
+			//$log.debug("checking fire state of " + JSON.stringify(trigger)) ;
+			//$log.debug(" - against " + JSON.stringify(answer)) ;
 
-			var fired = false ;
+			return isTriggerFired(trigger, state, response) ;
+		}, 
 
-			switch(field.type) {
+		getQuestionIds : function(trigger) {
 
-				case 'singlechoice' :
-					fired = isSinglechoiceTriggerFired(trigger, answer) ;
-					break ;
-				case 'multichoice' :
-					fired = isMultichoiceTriggerFired(trigger, answer) ;
-					break ;
-				case 'numeric' :
-					fired = isNumericTriggerFired(trigger, answer) ;
-					break ;
-				case 'freetext' :
-					fired = isFreetextTriggerFired(trigger, answer) ;
-					break ;
-				case 'mood' : 
-					fired = isMoodTriggerFired(trigger, answer) ;
-					break ;
-				default :
-					$log.warn("could not identify fire state of trigger for field type " + field.type) ;
-					break ;
-			} 
+			$log.info("identifying question ids for " + JSON.stringify(trigger)) ;
 
-			if (fired)
-				$log.debug(" - fired") ;
-			else
-				$log.debug(" - not fired") ;
+			var questionIds = getQuestionIdsForTrigger(trigger) ;
 
-			return fired ;
+			$log.info(questionIds) ;
+
+			return questionIds ;
 		} 
+
+
 	}
 }]) 
 
@@ -463,37 +579,6 @@ var AskLogic = angular.module('ask-logic', [])
 
 
 	function SurveyState(schema, response) {
-
-		//clone all field rules into array, attaching additional information
-		this.fieldRules = [] ;
-
-		_.each(schema.fieldRules, function(rule, ruleIndex) {
-
-			var r = _.cloneDeep(rule) ;
-			r.index = ruleIndex ;
-
-			_.each(r.triggers, function(trigger) {
-				trigger.fieldRuleIndex = ruleIndex ;
-			}) ;
-
-			this.fieldRules.push(r) ;
-		}, this) ;
-
-
-		//clone all page rules into array, attaching additional information
-		this.pageRules = [] ;
-
-		_.each(schema.pageRules, function(rule, ruleIndex) {
-
-			var r = _.cloneDeep(rule) ;
-			r.index = ruleIndex ;
-
-			_.each(r.triggers, function(trigger) {
-				trigger.pageRuleIndex = ruleIndex ;
-			}) ;
-
-			this.pageRules.push(r) ;
-		}, this) ;
 
 		//clone all fields into array, attaching additional information
 		this.fields = [] ;
@@ -542,42 +627,66 @@ var AskLogic = angular.module('ask-logic', [])
 
 			}
 
-			//some extra stuff is needed to handle question fields
-			if (f.isQuestion) {
-
-				//if we don't have an answer object for this question field, then initialize an empty one
-				
-
-				//identify any relevant fieldRuleTriggers
-				f.relevantTriggers = [] ;
-
-				_.each(this.fieldRules, function(rule) {
-					_.each(rule.triggers, function(trigger) {
-						if (trigger.questionId == f.id)
-							f.relevantTriggers.push(trigger) ;
-					}) ;
-				}) ;
-
-				_.each(this.pageRules, function(rule) {
-					_.each(rule.triggers, function(trigger) {
-						if (trigger.questionId == f.id)
-							f.relevantTriggers.push(trigger) ;
-					}) ;
-				}) ;
-			} ;
-
+			f.pageRuleIndexes = [] ;
+			f.fieldRuleIndexes = [] ;
 
 			this.fields.push(f) ;
 
 			this.fieldsById[f.id] = f ;
+	
+		}, this) ;
+
+		$log.debug("set up fields") ;
+
+
+		//clone all field rules into array, attaching additional information
+		//also attach to each field a list of relevant field rules that might be effected by answers to the field
+		this.fieldRules = [] ;
+		_.each(schema.fieldRules, function(rule, ruleIndex) {
+
+			var r = _.cloneDeep(rule) ;
+			r.index = ruleIndex ;
+
+			this.fieldRules.push(r) ;
+
+			_.each(TriggerStates.getQuestionIds(r.trigger), function(questionId) {
+
+				var field = this.fieldsById[questionId] ;
+
+				field.fieldRuleIndexes.push(ruleIndex) ;
+			}, this) ;
+		}, this) ;
+
+		$log.debug("set up field rules") ;
+
+		//clone all page rules into array, attaching additional information
+		//also attach to each field a list of relevant field rules that might be effected by answers to the field
+		this.pageRules = [] ;
+
+		_.each(schema.pageRules, function(rule, ruleIndex) {
+
+			var r = _.cloneDeep(rule) ;
+			r.index = ruleIndex ;
+
+			this.pageRules.push(r) ;
+
+			_.each(TriggerStates.getQuestionIds(r.trigger), function(questionId) {
+
+				var field = this.fieldsById[questionId] ;
+
+				field.pageRuleIndexes.push(ruleIndex) ;
+			}, this) ;
 
 		}, this) ;
 
+		$log.debug("set up page rules") ;
 
 		this.handleResponseUpdated(response) ;
 	}
 
 	SurveyState.prototype.handleResponseUpdated = function(response) {
+
+		$log.debug("Response changed!") ;
 
 		if (!response.answers)
 			response.answers = {} ;
@@ -604,8 +713,11 @@ var AskLogic = angular.module('ask-logic', [])
 
 		this.response = response ;
 
+		$log.debug(this.response.answers) ;
+
 		//check state of triggers for all answers
 		_.each(this.response.answers, function(answer, answerIndex) {
+			$log.debug("checking answer " + answerIndex) ;
 			this.handleAnswerChanged(answerIndex) ;
 		}, this) ;
 
@@ -769,70 +881,31 @@ var AskLogic = angular.module('ask-logic', [])
 		if (field.answered)
 			field.missing = false ;
 
-		_.each(field.relevantTriggers, function(trigger) {
+		_.each(field.fieldRuleIndexes, function(fieldRuleIndex) {
 
-			$log.debug("  checking trigger: " + trigger.fieldRuleIndex);
+			var fieldRule = this.fieldRules[fieldRuleIndex] ;
+			$log.debug("  checking fieldRule: " + fieldRuleIndex);
 
-			var triggerFired = TriggerStates.isFired(trigger, field, answer) ;
+			var fired = TriggerStates.isFired(fieldRule.trigger, this) ;
 
-			if (triggerFired != trigger.fired) {
-				trigger.fired = triggerFired ;
-				this.handleTriggerStateChanged(trigger) ;
+			if (fired != fieldRule.fired) {
+				fieldRule.fired = fired ;
+				this.handleFieldRuleStateChanged(fieldRule) ;
 			}
-
 		}, this) ;
 
-	}
+		_.each(field.pageRuleIndexes, function(pageRuleIndex) {
 
-	SurveyState.prototype.handleTriggerStateChanged = function(trigger) {
+			var pageRule = this.pageRules[pageRuleIndex] ;
+			$log.debug("  checking pageRule: " + pageRuleIndex);
 
-		$log.debug("state changed for trigger: " + JSON.stringify(trigger)) ;
-		
-		var ruleType, rule ;
+			var fired = TriggerStates.isFired(pageRule.trigger, this) ;
 
-		if (trigger.fieldRuleIndex != null) {
-			ruleType = 'fieldRule' ;
-			rule = this.fieldRules[trigger.fieldRuleIndex] ;
-		} else {
-			ruleType = 'pageRule' ;
-			rule = this.pageRules[trigger.pageRuleIndex] ;
-		}
-
-		var ruleFired ;
-
-		if (rule.operator == 'or') {
-			//look for first fired trigger
-
-			var firstFiredTrigger = _.find(rule.triggers, function(t) {
-				return t.fired ;
-			}) ;
-
-			if (firstFiredTrigger) 
-				ruleFired = true ;
-			else
-				ruleFired = false ;
-		} else {
-
-			//look for first unfired trigger
-
-			var firstUnfiredTrigger = _.find(rule.triggers, function(t) {
-				return !t.fired ;
-			}) ;
-
-			if (firstUnfiredTrigger)
-				ruleFired = false ;
-			else
-				ruleFired = true ;
-		}
-
-		if (ruleFired != rule.fired) {
-			rule.fired = ruleFired ;
-
-			if (ruleType == 'fieldRule')
-				this.handleFieldRuleStateChanged(rule) ;
-			else
-				this.handlePageRuleStateChanged(rule) ;
-		}
+			if (fired != pageRule.fired) {
+				pageRule.fired = fired ;
+				this.handlePageRuleStateChanged(pageRule) ;
+			}
+		}, this) ;
 	}
 
 	SurveyState.prototype.handleFieldRuleStateChanged = function(rule) {
@@ -860,11 +933,12 @@ var AskLogic = angular.module('ask-logic', [])
 			} ;
 
 			//if a field gets hidden, wipe any answers to it
-			if (field.fieldRuleState == "hide") {
+			if (field.fieldRuleState == "hide" && field.isQuestion) {
+
 				if (AnswerStates.isAnswered(field, this.response.answers[field.id])) {
 
 					$log.debug("Recursively clearing answer to " + field.id) ;
-
+					
 					this.response.answers[field.id] = {} ;
 					this.handleAnswerChanged(field.id) ;
 				}
@@ -882,9 +956,9 @@ var AskLogic = angular.module('ask-logic', [])
 
 		//identify earliest effected page, which is the next page after the last trigger
 		var earliestEffectedPageIndex ;
-		_.each(rule.triggers, function(trigger) {
+		_.each(TriggerStates.getQuestionIds(rule.trigger), function(questionId) {
 
-			var question = this.fieldsById[trigger.questionId] ;
+			var question = this.fieldsById[questionId] ;
 			if (earliestEffectedPageIndex == null || earliestEffectedPageIndex < question.pageIndex)
 				earliestEffectedPageIndex = question.pageIndex ;
 

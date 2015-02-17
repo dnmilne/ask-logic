@@ -28,8 +28,8 @@ describe('chatVisitorFeedback', function() {
 			expect(state.fields.length).toEqual(10) ;
 			expect(state.fieldsById["qGender"].question).toEqual("What gender are you?") ;
 			expect(state.fieldsById["qGender2"].question).toEqual("What best describes you?") ;
-			expect(state.fieldsById["qGender"].relevantTriggers.length).toEqual(1) ;
-			expect(state.fieldsById["qWorthwhile"].relevantTriggers.length).toEqual(1) ;
+			expect(state.fieldsById["qGender"].fieldRuleIndexes.length).toEqual(1) ;
+			expect(state.fieldsById["qWorthwhile"].fieldRuleIndexes.length).toEqual(1) ;
 		})
 
 		it ("Should have an unnamed page for all fields", function() {
