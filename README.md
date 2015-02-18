@@ -64,26 +64,26 @@ Within a controller, set up a `schema` object to store your ask schema. Below we
 	    "type" : "freetext"
 	  } ],
 	  "fieldRules" : [ {
-	    "triggers" : [ {
+	    "trigger" : {
 	      "questionId" : "qHappy",
 	      "condition" : "is",
 	      "value" : "Yes"
-	    } ],
+	    },
 	    "actions" : [ {
 	      "action" : "show",
 	      "fieldId" : "iGood"
 	    } ]
 	  }, {
-	    "triggers" : [ {
+	    "trigger" : {
 	      "questionId" : "qHappy",
 	      "condition" : "is",
 	      "value" : "No"
-	    } ],
+	    },
 	    "actions" : [ {
 	      "action" : "show",
 	      "fieldId" : "qBadReason"
 	    } ]
-	  } ],
+	  } ]
 	}
 
 Also set up a `response` object, that will store a user's response to this survey. 
