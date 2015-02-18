@@ -83,7 +83,7 @@ describe('trigger-states', function() {
 
 
 
-	/*
+	
 
 	it("Should handle singlechoice triggers correctly", function() {
 
@@ -225,8 +225,6 @@ describe('trigger-states', function() {
 
 	})
 
-	*/
-
 
 	it("Should handle OR triggers correctly ", function() {
 
@@ -243,6 +241,35 @@ describe('trigger-states', function() {
 		expect(TriggerStates.isFired(trigger, state)).toEqual(false) ;
 
 		response.answers['qFeeling'] = {choice:"Good"} ;
+		expect(TriggerStates.isFired(trigger, state)).toBeTruthy() ;
+
+		response.answers['qFeeling'] = {choice:"Bad"} ;
+		expect(TriggerStates.isFired(trigger, state)).toBeTruthy() ;
+
+		response.answers['qFeeling'] = {choice:"Meh"} ;
+		expect(TriggerStates.isFired(trigger, state)).toEqual(false) ;
+
+	})
+
+
+	it("Should handle AND triggers correctly ", function() {
+
+		var trigger = {
+			or : [
+				{questionId:'qFeeling', condition:"is", choice:"good"},
+				{questionId:'qName', condition:"equals", choice:"dave"}
+			]
+		}
+
+		var response = {answers:{}} ;
+		var state = SurveyStates.init(schema, response) ;
+
+		expect(TriggerStates.isFired(trigger, state)).toEqual(false) ;
+
+		response.answers['qFeeling'] = {choice:"Good"} ;
+		expect(TriggerStates.isFired(trigger, state)).toEqual(false) ;
+
+		response.answers['qName'] = {text:"Dave"} ;
 		expect(TriggerStates.isFired(trigger, state)).toBeTruthy() ;
 
 	})

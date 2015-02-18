@@ -555,11 +555,11 @@ var AskLogic = angular.module('ask-logic', [])
 
 		getQuestionIds : function(trigger) {
 
-			$log.info("identifying question ids for " + JSON.stringify(trigger)) ;
+			$log.debug("identifying question ids for " + JSON.stringify(trigger)) ;
 
 			var questionIds = getQuestionIdsForTrigger(trigger) ;
 
-			$log.info(questionIds) ;
+			$log.debug(questionIds) ;
 
 			return questionIds ;
 		} 
