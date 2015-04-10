@@ -57,6 +57,12 @@ describe('trigger-states', function() {
 					id:"qMood",
 					type:"mood",
 					name:"How you doin'?"
+				},
+				{
+					id:"qBreakfastRating",
+					type:"scale",
+					scaleType:"star",
+					length:5
 				}
 
 			],
@@ -148,6 +154,34 @@ describe('trigger-states', function() {
 		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
 
 	}) 
+
+    it ("Should handle scale triggers correctly", function() {
+
+
+    	var response = {answers:{}} ;
+    	var state = SurveyStates.init(schema, response) ;
+
+    	response.answers['qBreakfastRating'] = {index:3} ;
+
+    	var trigger = {questionId:'qBreakfastRating', condition:'equal', index:3} ;
+    	expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+    	var trigger = {questionId:'qBreakfastRating', condition:'equal', index:4} ;
+    	expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+    	var trigger = {questionId:'qBreakfastRating', condition:'greaterThan', index:2} ;
+    	expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+    	var trigger = {questionId:'qBreakfastRating', condition:'greaterThan', index:3} ;
+    	expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+    	var trigger = {questionId:'qBreakfastRating', condition:'lessThan', index:4} ;
+    	expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+    	var trigger = {questionId:'qBreakfastRating', condition:'lessThan', index:3} ;
+    	expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+    })
 
 	it ("Should handle freetext triggers correctly", function() {
 
@@ -255,7 +289,7 @@ describe('trigger-states', function() {
 	it("Should handle AND triggers correctly ", function() {
 
 		var trigger = {
-			or : [
+			and : [
 				{questionId:'qFeeling', condition:"is", choice:"good"},
 				{questionId:'qName', condition:"equals", choice:"dave"}
 			]

@@ -134,6 +134,14 @@ var AskLogic = angular.module('ask-logic', [])
 		return true ;
 	}
 
+	function isScaleAnswered(answer) {
+
+		if (!answer.index)
+			return false ;
+
+		return true ;
+	}
+
 	function isMoodAnswered(answer) {
 
 		if (!answer.mood)
@@ -169,6 +177,13 @@ var AskLogic = angular.module('ask-logic', [])
 			return "" ;
 
 		return answer.text ;
+	}
+
+	function scaleAsString(answer) {
+		if (!answer.index)
+			return "unknown" ;
+
+		return answer.index ;
 	}
 
 	function moodAsString(answer) {
@@ -211,6 +226,9 @@ var AskLogic = angular.module('ask-logic', [])
 				case 'freetext' :
 					answered = isFreetextAnswered(answer) ;
 					break ;
+				case 'scale' :
+					answered = isScaleAnswered(answer) ;
+					break ;
 				case 'mood' :
 					answered = isMoodAnswered(answer) ;
 					break ;
@@ -249,6 +267,8 @@ var AskLogic = angular.module('ask-logic', [])
 					return numericAsString(answer) ;
 				case 'freetext' :
 					return freetextAsString(answer) ;
+				case 'scale' :
+					return scaleAsString(answer) ;
 				case 'mood' :
 					return moodAsString(answer) ;
 				default :
@@ -382,6 +402,9 @@ var AskLogic = angular.module('ask-logic', [])
 			case 'freetext' :
 				fired = isFreetextTriggerFired(trigger, answer) ;
 				break ;
+			case 'scale' :
+				fired = isScaleTriggerFired(trigger, answer) ;
+				break ;
 			case 'mood' : 
 				fired = isMoodTriggerFired(trigger, answer) ;
 				break ;
@@ -475,6 +498,26 @@ var AskLogic = angular.module('ask-logic', [])
                 return answerText.indexOf(triggerText) >= 0 ;
             case 'startsWith':
                 return answerText.indexOf(triggerText) == 0 ;
+		}
+
+		return false ;
+	}
+
+
+	function isScaleTriggerFired(trigger, answer) {
+
+		if (answer.index === undefined || answer.index === null)
+			return false ;
+
+		switch(trigger.condition) {
+
+			case 'equal' : 
+				return answer.index == trigger.index ;
+			case 'greaterThan' :
+				return answer.index > trigger.index ;
+			case 'lessThan' :
+				return answer.index < trigger.index ;
+
 		}
 
 		return false ;
