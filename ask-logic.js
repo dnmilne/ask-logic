@@ -134,9 +134,39 @@ var AskLogic = angular.module('ask-logic', [])
 		return true ;
 	}
 
-	function isScaleAnswered(answer) {
+	function isMultitextAnswered(answer, field) {
 
-		if (!answer.index)
+		$log.debug("checking if multitext question answered") ;
+		$log.debug(answer) ;
+
+		if (!answer.entries) 
+			return false ;
+
+		if (answer.entries.length < 1) 
+			return false ;
+
+		if (field.minEntries && answer.entries.length < field.minEntries)
+			return false ;
+
+		if (field.maxEntries && answer.entries.length > field.maxEntries)
+			return false ;
+
+		var allEntriesValid = true ;
+
+		_.each(answer.entries, function(entry) {
+			if (entry == null)
+				allEntriesValid = false ;
+
+			if (entry.trim().length == 0)
+				allEntriesValid = false ;
+		}) ;
+
+		return allEntriesValid ;
+	}
+
+	function isRatingAnswered(answer) {
+
+		if (!answer.rating)
 			return false ;
 
 		return true ;
@@ -179,11 +209,18 @@ var AskLogic = angular.module('ask-logic', [])
 		return answer.text ;
 	}
 
-	function scaleAsString(answer) {
-		if (!answer.index)
+	function multitextAsString(answer) {
+		if (!answer.entries)
+			return "" ;
+
+		return answer.entries.join() ;
+	}
+
+	function ratingAsString(answer) {
+		if (!answer.rating)
 			return "unknown" ;
 
-		return answer.index ;
+		return answer.rating ;
 	}
 
 	function moodAsString(answer) {
@@ -210,6 +247,8 @@ var AskLogic = angular.module('ask-logic', [])
 				return false ;
 			}
 
+			$log.debug("checking if " + field.id + " is answered") ;
+
 			var answered = false ;
 
 			switch(field.type) {
@@ -226,8 +265,11 @@ var AskLogic = angular.module('ask-logic', [])
 				case 'freetext' :
 					answered = isFreetextAnswered(answer) ;
 					break ;
-				case 'scale' :
-					answered = isScaleAnswered(answer) ;
+				case 'multitext': 
+				    answered = isMultitextAnswered(answer, field) ;
+				    break ;
+				case 'rating' :
+					answered = isRatingAnswered(answer) ;
 					break ;
 				case 'mood' :
 					answered = isMoodAnswered(answer) ;
@@ -267,8 +309,10 @@ var AskLogic = angular.module('ask-logic', [])
 					return numericAsString(answer) ;
 				case 'freetext' :
 					return freetextAsString(answer) ;
-				case 'scale' :
-					return scaleAsString(answer) ;
+				case 'multitext' : 
+					return multitextAsString(answer) ;
+				case 'rating' :
+					return ratingAsString(answer) ;
 				case 'mood' :
 					return moodAsString(answer) ;
 				default :
@@ -402,8 +446,11 @@ var AskLogic = angular.module('ask-logic', [])
 			case 'freetext' :
 				fired = isFreetextTriggerFired(trigger, answer) ;
 				break ;
-			case 'scale' :
-				fired = isScaleTriggerFired(trigger, answer) ;
+			case 'multitext' :
+				fired = isMultitextTriggerFired(trigger, answer) ;
+				break ;
+			case 'rating' :
+				fired = isRatingTriggerFired(trigger, answer) ;
 				break ;
 			case 'mood' : 
 				fired = isMoodTriggerFired(trigger, answer) ;
@@ -503,20 +550,62 @@ var AskLogic = angular.module('ask-logic', [])
 		return false ;
 	}
 
+	function isMultitextTriggerFired(trigger, answer) {
 
-	function isScaleTriggerFired(trigger, answer) {
+		//handle count-based triggers
+		switch (trigger.condition) {
 
-		if (answer.index === undefined || answer.index === null)
+			case 'countEquals':
+				return answer.entries.length == trigger.count ;
+			case 'countGreaterThan':
+				return answer.entries.length > trigger.count ;
+			case 'countLessThan' :
+				return answer.entries.length < trigger.count ; 
+
+		}
+
+		//handle text-based triggers, which require us to iterate through entries
+
+		var triggerText = Normalizer.normalize(trigger.entry) ;
+
+		var validEntry = _.find(answer.entries, function(entry) {
+
+			var entryText = Normalizer.normalize(entry) ;
+
+			switch(trigger.condition) {
+				case 'entryIs':
+	                return entryText == triggerText ;
+	            case 'entryContains':
+	                return entryText.indexOf(triggerText) >= 0 ;
+	            case 'entryStartsWith':
+	                return entryText.indexOf(triggerText) == 0 ;
+
+	        }
+
+	        return false ;
+		}) ;
+
+		if (validEntry)
+			return true ;
+		else
+			return false ;
+
+	}
+
+
+	function isRatingTriggerFired(trigger, answer) {
+
+		if (answer.rating === undefined || answer.rating === null)
 			return false ;
 
 		switch(trigger.condition) {
 
 			case 'equal' : 
-				return answer.index == trigger.index ;
+				return answer.rating == trigger.rating ;
 			case 'greaterThan' :
-				return answer.index > trigger.index ;
+				return answer.rating > trigger.rating ;
 			case 'lessThan' :
-				return answer.index < trigger.index ;
+				return answer.rating < trigger.rating ;
 
 		}
 

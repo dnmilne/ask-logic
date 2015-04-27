@@ -1,0 +1,15 @@
+{
+  "title" : "Breakfast",
+  "fields" : [ 
+    {
+      "id" : "qFavorites",
+      "type" : "multitext",
+      "question" : "What are your favorite cereals?",
+      "length" : "SHORT",
+      "minEntries": 3,
+      "maxEntries": 5
+    }
+  ],
+  "fieldRules": [],
+  "pageRules": []
+}

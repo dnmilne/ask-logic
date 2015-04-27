@@ -11,7 +11,6 @@ describe('trigger-states', function() {
 	})) ;
 
 
-
 	beforeEach(function() {
 
 		inject(function ($injector) {
@@ -54,14 +53,21 @@ describe('trigger-states', function() {
 					name:"What is your name?"
 				},
 				{
+					id:"qFavorites",
+					type:"multitext",
+					name:"What are your favorite cereals?",
+					length: "SHORT",
+					minEntries: 3
+				},
+				{
 					id:"qMood",
 					type:"mood",
 					name:"How you doin'?"
 				},
 				{
 					id:"qBreakfastRating",
-					type:"scale",
-					scaleType:"star",
+					type:"rating",
+					ratingType:"star",
 					length:5
 				}
 
@@ -155,30 +161,30 @@ describe('trigger-states', function() {
 
 	}) 
 
-    it ("Should handle scale triggers correctly", function() {
+    it ("Should handle rating triggers correctly", function() {
 
 
     	var response = {answers:{}} ;
     	var state = SurveyStates.init(schema, response) ;
 
-    	response.answers['qBreakfastRating'] = {index:3} ;
+    	response.answers['qBreakfastRating'] = {rating:3} ;
 
-    	var trigger = {questionId:'qBreakfastRating', condition:'equal', index:3} ;
+    	var trigger = {questionId:'qBreakfastRating', condition:'equal', rating:3} ;
     	expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
 
-    	var trigger = {questionId:'qBreakfastRating', condition:'equal', index:4} ;
+    	var trigger = {questionId:'qBreakfastRating', condition:'equal', rating:4} ;
     	expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
 
-    	var trigger = {questionId:'qBreakfastRating', condition:'greaterThan', index:2} ;
+    	var trigger = {questionId:'qBreakfastRating', condition:'greaterThan', rating:2} ;
     	expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
 
-    	var trigger = {questionId:'qBreakfastRating', condition:'greaterThan', index:3} ;
+    	var trigger = {questionId:'qBreakfastRating', condition:'greaterThan', rating:3} ;
     	expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
 
-    	var trigger = {questionId:'qBreakfastRating', condition:'lessThan', index:4} ;
+    	var trigger = {questionId:'qBreakfastRating', condition:'lessThan', rating:4} ;
     	expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
 
-    	var trigger = {questionId:'qBreakfastRating', condition:'lessThan', index:3} ;
+    	var trigger = {questionId:'qBreakfastRating', condition:'lessThan', rating:3} ;
     	expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
 
     })
@@ -217,6 +223,48 @@ describe('trigger-states', function() {
 		trigger = {condition:'startsWith', text:'dave'} ;
 		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
 	}) 
+
+	it ("Should handle multitext triggers correctly", function() {
+
+		var response = {answers:{}} ;
+		var state = SurveyStates.init(schema, response) ;
+
+		response.answers['qFavorites'] = {entries:["Cocopops", "Fruitloops", "That weird milo cereal"]} ;
+
+		var trigger = {questionId:'qFavorites', condition:'countEquals', count:3} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+		trigger = {questionId:'qFavorites', condition:'countGreaterThan', count:3} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+		trigger = {questionId:'qFavorites', condition:'countGreaterThan', count:2} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+		trigger = {questionId:'qFavorites', condition:'countLessThan', count:4} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+		trigger = {questionId:'qFavorites', condition:'countLessThan', count:3} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+		trigger = {questionId:'qFavorites', condition:'entryIs', entry:'cocopops'} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+		trigger = {questionId:'qFavorites', condition:'entryIs', entry:'milo'} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+		trigger = {questionId:'qFavorites', condition:'entryContains', entry:'milo'} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+		trigger = {questionId:'qFavorites', condition:'entryContains', entry:'weetbix'} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+
+		trigger = {questionId:'qFavorites', condition:'entryStartsWith', entry:'coco'} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(true) ;
+
+		trigger = {questionId:'qFavorites', condition:'entryStartsWith', entry:'milo'} ;
+		expect(TriggerStates.isFired(trigger, state, response)).toEqual(false) ;
+	}) 
+
 
 	it ("Should handle mood triggers correctly", function() {
 
@@ -291,7 +339,7 @@ describe('trigger-states', function() {
 		var trigger = {
 			and : [
 				{questionId:'qFeeling', condition:"is", choice:"good"},
-				{questionId:'qName', condition:"equals", choice:"dave"}
+				{questionId:'qName', condition:"is", text:"dave"}
 			]
 		}
 
