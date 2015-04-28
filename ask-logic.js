@@ -701,23 +701,128 @@ var AskLogic = angular.module('ask-logic', [])
 }]) 
 
 
+
+
+
+.factory('ChoiceGatherer', ['$log','Normalizer', function($log, Normalizer) {
+
+
+	function getForFreetext(answer) {
+
+		if (!answer.text)
+			return [] ;
+
+		return [answer.text] ;
+	}
+
+	function getForMultitext(answer) {
+
+		if (!answer.entries)
+			return [] ;
+
+		return answer.entries ;
+	}
+
+	function getForSinglechoice(answer) {
+
+		if (!answer.choice)
+			return [] ;
+
+		return [answer.choice] ;
+	}
+
+	function getForMultichoice(answer) {
+
+		if (!answer.choices)
+			return [] ;
+
+		return answer.choices ;
+	}
+
+	function getForMood(answer) {
+
+		if (!answer.mood)
+			return [] ;
+
+		return answer.mood.name ;
+	}
+
+	function getForField(field, answer) {
+
+		switch(field.type) {
+
+			case 'freetext':
+				return getForFreetext(answer) ;
+			case 'multitext':
+				return getForMultitext(answer) ;
+			case 'singlechoice':
+				return getForSinglechoice(answer) ;
+			case 'multichoice':
+				return getForMultichoice(answer) ;
+			case 'mood':
+				return getForMood(answer) ;
+			default:
+				$log.warn("Tried to get autochoices from invalid field type " + field.type + " (" + field.id + ")") ;
+		}
+
+		return [] ;
+	}
+
+	return {
+
+		gatherChoices: function(choiceSources, response) {
+
+			var combinedChoices = [] ;
+			var normalizedChoices = [] ;
+
+			_.each(choiceSources, function(choiceSource) {
+
+				var answer = response.answers[choiceSource.id] ;
+
+				if (answer == null)
+					return ;
+
+				_.each(getForField(choiceSource, answer), function(choice) {
+
+					var normalizedChoice = Normalizer.normalize(choice) ;
+
+					if (normalizedChoice.length == 0)
+						return ;
+
+					if (!_.contains(normalizedChoices, normalizedChoice)) {
+						combinedChoices.push({name:choice}) ;
+						normalizedChoices.push(choice) ;
+					}
+
+				}) ;
+
+			}) ;
+
+			return combinedChoices ;
+		}
+	}
+}]) 
+
+
 /* 
 	This factory allows you to create one or more (so non-singleton) SurveyState objects
 
 	Each SurveyState obj is instantiated with a schema and a response object, and provides methods to track what happens to the survey state 
 	(e.g current page, visible fields, etc). 
 */
-.factory('SurveyStates', ['$log','TriggerStates', 'AnswerStates', function($log, TriggerStates, AnswerStates) {
+.factory('SurveyStates', ['$log','TriggerStates', 'AnswerStates', 'ChoiceGatherer', function($log, TriggerStates, AnswerStates, ChoiceGatherer) {
 
 
 	function SurveyState(schema, response) {
 
-		//clone all fields into array, attaching additional information
+		//clone all fields into array, attaching additional information, and make a map by id
 		this.fields = [] ;
 		this.fieldsById = {} ;
 
 		//also identify and clone individual pages
 		this.pages = [] ;
+
+
 
 		_.each(schema.fields, function (field) {
 
@@ -744,6 +849,30 @@ var AskLogic = angular.module('ask-logic', [])
 					p = _.last(this.pages) ;
 				}
 				p.relevantFields.push(f) ;
+
+
+
+				if (f.choiceSources) {
+
+					//tell each autochoice source about this autochoice destination
+					_.each(f.choiceSources, function(choiceSourceId) {
+
+						var choiceSource = this.fieldsById[choiceSourceId] ;
+
+						if (!choiceSource) {
+							$log.error("Could not identify choice source " + choiceSourceId) ;
+							return ;
+						}
+
+						if (!choiceSource.choiceDestinations) 
+							choiceSource.choiceDestinations = [] ;
+						
+						if (!_.contains(choiceSource.choiceDestinations, this.choiceDestination.id)) 
+							choiceSource.choiceDestinations.push(this.choiceDestination.id) ;
+
+					}, {fieldsById: this.fieldsById, choiceDestination:f}) ; 
+				}
+
 			}
 
 			f.pageIndex = (this.pages.length - 1) ;
@@ -1037,8 +1166,40 @@ var AskLogic = angular.module('ask-logic', [])
 				pageRule.fired = fired ;
 				this.handlePageRuleStateChanged(pageRule) ;
 			}
+
+		}, this) ;
+
+
+		_.each(field.choiceDestinations, function(choiceDestinationId){
+			this.handleChoiceSourcesChanged(choiceDestinationId) ;
 		}, this) ;
 	}
+
+
+	SurveyState.prototype.handleChoiceSourcesChanged = function(fieldId) {
+
+		var field = this.fieldsById[fieldId] ;
+
+		var choiceSources = [] ;
+
+		_.each(field.choiceSources, function(choiceSourceId) {
+
+			var choiceSource = this.fieldsById[choiceSourceId] ;
+
+			if (!choiceSource) {
+				$log.error("Could not identify choice source " + choiceSourceId) ;
+				return ;
+			}
+
+			this.choiceSources.push(choiceSource) ;
+
+		}, {fieldsById : this.fieldsById, choiceSources:choiceSources}) ;
+
+		field.autochoices = ChoiceGatherer.gatherChoices(choiceSources, this.response) ;
+	}
+
+
+
 
 	SurveyState.prototype.handleFieldRuleStateChanged = function(rule) {
 

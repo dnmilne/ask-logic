@@ -14,6 +14,7 @@
     "karma-chrome-launcher": "latest",
     "karma-jasmine": "latest",
     "karma-jasmine-jquery": "latest",
+    "lodash": "^3.7.0",
     "socket.io": "0.9.16"
   }
 }

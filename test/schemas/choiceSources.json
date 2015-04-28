@@ -1,0 +1,54 @@
+{
+	"fields": [
+		{
+			"id": "qName",
+			"type": "freetext",
+			"question": "What is your name?",
+			"length": "SHORT"
+		},
+		{
+			"id": "qGender",
+			"type": "singlechoice",
+			"question": "What is your Gender?",
+			"choices": [
+				{"name": "Male"},
+				{"name": "Female"}
+			]
+		},
+		{
+			"id": "qHobbies",
+			"type": "multichoice",
+			"question": "What are you?",
+			"choices": [
+				{"name": "a lover"},
+				{"name": "a joker"},
+				{"name": "a midnight toker"}
+			]
+		},
+		{
+			"id": "qMood",
+			"type": "mood",
+			"question": "How do you feel?"
+		},
+		{
+			"id": "qCereals",
+			"type": "multitext",
+			"question": "What are your favorite cereals?",
+			"length": "short"
+		},
+		{
+			"id": "qCombined",
+			"type": "multichoice",
+			"question": "This makes no sense, just roll with it",
+			"choiceSources": ["qName","qGender","qHobbies"]
+		},
+		{
+			"id": "qCombined2",
+			"type": "singlechoice",
+			"question": "This makes no sense, just roll with it",
+			"choiceSources": ["qHobbies", "qMood", "qCereals"]
+		}
+	],
+	"fieldRules": [],
+	"pageRules": []
+}
