@@ -31,7 +31,6 @@ describe('chatScript', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			console.log("BLAH!!") ;
 			console.log("qLaunch: ") ;
 			console.log(state.fieldsById["qLaunch"]) ;
 

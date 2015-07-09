@@ -2,8 +2,109 @@ var AskLogic = angular.module('ask-logic', [])
 
 
 
+.factory('Logger', ['$log', function($log) {
 
-.factory('PlaceholderResolver', ['$log', 'AnswerStates', function($log, AnswerStates) {
+	var levels = ['trace','debug','info','warn','error'] ;
+
+	var levelIndexes = {
+		trace: 0,
+		debug: 1,
+		info: 2,
+		warn: 3,
+		error: 4
+	} ;
+
+	var levelsByContext = {} ;
+	levelsByContext['*'] = 'warn' ;
+
+	function getLogLevel(context) {
+
+		var contextChunks = context.split(".") ;
+
+		for (i=contextChunks.length ; i >= 0 ; i--) {
+
+			var relevantContextChunks = contextChunks.slice(0,i) ;
+			var contextPath = relevantContextChunks.join('.') ;
+
+			//console.log(contextPath + "->" + levelsByContext[contextPath]) ;
+
+			if (levelsByContext[contextPath])
+				return levelsByContext[contextPath] ;
+		}
+
+		return levelsByContext['*'] ;
+	}
+
+	function isLoggable(level, context) {
+
+		if (!context)
+			context = '*' ;
+
+		var minLevel = getLogLevel(context) ;
+
+		return (levelIndexes[level] >= levelIndexes[minLevel]) ;
+	}
+
+	return {
+
+		setLogLevel: function(level, context) {
+
+			if (levelIndexes[level] == null)
+				$log.warn(level + " is not a valid log level") ;
+
+			if (!context)
+				context = '*' ;
+
+			levelsByContext[context] = level ;
+		},
+
+		trace: function(content, context) {
+
+			if (!isLoggable('trace', context))
+				return ;
+
+			$log.trace(content) ;
+		},
+
+		debug: function(content, context) {
+
+			if (!isLoggable('debug', context))
+				return ;
+
+			$log.debug(content) ;
+		},
+
+		info: function(content, context) {
+
+			if (!isLoggable('info', context))
+				return ;
+
+			$log.info(content) ;
+		},
+
+		warn: function(content, context) {
+
+			if (!isLoggable('warn', context))
+				return ;
+
+			$log.warn(content) ;
+		},
+
+		error: function(content, context) {
+
+			if (!isLoggable('error', context))
+				return ;
+
+			$log.error(content) ;
+		}
+
+	}
+
+
+}]) 
+
+
+.factory('PlaceholderResolver', ['Logger', 'AnswerStates', function(Logger, AnswerStates) {
 
 	
 
@@ -20,17 +121,17 @@ var AskLogic = angular.module('ask-logic', [])
 			var index = 0 ;
 			while (match != null) {
 
-				$log.debug("found " + match[0] + "at " + match.index) ;
+				Logger.debug("found " + match[0] + "at " + match.index, "ask.logic.placeholder") ;
 
 			    resolvedText = resolvedText + text.substr(index,match.index-index) ;
 
 			    var questionId = match[1] ;
-			    $log.debug("Resolving placeholder [[" + questionId + "]]") ;
+			    Logger.debug("Resolving placeholder [[" + questionId + "]]", "ask.logic.placeholder") ;
 
 			    var question = state.fieldsById[questionId] ;
 
 			    if (!question) {
-			    	$log.warn("Could not find question for placeholder " + questionId) ;
+			    	Logger.warn("Could not find question for placeholder " + questionId, "ask.logic.placeholder") ;
 			    	continue ;
 			    }
 
@@ -39,7 +140,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 	            if (answer == null || !AnswerStates.isAnswered(question, answer)) {
 	                resolvedText = resolvedText + "`unansweredQuestion:" + questionId + "`" ;
-	                $log.warn("Could not find answer for placeholder " + questionId) ;
+	                Logger.warn("Could not find answer for placeholder " + questionId, "ask.logic.placeholder") ;
 	            } else {
 	                resolvedText = resolvedText + AnswerStates.answerAsString(question, answer) ;
 	            }
@@ -96,7 +197,7 @@ var AskLogic = angular.module('ask-logic', [])
 })
 
 
-.factory('AnswerStates', ['$log', function($log) {
+.factory('AnswerStates', ['Logger', function(Logger) {
 
 
 	function isSinglechoiceAnswered(answer) {
@@ -136,8 +237,8 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isMultitextAnswered(answer, field) {
 
-		$log.debug("checking if multitext question answered") ;
-		$log.debug(answer) ;
+		Logger.debug("checking if multitext question answered", "ask.logic.answers") ;
+		Logger.debug(answer, "ask.logic.answers") ;
 
 		if (!answer.entries) 
 			return false ;
@@ -238,16 +339,16 @@ var AskLogic = angular.module('ask-logic', [])
 		isAnswered : function(field, answer) {
 
 			if (!field) {
-				$log.warn("tried to check answer to nonexistent field") ;
+				Logger.warn("tried to check answer to nonexistent field", "ask.logic.answers") ;
 				return false ;
 			}
 
 			if (!answer) {
-				$log.warn("tried to check undefined answer to field " + field.id)
+				Logger.warn("tried to check undefined answer to field " + field.id, "ask.logic.answers")
 				return false ;
 			}
 
-			$log.debug("checking if " + field.id + " is answered") ;
+			Logger.debug("checking if " + field.id + " is answered", "ask.logic.answers") ;
 
 			var answered = false ;
 
@@ -275,14 +376,14 @@ var AskLogic = angular.module('ask-logic', [])
 					answered = isMoodAnswered(answer) ;
 					break ;
 				default :
-					$log.warn("cannot check answer of unknown field type " + field.type + " (" + field.id + ")") ;
+					Logger.warn("cannot check answer of unknown field type " + field.type + " (" + field.id + ")", "ask.logic.answers") ;
 
 			}
 
 			if (answered)
-				$log.debug(field.id + " IS answered") ;
+				Logger.debug(field.id + " IS answered", "ask.logic.answers") ;
 			else
-				$log.debug(field.id + " IS NOT answered") ;
+				Logger.debug(field.id + " IS NOT answered", "ask.logic.answers") ;
 
 			return answered ;
 		},
@@ -290,12 +391,12 @@ var AskLogic = angular.module('ask-logic', [])
 		answerAsString: function(field, answer) {
 
 			if (!field) {
-				$log.warn("tried to stringify answer to nonexistent field") ;
+				Logger.warn("tried to stringify answer to nonexistent field", "ask.logic.answers") ;
 				return null ;
 			}
 
 			if (!answer) {
-				$log.warn("tried to stringify undefined answer to field " + field.id)
+				Logger.warn("tried to stringify undefined answer to field " + field.id, "ask.logic.answers")
 				return null ;
 			}
 
@@ -316,7 +417,7 @@ var AskLogic = angular.module('ask-logic', [])
 				case 'mood' :
 					return moodAsString(answer) ;
 				default :
-					$log.warn("cannot stringify answer of unknown field type " + field.type + " (" + field.id + ")") ;
+					Logger.warn("cannot stringify answer of unknown field type " + field.type + " (" + field.id + ")", "ask.logic.answers") ;
 
 			}
 
@@ -329,7 +430,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 
 
-.factory('TriggerStates', ['$log','Normalizer', function($log, Normalizer) {
+.factory('TriggerStates', ['Logger','Normalizer', function(Logger, Normalizer) {
 
 	function getQuestionIdsForTrigger(trigger) {
 
@@ -337,7 +438,7 @@ var AskLogic = angular.module('ask-logic', [])
 			return [trigger.questionId] ;
 		}
 
-		if (trigger.and != undefined || trigger.and != null) {
+		if (!!trigger.and) {
 			
 			var questionIds = [] ;
 
@@ -348,7 +449,7 @@ var AskLogic = angular.module('ask-logic', [])
 			return questionIds ;
 		}
 		
-		if (trigger.or != undefined || trigger.or != null) {
+		if (!!trigger.or) {
 
 			var questionIds = [] ;
 
@@ -359,7 +460,7 @@ var AskLogic = angular.module('ask-logic', [])
 			return questionIds ;
 		}
 
-		$log.warn("could not identify type of trigger") ;
+		Logger.warn("could not identify type of trigger", "ask.logic.triggers") ;
 		return [] ;
 
 	}
@@ -367,7 +468,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isTriggerFired(trigger, state) {
 
-		$log.debug(" - checking trigger " + JSON.stringify(trigger)) ;
+		Logger.debug(" - checking trigger " + JSON.stringify(trigger), "ask.logic.triggers") ;
 
 		if (trigger.questionId != undefined || trigger.questionId != null) 
 			return isQuestionTriggerFired(trigger, state) ;
@@ -378,14 +479,11 @@ var AskLogic = angular.module('ask-logic', [])
 		if (trigger.or != undefined || trigger.or != null)
 			return isOrTriggerFired(trigger, state) ;
 
-		$log.warn("could not identify type of trigger") ;
+		Logger.warn("could not identify type of trigger", "ask.logic.triggers") ;
 		return false ;
 	}
 
 	function isAndTriggerFired(trigger, state) {
-
-		//$log.debug(" - checking AND trigger " + JSON.stringify(trigger)) ;
-		
 
 		var fired = true ;
 
@@ -401,8 +499,6 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isOrTriggerFired(trigger, state) {
 
-		//$log.debug(" - checking OR trigger " + JSON.stringify(trigger)) ;
-		
 		var fired = false ;
 
 		_.each(trigger.or, function(subTrigger) {
@@ -417,12 +513,12 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isQuestionTriggerFired(trigger, state) {
 
-		$log.debug("checking fire state of " + JSON.stringify(trigger)) ;
+		Logger.debug("checking fire state of " + JSON.stringify(trigger), "ask.logic.triggers") ;
 	
 		var field = state.fieldsById[trigger.questionId] ;
 
 		if (field == null) {
-			$log.warn("Could not identify field \"" + trigger.questionId + "\"") ;
+			Logger.warn("Could not identify field \"" + trigger.questionId + "\"", "ask.logic.triggers") ;
 			return false ;
 		}
 
@@ -456,14 +552,14 @@ var AskLogic = angular.module('ask-logic', [])
 				fired = isMoodTriggerFired(trigger, answer) ;
 				break ;
 			default :
-				$log.warn("could not identify fire state of trigger for field type " + field.type) ;
+				Logger.warn("could not identify fire state of trigger for field type " + field.type, "ask.logic.triggers") ;
 				break ;
 		} 
 
 		if (fired)
-			$log.debug(" - fired") ;
+			Logger.debug(" - fired", "ask.logic.triggers") ;
 		else
-			$log.debug(" - not fired") ;
+			Logger.debug(" - not fired", "ask.logic.triggers") ;
 
 		return fired ;
 
@@ -471,8 +567,8 @@ var AskLogic = angular.module('ask-logic', [])
 
 	function isSinglechoiceTriggerFired(trigger, answer) {
 
-		$log.debug(" - checking single choice trigger " + JSON.stringify(trigger)) ;
-		$log.debug(" - - against " + JSON.stringify(answer)) ;
+		Logger.debug(" - checking single choice trigger " + JSON.stringify(trigger), "ask.logic.triggers") ;
+		Logger.debug(" - - against " + JSON.stringify(answer), "ask.logic.triggers") ;
 
 		if (answer.choice == null) {
 			return false ;
@@ -678,20 +774,17 @@ var AskLogic = angular.module('ask-logic', [])
 
 		isFired : function (trigger, state, response) {
 
-
-			//$log.debug("checking fire state of " + JSON.stringify(trigger)) ;
-			//$log.debug(" - against " + JSON.stringify(answer)) ;
-
+			Logger.debug("checking fire state of " + JSON.stringify(trigger), "ask.logic.triggers") ;
 			return isTriggerFired(trigger, state, response) ;
 		}, 
 
 		getQuestionIds : function(trigger) {
 
-			$log.debug("identifying question ids for " + JSON.stringify(trigger)) ;
+			Logger.debug("identifying question ids for " + JSON.stringify(trigger), "ask.logic.triggers") ;
 
 			var questionIds = getQuestionIdsForTrigger(trigger) ;
 
-			$log.debug(questionIds) ;
+			Logger.debug(questionIds, "ask.logic.triggers") ;
 
 			return questionIds ;
 		} 
@@ -704,7 +797,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 
 
-.factory('ChoiceGatherer', ['$log','Normalizer', function($log, Normalizer) {
+.factory('ChoiceGatherer', ['Logger','Normalizer', function(Logger, Normalizer) {
 
 
 	function getForFreetext(answer) {
@@ -762,7 +855,7 @@ var AskLogic = angular.module('ask-logic', [])
 			case 'mood':
 				return getForMood(answer) ;
 			default:
-				$log.warn("Tried to get autochoices from invalid field type " + field.type + " (" + field.id + ")") ;
+				Logger.warn("Tried to get autochoices from invalid field type " + field.type + " (" + field.id + ")", "ask.logic.choiceSources") ;
 		}
 
 		return [] ;
@@ -810,10 +903,166 @@ var AskLogic = angular.module('ask-logic', [])
 	Each SurveyState obj is instantiated with a schema and a response object, and provides methods to track what happens to the survey state 
 	(e.g current page, visible fields, etc). 
 */
-.factory('SurveyStates', ['$log','TriggerStates', 'AnswerStates', 'ChoiceGatherer', function($log, TriggerStates, AnswerStates, ChoiceGatherer) {
+.factory('SurveyStates', ['Logger','TriggerStates', 'AnswerStates', 'ChoiceGatherer', function(Logger, TriggerStates, AnswerStates, ChoiceGatherer) {
 
+
+
+	function gatherFieldIdsByTag(schema) {
+
+		var fieldIdsByTag = {} ;
+
+		_.each(schema.fields, function(field) {
+
+			if (!field.tags || !field.tags.length)
+				return ;
+
+			if (field.type == "pageBreak")
+				return ;
+
+			_.each(field.tags, function(tag) {
+
+				if (!fieldIdsByTag[tag])
+					fieldIdsByTag[tag] = [] ;
+
+				fieldIdsByTag[tag].push(field.id) ;
+			}, this) ;
+
+		}, this) ;
+
+		Logger.debug("fieldIdsByTag", "ask.logic.state.init") ;
+		Logger.debug(fieldIdsByTag, "ask.logic.state.init") ; 
+
+		return fieldIdsByTag ;
+	}
+
+	function gatherPageIdsByTag(schema) {
+
+		var pageIdsByTag = {} ;
+
+		_.each(schema.fields, function(field) {
+
+			if (!field.tags || !field.tags.length)
+				return ;
+
+			if (field.type != "pageBreak")
+				return ;
+
+			_.each(field.tags, function(tag) {
+
+				if (!pageIdsByTag[tag])
+					pageIdsByTag[tag] = [] ;
+
+				pageIdsByTag[tag].push(field.id) ;
+			}, this) ;
+
+		}, this) ;
+
+		Logger.debug("pageIdsByTag", "ask.logic.state.init") ;
+		Logger.debug(pageIdsByTag, "ask.logic.state.init") ; 
+
+		return pageIdsByTag ;
+	}
+
+	function isQuestion(field) {
+
+		switch (field.type) {
+			case 'instruction':
+			case 'pageBreak':
+			case 'sectionBreak':
+			case 'video':
+				return  false ;
+			default:
+				return  true ;
+		}
+	}
+
+	function backlinkChoiceSources(field, surveyState) {
+
+		if (!field.choiceSources) 
+			return ;
+
+		for (var i = 0 ; i < field.choiceSources.length ; i++) {
+
+			var choiceSource = surveyState.fieldsById[field.choiceSources[i]] ;
+
+			if (!choiceSource) {
+				Logger.error("Could not identify choice source " + field.choiceSources[i], "ask.logic.state.init") ;
+				return ;
+			}
+
+			if (!choiceSource.choiceDestinations) 
+				choiceSource.choiceDestinations = [] ;
+						
+			if (!_.contains(choiceSource.choiceDestinations, field.id)) 
+				choiceSource.choiceDestinations.push(field.id) ;
+		}
+	}
+
+	function gatherAffectedFieldIds(fieldRule, action, fieldIdsByTag) {
+
+		var affectedFieldIds = [] ;
+
+		_.each(fieldRule.actions, function(a) {
+
+			if (a.action != action) 
+				return ;
+
+			if (a.fieldId != null) 
+				affectedFieldIds.push(a.fieldId) ;
+				
+			if (!a.tag)
+				return ;
+
+			if (!fieldIdsByTag[a.tag])
+				return ;
+
+			_.each(fieldIdsByTag[a.tag], function(fieldId) {
+				affectedFieldIds.push(fieldId) ;
+			}, this) ;
+				
+		}, this) ;
+
+		Logger.debug("affected field ids for rule " + fieldRule.index + " " + action, "ask.logic.state.init") ;
+		Logger.debug(affectedFieldIds, 'ask.logic.state.init') ;
+
+		return _.uniq(affectedFieldIds) ;
+	}
+
+	function getFieldRuleAction(field) {
+
+		//if no affecting field rules, show it
+		if (!field.affectingShowFieldRules.length && !field.affectingHideFieldRules.length)
+			return 'show' ;
+
+		if (field.affectingShowFieldRules.length) {
+
+			var untriggeredShowFieldRule = _.find(field.affectingShowFieldRules, function(rule) {
+				return !rule.fired ;
+			}) ;
+
+			if (untriggeredShowFieldRule)
+				return 'hide' ;
+			else
+				return 'show' ;
+		}
+
+		if (field.affectingHideFieldRules.length) {
+
+			var untriggeredHideFieldRule = _.find(field.untriggeredHideFieldRule, function(rule) {
+				return !rule.fired ;
+			}) ;
+
+			if (untriggeredHideFieldRule)
+				return 'show' ;
+			else
+				return 'hide' ;
+		}
+	}
 
 	function SurveyState(schema, response) {
+
+		this.fieldIdsByTag = gatherFieldIdsByTag(schema) ;
+		this.pageIdsByTag = gatherPageIdsByTag(schema) ;
 
 		//clone all fields into array, attaching additional information, and make a map by id
 		this.fields = [] ;
@@ -821,133 +1070,132 @@ var AskLogic = angular.module('ask-logic', [])
 
 		//also identify and clone individual pages
 		this.pages = [] ;
+		this.pagesById = {} ;
 
+		var currentPage ;
 
+		_.each(schema.fields, function(f, fIndex) {
+		
+			var field = _.cloneDeep(f) ;
 
-		_.each(schema.fields, function (field) {
+			if (field.type == "pageBreak") {
 
-			var f = _.cloneDeep(field) ;
+				currentPage = field ;
+				currentPage.relevantFields = [] ;
+				currentPage.pageRuleStates = {} ;
+				currentPage.affectingRules = [] ;
+				currentPage.index = this.pages.length ;
 
-			var p ;
-
-			if (f.type == "pageBreak") {
-				
-				p = f ;
-				p.relevantFields = [] ;
-				p.pageRuleStates = {} ;
-
-				this.pages.push(p) ;
+				this.pages.push(currentPage) ;
+				this.pagesById[currentPage.id] = currentPage ;
 
 			} else {
 
-				if (this.pages.length == 0) {
+				if (!currentPage) {
+
 					//we must have fields occurring before any page
 					//need to create an unnamed page for them 
-					p = {relevantFields:[]} ;
-					this.pages.push(p) ;
-				} else {
-					p = _.last(this.pages) ;
-				}
-				p.relevantFields.push(f) ;
+					currentPage = {
+						relevantFields: [],
+						pageRuleStates: {},
+						index:0
+					} ;
 
-
-
-				if (f.choiceSources) {
-
-					//tell each autochoice source about this autochoice destination
-					_.each(f.choiceSources, function(choiceSourceId) {
-
-						var choiceSource = this.fieldsById[choiceSourceId] ;
-
-						if (!choiceSource) {
-							$log.error("Could not identify choice source " + choiceSourceId) ;
-							return ;
-						}
-
-						if (!choiceSource.choiceDestinations) 
-							choiceSource.choiceDestinations = [] ;
-						
-						if (!_.contains(choiceSource.choiceDestinations, this.choiceDestination.id)) 
-							choiceSource.choiceDestinations.push(this.choiceDestination.id) ;
-
-					}, {fieldsById: this.fieldsById, choiceDestination:f}) ; 
+					this.pages.push(currentPage) ;
 				}
 
+				currentPage.relevantFields.push(field) ;
+				field.pageIndex = currentPage.index ;
+
+				field.isQuestion = isQuestion(field) ;
+				backlinkChoiceSources(field, this) ;
+
+				this.fields.push(field) ;
+				this.fieldsById[field.id] = field ;
+
+				if (field.isQuestion) {
+
+					//will contain field and page rules whose trigger state
+					//could be affected by answer to this question
+
+					field.affectedFieldRules = [] ;
+					field.affectedPageRules = [] ;
+				}
+
+				//will contain any field rules that might show or hide this field
+				field.affectingShowFieldRules = [] ;
+				field.affectingHideFieldRules = [] ;
 			}
-
-			f.pageIndex = (this.pages.length - 1) ;
-
-			switch (f.type) {
-				case 'instruction':
-				case 'pageBreak':
-				case 'sectionBreak':
-					f.isQuestion = false ;
-					break ;
-				default:
-					f.isQuestion = true ;
-
-			}
-
-			f.pageRuleIndexes = [] ;
-			f.fieldRuleIndexes = [] ;
-
-			this.fields.push(f) ;
-
-			this.fieldsById[f.id] = f ;
-	
 		}, this) ;
 
-		$log.debug("set up fields") ;
+		Logger.debug("set up fields", "ask.logic.state.init") ;
 
-
-		//clone all field rules into array, attaching additional information
-		//also attach to each field a list of relevant field rules that might be effected by answers to the field
 		this.fieldRules = [] ;
-		_.each(schema.fieldRules, function(rule, ruleIndex) {
+		_.each(schema.fieldRules, function(fr, frIndex) {
 
-			var r = _.cloneDeep(rule) ;
-			r.index = ruleIndex ;
+			var fieldRule = _.cloneDeep(fr) ;
+			fieldRule.index = frIndex ;
 
-			this.fieldRules.push(r) ;
-
-			_.each(TriggerStates.getQuestionIds(r.trigger), function(questionId) {
-
+			//gather questions whose answers effect the trigger state of this rule
+			//and tell them about it. 
+			_.each(TriggerStates.getQuestionIds(fieldRule.trigger), function(questionId) {
 				var field = this.fieldsById[questionId] ;
-
-				field.fieldRuleIndexes.push(ruleIndex) ;
+				field.affectedFieldRules.push(fieldRule) ;
 			}, this) ;
+
+			//gather fields that might be shown by this rule, and tell them about this rule.
+			var fieldIdsToShow = gatherAffectedFieldIds(fieldRule, 'show', this.fieldIdsByTag) ;
+			//Logger.debug("fields shown by " + frIndex, 'ask.logic.state.init') ;
+			//Logger.debug(fieldIdsToShow, 'ask.logic.state.init') ;
+			_.each(fieldIdsToShow, function(fieldId) {
+				var field = this.fieldsById[fieldId] ;
+				field.affectingShowFieldRules.push(fieldRule) ;
+			}, this) ;
+
+			//gather fields that might be hidden by this rule, and tell them about this rule.
+			var fieldIdsToHide = gatherAffectedFieldIds(fieldRule, 'hide', this.fieldIdsByTag) ;
+			_.each(fieldIdsToHide, function(fieldId) {
+				var field = this.fieldsById[fieldId] ;
+				field.affectingHideFieldRules.push(fieldRule) ;
+			}, this) ;
+
+			fieldRule.affectedFieldIds = _.uniq(_.union(fieldIdsToShow, fieldIdsToHide)) ;
+
+			this.fieldRules.push(fieldRule) ;
 		}, this) ;
 
-		$log.debug("set up field rules") ;
+		Logger.debug("set up field rules", "ask.logic.state.init") ;
 
 		//clone all page rules into array, attaching additional information
 		//also attach to each field a list of relevant field rules that might be effected by answers to the field
 		this.pageRules = [] ;
 
-		_.each(schema.pageRules, function(rule, ruleIndex) {
+		_.each(schema.pageRules, function(pr, prIndex) {
+		
+			var pageRule = _.cloneDeep(pr) ;
+			pageRule.index = prIndex ;
 
-			var r = _.cloneDeep(rule) ;
-			r.index = ruleIndex ;
-
-			this.pageRules.push(r) ;
-
-			_.each(TriggerStates.getQuestionIds(r.trigger), function(questionId) {
+			//gather questions whose answers effect the trigger state of this rule
+			//and tell them about it. 
+			_.each(TriggerStates.getQuestionIds(pageRule.trigger), function(questionId) {
 
 				var field = this.fieldsById[questionId] ;
 
-				field.pageRuleIndexes.push(ruleIndex) ;
+				field.affectedPageRules.push(pageRule) ;
 			}, this) ;
+
+			this.pageRules.push(pageRule) ;
 
 		}, this) ;
 
-		$log.debug("set up page rules") ;
+		Logger.debug("set up page rules", "ask.logic.state.init") ;
 
 		this.handleResponseUpdated(response) ;
 	}
 
 	SurveyState.prototype.handleResponseUpdated = function(response) {
 
-		$log.debug("Response changed!") ;
+		Logger.debug("Response changed!", "ask.logic.state") ;
 
 		if (!response.answers)
 			response.answers = {} ;
@@ -974,13 +1222,19 @@ var AskLogic = angular.module('ask-logic', [])
 
 		this.response = response ;
 
-		$log.debug(this.response.answers) ;
+		Logger.debug(this.response.answers, "ask.logic.state") ;
 
 		//check state of triggers for all answers
 		_.each(this.response.answers, function(answer, answerIndex) {
-			$log.debug("checking answer " + answerIndex) ;
+			Logger.debug("checking answer " + answerIndex, "ask.logic.state") ;
 			this.handleAnswerChanged(answerIndex) ;
 		}, this) ;
+
+		//check visibility of all fields
+		_.each(this.fields, function(field) {
+			this.updateVisibility(field) ;
+		}, this) ;
+
 
 		this.handleCurrentPageChanged() ;
 	}
@@ -999,7 +1253,7 @@ var AskLogic = angular.module('ask-logic', [])
 		var hasMissingFields = false ;
 		_.each(currPage.relevantFields, function(field) {
 
-			if (field.fieldRuleState == 'hide')
+			if (!field.visible)
 				return ;
 
 			if (!field.isQuestion)
@@ -1014,7 +1268,7 @@ var AskLogic = angular.module('ask-logic', [])
 			if (field.optional)
 				return ;
 
-			//console.log("required field is not answered")
+			Logger.debug("Required field " + field.id + " on page " + currPage.index + " is not answered", "ask.logic.state.pageRules") ;
 			//console.log(field) ;
 
 			field.missing = true ;
@@ -1041,7 +1295,7 @@ var AskLogic = angular.module('ask-logic', [])
 		}
 
 		if (nextUnskippedPage) {
-			this.response.pageIndex = nextUnskippedPage.pageIndex ;
+			this.response.pageIndex = nextUnskippedPage.index ;
 		} else {
 			this.response.pageIndex = this.pages.length ;
 			this.response.completed = true ;
@@ -1076,7 +1330,7 @@ var AskLogic = angular.module('ask-logic', [])
 		}
 
 		if (prevUnskippedPage) {
-			this.response.pageIndex = prevUnskippedPage.pageIndex ;
+			this.response.pageIndex = prevUnskippedPage.index ;
 		} else {
 			//this should never happen, but if it does then just jump to first page
 			this.response.pageIndex = 0 ;
@@ -1100,10 +1354,6 @@ var AskLogic = angular.module('ask-logic', [])
 			page.current = (pageIndex == this.response.pageIndex) ;
 		}, this) ;
 
-		_.each(this.fields, function(field) {
-			//console.log(field.id + " p:" + field.pageIndex + " cp:" + this.response.pageIndex + " fs:" + field.fieldRuleState) ;
-			this.updateVisibility(field) ;
-		}, this) ;
 	}
 
 	SurveyState.prototype.updateVisibility = function(field) {
@@ -1113,11 +1363,10 @@ var AskLogic = angular.module('ask-logic', [])
 		if (field.hidden) 
 			visible = false ;
 
-		if (field.fieldRuleState == 'hide')
+		if (field.fieldRuleAction == 'hide')
 			visible = false ;
 
-		if (field.pageIndex != this.response.pageIndex)
-			visible = false ;
+		Logger.debug("field " + field.id + " v=" + field.visible + " a=" + field.fieldRuleAction, "ask.logic.state") ;
 
 		field.visible = visible ;
 	}
@@ -1125,27 +1374,27 @@ var AskLogic = angular.module('ask-logic', [])
 
 	SurveyState.prototype.handleAnswerChanged = function(fieldId) {
 
-		$log.debug("answer changed for " + fieldId) ;
+		Logger.debug("answer changed for " + fieldId, "ask.logic.state") ;
 
 		var field = this.fieldsById[fieldId] ;
 		var answer = this.response.answers[fieldId] ;
 
 		
 		if (field == undefined) {
-			$log.warn("Could not find field " + fieldId) ;
+			Logger.warn("Could not find field " + fieldId, "ask.logic.state") ;
 			return ;
 		}
 
+		Logger.debug(field, "ask.logic.state") ;
 
 		field.answered = AnswerStates.isAnswered(field, answer) ;
 
 		if (field.answered)
 			field.missing = false ;
 
-		_.each(field.fieldRuleIndexes, function(fieldRuleIndex) {
+		_.each(field.affectedFieldRules, function(fieldRule) {
 
-			var fieldRule = this.fieldRules[fieldRuleIndex] ;
-			$log.debug("  checking fieldRule: " + fieldRuleIndex);
+			Logger.debug("  checking fieldRule: " + fieldRule.index, "ask.logic.state.fieldRules");
 
 			var fired = TriggerStates.isFired(fieldRule.trigger, this) ;
 
@@ -1153,12 +1402,12 @@ var AskLogic = angular.module('ask-logic', [])
 				fieldRule.fired = fired ;
 				this.handleFieldRuleStateChanged(fieldRule) ;
 			}
+
 		}, this) ;
 
-		_.each(field.pageRuleIndexes, function(pageRuleIndex) {
+		_.each(field.affectedPageRules, function(pageRule) {
 
-			var pageRule = this.pageRules[pageRuleIndex] ;
-			$log.debug("  checking pageRule: " + pageRuleIndex);
+			Logger.debug("  checking pageRule: " + pageRule.index, "ask.logic.state.pageRules");
 
 			var fired = TriggerStates.isFired(pageRule.trigger, this) ;
 
@@ -1187,7 +1436,7 @@ var AskLogic = angular.module('ask-logic', [])
 			var choiceSource = this.fieldsById[choiceSourceId] ;
 
 			if (!choiceSource) {
-				$log.error("Could not identify choice source " + choiceSourceId) ;
+				Logger.error("Could not identify choice source " + choiceSourceId, "ask.logic.state") ;
 				return ;
 			}
 
@@ -1203,34 +1452,27 @@ var AskLogic = angular.module('ask-logic', [])
 
 	SurveyState.prototype.handleFieldRuleStateChanged = function(rule) {
 
+		Logger.debug("field rule state changed to " + rule.fired, "ask.logic.state.rules") ;
+		Logger.debug(rule.affectedFieldIds, "ask.logic.state.rules") ;
 
+		_.each(rule.affectedFieldIds, function(fieldId) {
 
-		$log.debug("field rule state changed to " + rule.fired) ;
+			var field = this.fieldsById[fieldId] ;
 
-		_.each(rule.actions, function(action) {
+			var fieldRuleAction = getFieldRuleAction(field) ;
+			Logger.debug("- " + fieldId + " action is " + fieldRuleAction, 'ask.logic.state.rules') ;
 
-			var field = this.fieldsById[action.fieldId] ;
+			if (fieldRuleAction == field.fieldRuleAction)
+				return ;
 
-			$log.debug("  - handling action to " + action.action + " " + action.fieldId) ;
+			field.fieldRuleAction = fieldRuleAction ;
 
-			if (action.action == 'show') {
-				if (rule.fired)
-					field.fieldRuleState = "show" ;
-				else
-					field.fieldRuleState = "hide" ;
-			} else {
-				if (rule.fired)
-					field.fieldRuleState = "hide" ;
-				else
-					field.fieldRuleState = "show" ;
-			} ;
-
-			//if a field gets hidden, wipe any answers to it
-			if (field.fieldRuleState == "hide" && field.isQuestion) {
+			//whenever a question gets hidden, recursively clear out answers to it
+			if (field.fieldRuleAction == "hide" && field.isQuestion) {
 
 				if (AnswerStates.isAnswered(field, this.response.answers[field.id])) {
 
-					$log.debug("Recursively clearing answer to " + field.id) ;
+					Logger.debug("Recursively clearing answer to " + field.id, "ask.logic.state") ;
 					
 					this.response.answers[field.id] = {} ;
 					this.handleAnswerChanged(field.id) ;
@@ -1240,23 +1482,34 @@ var AskLogic = angular.module('ask-logic', [])
 			this.updateVisibility(field) ;
 
 		}, this) ;
+
 	}
+
+
 
 	SurveyState.prototype.handlePageRuleStateChanged = function(rule) {
 
-		$log.debug("page rule state changed to " + rule.fired) ;
-		$log.debug(rule) ;
+		Logger.debug("page rule state changed to " + rule.fired, "ask.logic.state.pageRules") ;
+		Logger.debug(rule, "ask.logic.state.pageRules") ;
 
+		var questionIds = TriggerStates.getQuestionIds(rule.trigger) ;
+
+		Logger.debug(questionIds, "ask.logic.state.pageRules") ;
 		//identify earliest effected page, which is the next page after the last trigger
 		var earliestEffectedPageIndex ;
-		_.each(TriggerStates.getQuestionIds(rule.trigger), function(questionId) {
+		_.each(questionIds, function(questionId) {
 
 			var question = this.fieldsById[questionId] ;
+
+			Logger.debug("- " + questionId + " " + question.pageIndex, "ask.logic.state.pageRules") ;
+
 			if (earliestEffectedPageIndex == null || earliestEffectedPageIndex < question.pageIndex)
 				earliestEffectedPageIndex = question.pageIndex ;
 
 		}, this) ;
 		earliestEffectedPageIndex ++ ;
+
+		Logger.debug("earliestEffectedPageIndex: " + earliestEffectedPageIndex, "ask.logic.state.pageRules") ;
 
 		_.each(rule.actions, function(action) {
 
@@ -1264,7 +1517,7 @@ var AskLogic = angular.module('ask-logic', [])
 
 				case 'skip' :
 
-					var pageToSkip = this.fieldsById[action.pageId] ;
+					var pageToSkip = this.pagesById[action.pageId] ;
 
 					if (rule.fired) {
 						//skip all pages between current one and action.page
@@ -1278,9 +1531,9 @@ var AskLogic = angular.module('ask-logic', [])
 
 				case 'skipTo' :
 
-					var pageToSkipTo = this.fieldsById[action.pageId] ;
+					var pageToSkipTo = this.pagesById[action.pageId] ;
 
-					for (var i=earliestEffectedPageIndex ; i<pageToSkipTo.pageIndex ; i++) {
+					for (var i=earliestEffectedPageIndex ; i<pageToSkipTo.index ; i++) {
 
 						if (rule.fired) {
 							//skip all pages between current one and action.page

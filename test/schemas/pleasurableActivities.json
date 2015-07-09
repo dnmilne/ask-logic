@@ -1,0 +1,514 @@
+{
+	"fields" : [ 
+  		{
+    		"id" : "pWelcome",
+    		"type" : "pageBreak"
+  		},
+  		{
+  			"id" : "iWelcome",
+  			"type": "instruction",
+  			"text": "Welcome to the myCompass **Increasing Pleasurable Activities** module.\n\nWe recommend this module if you are feeling low or lacking energy or motivation to get on and enjoy your life.\n\nThis module aims to put some spring back in your step! We will do this by helping you to understand your current situation and by bringing more pleasurable activities into your daily life."
+  		},
+      {
+          "id": "qVerbosity",
+          "type":"singlechoice",
+          "question":"Verbosity",
+          "choices":[
+            {"name": "verbose"},
+            {"name": "concise"}
+          ]
+      },
+      {
+          "id": "qPersonas",
+          "type":"singlechoice",
+          "question":"Show personas",
+          "choices":[
+            {"name": "yes"},
+            {"name": "no"}
+          ]
+      },
+      {
+          "id": "qMedia",
+          "type":"singlechoice",
+          "question":"Media",
+          "choices":[
+            {"name": "text"},
+            {"name": "video"}
+          ]
+      },
+  		{
+  			"id" : "pStart",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iStartVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Let's face it:** everybody has bad days once in a while. In fact most of us will probably remember a day where we really wished we had stayed in bed!\n\nAt least one in five people experience periods in their lives where the bad days start to outnumber the good ones. Some people call this 'the blues' and some call it 'depression'.\n\nWhatever we decide to call it, during these periods it can be very difficult to get much joy out of life. When we're feeling low, we often don't feel like doing the things that used to make us happy. We therefore end up in a vicious cycle of avoiding the very things that we should be doing to make us feel better."
+  		},
+      {
+        "id": "iStartConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Everybody has bad days.**\n\nAt least 1 in 5 people experience periods where the bad days start to outnumber the good.\n\nWhen we're feeling low, we often loose motivation. We end up in a cycle, avoiding the things that would make us feel better."
+      },
+  		{
+  			"id": "iWarningVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"tone": "danger",
+  			"text": "If you are feeling so low that you cannot get motivated to get up and about, and you haven't already spoken to your doctor or health professional, we urge you to do so without delay. You may be suffering from a severe episode of depression which will require more support than this module can provide."
+  		},
+      {
+        "id": "iWarningConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "tone": "danger",
+        "text": "If you are feeling extremely unmotivated, we encourage you to chat to a doctor or mental health professional. You may need more help than this module can provide on its own. `we would have picked this up from screener`"
+      },
+      {
+        "id": "vStartVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vStartVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vStartConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vStartConcise.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pPersonas",
+  			"type": "pageBreak",
+        "tags": ["personas"]
+  		},
+      {
+        "id" : "iPersonasVerbose",
+        "type":"instruction",
+        "tags": ["verbose", "text", "personas"],
+        "text":"**Let's check in with Talia and John:**\n\n<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\n**Tahlia** has been dragging herself out of bed lately. She has to be up for the kids, but every second weekend her ex-partner has them. Tahlia spends those weekends in bed, telling herself she needs to catch up on sleep. Actually, she has to admit, she ends up feeling worse.\n</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\n**John** has been spending long hours during the day on the web. He doesn't really feel like doing anything else. He used to exercise a bit more but he has the excuse of a sore knee. Now it's just become a bit of a habit to sit around all day.</div>"
+      },
+      {
+        "id" : "iPersonasConcise",
+        "type":"instruction",
+        "tags": ["concise", "text", "personas"],
+        "text":"**Let's check in with Talia and John:**\n\n<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\n*\"My kids are with my ex every other weekend. I spend those days in bed, catching up on sleep. To be honest, those lazy days make me feel worse, not better.\"*\n</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\n*\"I browse the web a lot, and don't really feel like doing anything else. Since I hurt my knee I haven't been getting much exercise.\"*</div>"
+      },
+      {
+        "id": "vPersonas",
+        "type":"video",
+        "tags": ["video", "personas"],
+        "source":"data/video/vPersonas.mp4",
+        "videoType":"video/mp4"
+      },
+  		{	
+  			"id" : "pBank",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iBankVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Our mood bank account**\n\nResearchers have found that mood on any one day is closely related to the number of positive and negative things that we do on that day. It's as if mood worked the same way as a bank account.\n\nIf we keep withdrawing money from our account without ever putting any back in, we would soon be broke. In the same way, with a 'mood account', if we only did negative or boring activities (and let's face it, we all have plenty of these) and never anything pleasurable, we would soon find ourselves overdrawn, with no positives to draw against.\n\nDo you know that old saying *\"All work and no play makes Johnny a dull boy\"*?\n\nWell it turns out to be true!"
+  		},
+      {
+        "id": "iBankConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Your mood works like a bank account.**\n\nResearchers have found that mood is closely related to the number of positive and negative things that we do. If you keep making withdrawls&mdash;if you only do negative and boring activities&mdash;you go broke.\n\nAs they say, *\"All work and no play makes Johnny a dull boy.\"*"
+      },
+      {
+        "id": "vBankConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vBankConcise.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vBankVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vBankVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pValue",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iValueVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**The value of pleasurable activities**\n\nWhen people are feeling well and happy, they tend to do more fun or pleasurable things, not just in their spare time, but in their work or home context. Unfortunately, depression can be the ultimate motivation zapper and when we feel very low, we can stop doing pleasurable activities altogether. This is usually because we also feel low in energy, can't be bothered or don't expect to get any enjoyment by doing these activities. It is easy to see why people can get stuck in a cycle of depression and find it difficult to get out.\n\nPsychologists and researchers have repeatedly found that pleasurable activities make a big difference in lifting mood. In short, do more of the things you enjoy, or used to enjoy, even if you don't feel like doing them. Avoiding activity will leave you stuck in the blues and may increase depression.\n\n**But how do we get started?**\n\nThe best way is to collect ideas, make a plan, and stick with it."
+  		},
+      {
+        "id": "iValueConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**You need to make a plan, and stick with it.**\n\nDepression zaps motivation, and can stop you doing pleasurable activities altogether. It is easy to see why people can get stuck in a cycle of depression and find it difficult to get out.\n\nTo break that cycle, you need to do more of the things you enjoy, or used to enjoy, even if you don't feel like doing them. Avoiding activity will leave you stuck in the blues and may increase depression."
+      },
+      {
+        "id": "vValueConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vValueConcise.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vValueVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vValueVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pPersonaActivites",
+  			"type": "pageBreak",
+        "tags": ["personas"]
+  		},
+  		{
+  			"id": "iPersonaActivitiesVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text", "personas"],
+  			"text": "**What are pleasurable activities?**\n\nOne person's pleasure might be another person's pain:\n\n<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\nFor example, **Tahlia** might say she had a great day if she played some games with her children, finished all her household chores and spent some time chatting to her sister on the phone.\n</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\nIf he's not on the web, **John** likes to watch cricket. He would feel pretty miserable if he had Tahlia's day, and she hates the cricket!</div>"
+  		},
+      {
+        "id": "iPersonaActivitiesConcise",
+        "type": "instruction",
+        "tags": ["concise", "text", "personas"],
+        "text": "**One person's pleasure might be another person's pain:**\n\n<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\n*\"A great day for me is one where I play lots of games with my kids, get all my household stuff done, and have a good chat with my sister.\"*</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\n*\"I like relaxing on the couch, catching a game of cricket.\"*</div>\n\nJohn would feel pretty miserable if he had Talia's sister on the phone, and she hates the cricket!"
+      },
+      {
+        "id": "vPersonaActivities",
+        "type":"video",
+        "tags": ["video", "personas"],
+        "source":"data/video/vPersonaIdealDay.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pTooMuch",
+  			"type":"pageBreak"
+  		},
+  		{
+  			"id": "iTooMuchVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Can we have too much pleasure?**\n\nSome people are unhappy because they might have too much of a good thing! You guessed it – we're talking about habits that can be a health hazard, like too much eating, drinking, web surfing or gaming, partying, drug-taking, unsafe sex or gambling. For some, they are tempting 'quick fixes' for pain, stress, anxiety or depression.\n\nUnfortunately, none of these activities provide a long-term solution to our troubles. We don't want to sound like your grandma, but 'everything in moderation' is not a bad slogan to remember. We don't support illegal drug-taking or unsafe sex because of the known serious health risks. You can also look at our insights on *Healthy Eating*, *Moderating Alcohol* or *Stop Smoking*. If you are worried about addictions, you may wish to speak to your health professional.\n\nLet's go back to the helpful pleasurable activities - the ones that are good for you."
+  		},
+      {
+        "id": "iTooMuchConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Not all pleasure is good for you.** Too much eating, drinking, web surfing or gaming, partying, drug-taking, unsafe sex or gambling; none of these quick fixes are a long-term solution to our troubles.\n\nNot to sound like your grandma, but *\"everything in moderation\"* is not a bad slogan. If you are worried about addictions, you may wish to speak to your health professional."
+      },
+      {
+        "id": "vTooMuchVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vTooMuchVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vTooMuchConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vTooMuchConcise.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pBrainstorm",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iBrainstormVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Activity: Brainstorm some pleasurable activities**\n\nReflect on your last week.\n\nThe first step is to analyse what, for you, are pleasurable activities. Before you say \"nothing\", think about anything that you enjoy, or have enjoyed.\n\nNow jot down these activities. It doesn't matter how small&mdash;it might be a conversation with a friend, or feeding the ducks at the local duck pond. Only you will see the list, so aim to come up with some simple key words to jog your memory."
+  		},
+      {
+        "id": "iBrainstormConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Time to brainstorm.**\n\nMake a list of what, for you, are pleasurable activities.\n\nBefore you say *\"nothing\"*, think about anything that you enjoy, or have enjoyed. They don't need to be big or cost money. Chatting with a friend is fine."
+      },
+      {
+        "id": "vBrainstormVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vBrainstormVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vBrainstormConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vBrainstormConcise.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "iBrainstormPersona",
+        "type": "instruction",
+        "tags": ["personas", "text"],
+        "text": "<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\n**Tahlia** came up with\n\n* Calling a friend\n* Listening to music\n\n</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\n**John** came up with\n\n* Playing cricket\n* Travelling\n\n</div>"
+      },
+  		{
+  			"id": "qBrainstorm",
+  			"type": "multitext",
+  			"length": "SHORT",
+  			"question": "List some activities that you enjoy or used to enjoy",
+  			"notes": "Don't worry if your list is short at the moment, but aim for at least two activities.",
+  			"minEntries": 2
+  		},
+  		{
+  			"id": "pMoreBrainstorm",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iMoreBrainstormVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Activity: More pleasurable activities**\n\nSometimes it can be difficult to think of enjoyable things when we're feeling low. One way to do it is to think about the highlight of your day, or think a little more about activities you used to enjoy in the past, even if you don't do them now. These activities do not need to cost money, they just need to give you or have given you some pleasure in the past."
+  		},
+      {
+        "id": "iMoreBrainstormConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Take another stab.**\n\nIt can be difficult to think of enjoyable things when we're feeling low. Think about the highlight of your day, or things that you used to enjoy in the past, even if you don't do them now." 
+      },
+      {
+        "id": "vMoreBrainstormVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vMoreBrainstormVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vMoreBrainstormConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vMoreBrainstormConcise.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "iMoreBrainstormPersona",
+        "type": "instruction",
+        "tags": ["personas"],
+        "text": "<div class='cell-main'>\n\n**Talia** came up with:\n\n* Singing\n* Attending social events - parties\n* Playing netball\n* Attending work functions\n* Listening to bands\n\n</div><div class='cell-main'>\n\n**John** came up with:\n\n* Socialising\n* Chopping wood\n* Doing committee work\n* Fixing things around the house and garden\n* Making things - carpentry\n\n</div>"
+      },
+  		{
+  			"id": "qMoreBrainstorm",
+  			"type": "multitext",
+  			"length": "SHORT",
+  			"question": "Try to add a few more activities.",
+        "notes": "Don't worry if you can't immediately see how you can take them up. The aim is just to come up with as many ideas as you can.",
+  			"minEntries": 2
+  		},
+  		{
+  			"id": "pBuildingPleasureVerbose",
+  			"type": "pageBreak",
+        "tags": ["verbose"]
+  		},
+  		{
+  			"id": "iBuildingPleasure",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Building pleasure into your life**\n\nAs we've explained, if we increase the amount of pleasurable things we do in a day, we are very likely to feel a lot better!\n\nThe goal of this session is for you to decide on one or two activities that you will build into your day over the coming week.\n\nFrom your list, settle on one activity that you could, with planning, include in your day. Aim for something short-term and simple that you can do either every day or at least every other day over the week.\n\nIf it is something you already do, then plan to do it more often. And choose something that doesn't have too many barriers to overcome first - you don't want to set yourself up for failure before you've even begun!\n\nFor Tahlia, netball would involve quite a bit of organisation, and for John, although he used to really love carpentry, he is not set up in his current location to take this up. These are both activities they could think about in the longer-term.\n\nOnce you've decided which activity, **it's important to do the activity**, even if you don't feel like doing it and even if you don't expect to enjoy it. Treat it as an 'experiment' &mdash; we'll ask you some questions about how it went afterwards."
+  		},
+      {
+        "id": "vBuildingPleasure",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vBuildingPleasure.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pPersonaChoices",
+  			"type": "pageBreak",
+        "tags": ["personas"]
+  		},
+  		{
+  			"id": "iPersonaChoicesVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text", "personas"],
+  			"text":"**What did others do?**\n\n<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\n**Tahlia** didn't know what to choose from her list but when she talked it over with Ellie her friend, Ellie suggested singing. It didn't matter that Tahlia couldn't go out to do it – she could do it at home – only the neighbours could complain! She has some favourite CDs she hasn't listened to for ages, and she thought she'd get them out and sing along with them. People always told her she had a great voice, so it seemed a good idea to give that a try.\n</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\n**John** was tempted by the carpentry but because it needed to be a short term thing he decided to go for the option of fixing things. He always used to be good at fixing things, but lately he had let things go. He could get out his list of 'things to be fixed' and if he ran out, he could always find more.</div>"
+  		},
+      {
+        "id": "iPersonaChoicesConcise",
+        "type": "instruction",
+        "tags": ["concise", "text", "personas"],
+        "text":"**What did others do?**\n\n<div class='cell-left'>\n<img class='img-rounded' src='https://pleasure.mycompass.org.au/img/landing/tahlia_module_1.png'>\n</div>\n<div class='cell-main'>\n\n*\"I didn't know what to choose, but my friend Ellie suggested singing. It didn't matter that I couldn't go out to do it. I could just put on a CD and do it at home.\"*</div>\n<br/>\n<div class='cell-left'>\n<img src='https://pleasure.mycompass.org.au/img/landing/john_module_1.png' class='img-rounded'></img>\n</div>\n<div class='cell-main'>\n\n*\"I was tempted by the carpentry but that’s not a short-term thing. So, I went for the option of fixing things. I always used to be good at it, but let things go lately. I got out a list of 'things to be fixed' and just kept adding to it and ticking things off.\"*</div>"
+      },
+      {
+        "id": "vPersonaChoices",
+        "type":"video",
+        "tags": ["video", "personas"],
+        "source":"data/video/vPersonaChoices.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id": "pCommit",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iCommitVerbose",
+  			"type": "instruction",
+        "tags": ["verbose"],
+  			"text": "**Activity: choose a pleasurable activity**"
+  		},
+      {
+        "id": "iCommitConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Now choose one or two activities to build into your week.**\n\nFrom your list, choose something that is short-term and easy to do, without any barriers to overcome first. If it is something you already do, then plan to do it more often."
+      },
+      {
+        "id": "vCommitConcise",
+        "type":"video",
+        "tags": ["verbose", "text"],
+        "source":"data/video/vCommitConcise.mp4",
+        "videoType":"video/mp4"
+      },
+  		{
+  			"id":"qActivity",
+  			"type": "singlechoice",
+  			"question": "Please select one activity from your list that you will do in the next week",
+  			"choiceSources": ["qBrainstorm","qMoreBrainstorm"]
+  		},
+  		{
+  			"id": "pNextSteps",
+  			"type": "pageBreak"
+  		},
+  		{
+  			"id": "iNextStepsVerbose",
+  			"type": "instruction",
+        "tags": ["verbose", "text"],
+  			"text": "**Next steps**\n\nDon't be put off if the first activity you try doesn't do it for you. That sometimes happens. Just try another one.\n\nMake a conscious effort to fit your activity into your week. Plan how and when you will do it.\n\nNext session, we'll ask you how you enjoyed it, and look at some more ways in which pleasurable activities can make you feel better.\n\n**Have a good week!**"
+  		},
+      {
+        "id": "iNextStepsConcise",
+        "type": "instruction",
+        "tags": ["concise", "text"],
+        "text": "**Now that we have a plan...**\n\nThe most important thing is to follow through, even if you don't expect to enjoy it.\n\nDon't be put off if an activity really doesn't work for you. That sometimes happens. Just try another one.\n\nTreat this week as an *\"experiment\"* &mdash; we'll ask you some questions about how it went afterwards."
+      },
+      {
+        "id": "vNextStepsVerbose",
+        "type":"video",
+        "tags": ["verbose", "video"],
+        "source":"data/video/vNextStepsVerbose.mp4",
+        "videoType":"video/mp4"
+      },
+      {
+        "id": "vNextStepsConcise",
+        "type":"video",
+        "tags": ["concise", "video"],
+        "source":"data/video/vNextStepsConcise.mp4",
+        "videoType":"video/mp4"
+      }
+  	],
+  	"fieldRules": [ 
+      {
+        "trigger": {
+          "questionId": "qVerbosity",
+          "condition": "is",
+          "choice": "verbose"
+        },
+        "actions": [
+          {
+            "action": "show",
+            "tag" : "verbose"
+          }
+        ]
+      },
+      {
+        "trigger": {
+          "questionId": "qVerbosity",
+          "condition": "is",
+          "choice": "concise"
+        },
+        "actions": [
+          {
+            "action": "show",
+            "tag" : "concise"
+          }
+        ]
+      },
+      {
+        "trigger": {
+          "questionId":"qPersonas",
+          "condition": "is",
+          "choice": "yes"
+        },
+        "actions": [
+          {
+            "action": "show",
+            "tag" : "personas"
+          }
+        ]
+      },
+      {
+        "trigger": {
+          "questionId": "qMedia",
+          "condition": "is",
+          "choice": "text"
+        },
+        "actions": [
+          {
+            "action": "show",
+            "tag" : "text"
+          }
+        ]
+      },
+      {
+        "trigger": {
+          "questionId": "qMedia",
+          "condition": "is",
+          "choice": "video"
+        },
+        "actions": [
+          {
+            "action": "show",
+            "tag" : "video"
+          }
+        ]
+      }
+    ],
+  	"pageRules": [
+      {
+        "trigger": {
+          "questionId": "qVerbosity",
+          "condition": "is",
+          "choice": "concise"
+        },
+        "actions": [
+          {
+            "pageId": "pBuildingPleasureVerbose",
+            "action": "skip"
+          }
+        ]
+      },
+      {
+        "trigger": {
+          "questionId": "qPersonas",
+          "condition": "is",
+          "choice": "no"
+        },
+        "actions": [
+          {
+            "pageId": "pPersonas",
+            "action": "skip"
+          },
+          {
+            "pageId": "pPersonaActivites",
+            "action": "skip"
+          },
+          {
+            "pageId": "pPersonaChoices",
+            "action": "skip"
+          }
+        ]
+      }
+    ]
+}

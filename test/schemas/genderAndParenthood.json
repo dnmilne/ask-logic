@@ -2,7 +2,8 @@
   "title" : "Gender and Parenthood",
   "completionMessage" : null,
   "tags" : null,
-  "fields" : [ {
+  "fields" : [
+  {
     "type" : "singlechoice",
     "id" : "qGender",
     "notes" : null,
