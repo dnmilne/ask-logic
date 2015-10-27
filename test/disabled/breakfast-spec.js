@@ -3,7 +3,7 @@ describe('chatScript', function() {
 	var SurveyStates ;
 	var AnswerStates ;
 
-	beforeEach(module('ask-logic', function($provide) {
+	beforeEach(module('askjs.core', function($provide) {
 
 	  $provide.value('$log', console);
 
@@ -31,27 +31,27 @@ describe('chatScript', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			console.log(state.fieldsById["qFavorites"]) ;
+			console.log(state.schema.fieldsById["qFavorites"]) ;
 
 			response.answers["qFavorites"] = {entries:[""]} ;
 			state.handleAnswerChanged("qFavorites") ;
-			expect(state.fieldsById["qFavorites"].answered).toEqual(false) ;
+			expect(state.schema.fieldsById["qFavorites"].answered).toEqual(false) ;
 
 			response.answers["qFavorites"] = {entries:["","",""]} ;
 			state.handleAnswerChanged("qFavorites") ;
-			expect(state.fieldsById["qFavorites"].answered).toEqual(false) ;
+			expect(state.schema.fieldsById["qFavorites"].answered).toEqual(false) ;
 
 			response.answers["qFavorites"] = {entries:["Cocopops","Rice Krispies","Fruit loops"]} ;
 			state.handleAnswerChanged("qFavorites") ;
-			expect(state.fieldsById["qFavorites"].answered).toEqual(true) ;
+			expect(state.schema.fieldsById["qFavorites"].answered).toEqual(true) ;
 
 			response.answers["qFavorites"] = {entries:["Cocopops","Rice Krispies"]} ;
 			state.handleAnswerChanged("qFavorites") ;
-			expect(state.fieldsById["qFavorites"].answered).toEqual(false) ;
+			expect(state.schema.fieldsById["qFavorites"].answered).toEqual(false) ;
 
 			response.answers["qFavorites"] = {entries:["Cocopops","", "Fruit loops"]} ;
 			state.handleAnswerChanged("qFavorites") ;
-			expect(state.fieldsById["qFavorites"].answered).toEqual(false) ;
+			expect(state.schema.fieldsById["qFavorites"].answered).toEqual(false) ;
 			
 		}) 
 		

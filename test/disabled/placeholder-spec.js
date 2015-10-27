@@ -5,7 +5,7 @@ describe('placeholder', function() {
 	var schema ;
 
 
-	beforeEach(module('ask-logic', function($provide) {
+	beforeEach(module('askjs.core', function($provide) {
 
 	  $provide.value('$log', console);
 
@@ -17,7 +17,7 @@ describe('placeholder', function() {
 
 	beforeEach(function() {
 
-		module('ask-logic') ;
+		module('askjs.core') ;
 
 		inject(function ($injector) {
 			PlaceholderResolver = $injector.get('PlaceholderResolver') ;

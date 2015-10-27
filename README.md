@@ -1,6 +1,6 @@
-#ask-logic
+#askjs.core
 
-**ask-logic** is an angular module for processing [ask survey schemas](http://ask.poscomp.org/#/help/schema). The schema defines what fields (e.g. questions, instructions, page breaks) your survey has and the rules for how to flow from one to the next. This module provides the logic that implements that flow (so you tell it what questions have been answered, and it tells you what page you are on, what fields are visible, and whether you are allowed to continue to the next page).
+**askjs.core** is an angular module for processing [ask survey schemas](http://ask.poscomp.org/#/help/schema). The schema defines what fields (e.g. questions, instructions, page breaks) your survey has and the rules for how to flow from one to the next. This module provides the logic that implements that flow (so you tell it what questions have been answered, and it tells you what page you are on, what fields are visible, and whether you are allowed to continue to the next page).
 
 Using this module directly is only necessary if you want full control over how your ask survey looks and feels. If you are happy using our standard look and feel (with a little CSS for theming), then check out [ask-bootstrap](https://github.com/dnmilne/ask-bootstrap).
 
@@ -17,9 +17,9 @@ But that's handled automatically if you install via bower.
 
 We assume you are working within an angular app. 
 
-1. Install with bower using `bower install ask-logic`
+1. Install with bower using `bower install askjs.core`
 
-2. Include `ask-logic.js`, which should be located in `bower_components/ask-logic/`
+2. Include `askjs.core.min.js`, which should be located in `bower_components/askjs.core/dist/`
 
 3. Include the dependency`lodash.min.js` (`bower_components/lodash/dist/`)
 

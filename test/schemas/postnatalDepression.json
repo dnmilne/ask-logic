@@ -1,0 +1,619 @@
+{
+  "fields": [
+    {
+      "id": "pIntro",
+      "type": "pageBreak"
+    },
+    {
+      "id": "iIntro",
+      "type": "instruction",
+      "text": "Welcome to the **Postnatal Risk Questionnaire**\n\nYou should try this if you are a new mother and would like to understand more about Postnatal Depression.\n\nIt should take no more than **5 minutes** to complete."
+    },
+    {
+      "id": "pPersonality",
+      "type": "pageBreak"
+    },
+    {
+      "id": "iPersonality",
+      "type": "instruction",
+      "text": "**Your personality**"
+    },
+    {
+      "id":"qWorrier",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "Would you generally consider yourself a worrier?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        1,
+        5
+      ]
+    },
+    {
+      "id":"qNeedOrder",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "In general, do you become upset if you do not have order in your life?",
+      "notes": "e.g. regular time table, a tidy house",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        1,
+        5
+      ]
+    },
+    {
+      "id": "pBaby",
+      "type": "pageBreak"
+    },
+    {
+      "id": "iBaby",
+      "type": "instruction",
+      "text": "**Your baby**"
+    },
+    {
+      "id":"qBirthExperience",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "Was your experience of giving birth to this baby disappointing or frightening?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        1,
+        5
+      ]
+    },
+    {
+      "id":"qParentingExperience",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "Has your experience of parenting this baby been a positive one?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        5,
+        1
+      ]
+    },
+    {
+      "id":"qUnsettled",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "Overall, has your baby been unsettled or feeding poorly?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        1,
+        5
+      ]
+    },
+
+
+    {
+      "id": "pSupport",
+      "type": "pageBreak"
+    },
+    {
+      "id": "iSupport",
+      "type": "instruction",
+      "text": "**Your support network**"
+    },
+    {
+      "id":"qSupport",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "Do you feel you have people you can depend on for support with your baby?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        5,
+        1
+      ]
+    },
+    {
+      "id":"qPartnerPresent",
+      "type":"singlechoice",
+      "question": "Are you currently in a relationship?",
+      "choices": [
+        {"name":"Yes", "weight":0},
+        {"name":"No", "weight":6}
+      ]
+    },
+    {
+      "id":"qPartnerSupportive",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "Is your relationship with your partner an emotionally supportive one?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        5,
+        1
+      ]
+    },
+
+
+
+    {
+      "id": "pStory",
+      "type": "pageBreak"
+    },
+    {
+      "id": "iStory",
+      "type": "instruction",
+      "text": "**Your story**"
+    },
+    {
+      "id":"qStresses",
+      "type":"singlechoice",
+      "question": "Have you had any stresses, major changes or losses in the last 12 months?",
+      "notes": "e.g. separation, domestic violence, unemployment, bereavement or migration",
+      "choices": [
+        {"name":"Yes", "weight":5},
+        {"name":"No", "weight": 0}
+      ]
+    },
+    {
+      "id":"qStressesRating",
+      "type":"rating",
+      "ratingType":"radio",
+      "question": "How distressed did these stresses/changes/losses make you?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights": [
+        1,
+        5
+      ]
+    },
+    {
+      "id": "qMotherPresent",
+      "type": "singlechoice",
+      "question": "Was your mother present while your were growing up?",
+      "choices":[
+        {"name":"Yes", "weight":0},
+        {"name":"No", "weight":6}
+      ]
+    },
+    {
+      "id": "qMotherSupportive",
+      "type":"rating",
+      "ratingType": "radio",
+      "question":"When you were growing up, did you feel your mother was emotionally supportive of you?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights":[
+        5,
+        1
+      ]
+    },
+    {
+      "id":"qEmotionAbuse",
+      "type":"singlechoice",
+      "question": "Were you emotionally abused when you were growing up?",
+      "choices": [
+        {"name":"Yes", "weight":5},
+        {"name":"No", "weight":0}
+      ]
+    },
+    {
+      "id":"qOtherAbuse",
+      "type":"singlechoice",
+      "question": "Have you **ever** been abused sexually or physically?",
+      "choices": [
+        {"name":"Yes", "weight":5},
+        {"name":"No", "weight":0}
+      ]
+    },
+    {
+      "id": "pMentalhealth",
+      "type": "pageBreak"
+    },
+    {
+      "id": "iMentalhealth",
+      "type": "instruction",
+      "text": "**Your mental health**"
+    },
+    {
+      "id":"qDepressionEpisodes",
+      "type":"singlechoice",
+      "question": "Before this pregnancy did you ever have a period of 2 weeks or more when you felt particularly anxious, miserable or depressed?",
+      "choices": [
+        {"name": "Yes", "weight":5},
+        {"name": "No", "weight":0}
+      ]
+    },
+    {
+      "id": "qDepressionImpact",
+      "type":"rating",
+      "ratingType": "radio",
+      "question":"Did this episode seriously interfere with your work and your relationships with friends and family?",
+      "length": 5,
+      "descriptions": [
+        "Not at all",
+        "Very much"
+      ],
+      "weights":[
+        1,
+        5
+      ]
+    },
+    {
+      "id":"qDepressionHelpseeking",
+      "type":"singlechoice",
+      "question": "Did this episode lead you to seek professional help?",
+      "choices": [
+        {"name":"Yes", "weight":5},
+        {"name":"No", "weight":0}
+      ]
+    },
+    {
+      "id":"qMedicineUse",
+      "type":"singlechoice",
+      "question": "Did you take tablets/herbal medicine?",
+      "choices": [
+        {"name":"Yes", "weight":5},
+        {"name":"No", "weight":0}
+      ]
+    },
+    {
+      "id":"qHistory",
+      "type":"singlechoice",
+      "question": "Do you have any other history of mental health problems?",
+      "notes": "e.g. eating disorders, psychosis, bipolar disorder, schizophrenia",
+      "choices": [
+        {"name":"Yes", "weight":5},
+        {"name":"No", "weight":0}
+      ]
+    },
+    {
+      "id":"pDetails",
+      "type":"pageBreak"
+    },
+    {
+      "id":"iDetails",
+      "type":"instruction",
+      "text":"**Optional details**\n\nThe questions on this page will help us better understand what you are going through.\n\n They will not effect your score, and they can be skipped if you like."
+    },
+    {
+      "id":"qDepressionHelper",
+      "type":"multichoice",
+      "question": "You previously indicated that you sought help with an episode of depression. Who did you see?",
+      "optional": "true",
+      "choices":[
+        {"name": "Psychiatrist"},
+        {"name": "Psychologist"},
+        {"name":"Counsellor"},
+        {"name": "GP"}
+      ]
+    },
+    {
+      "id":"qPsychiatrist",
+      "type":"freetext",
+      "question":"What was the name of your Psychiatrist?",
+      "length": "SHORT",
+      "optional": "true"
+    },
+    {
+      "id":"qPsychologist",
+      "type":"freetext",
+      "question":"What was the name of your Psychologist?",
+      "length": "SHORT",
+      "optional": "true"
+    },
+    {
+      "id":"qCounsellor",
+      "type":"freetext",
+      "question":"What was the name of your Counsellor?",
+      "length": "SHORT",
+      "optional": "true"
+    },
+    {
+      "id":"qGP",
+      "type":"freetext",
+      "question":"What was the name of your GP?",
+      "length": "SHORT",
+      "optional": "true"
+    },
+    {
+      "id":"qMedicineDetails",
+      "type":"freetext",
+      "question":"You previously indicated that you took medication for depression. What did you take?",
+      "length": "SHORT",
+      "optional": "true"
+    },
+    {
+      "id":"qHistoryDetails",
+      "type":"multichoice",
+      "question":"You previously indicated a history of mental health problems. What problems have you faced?",
+      "optional": "true",
+      "choices": [
+        {"name":"eating disorder"},
+        {"name":"psychosis"},
+        {"name":"bipolar disorder"},
+        {"name":"schizophrenia"},
+        {"name":"other"}
+      ]
+    },
+    {
+      "id":"qStressesDetails",
+      "type":"multichoice",
+      "question":"You previously indicated that you have experienced major stresses recently. What were these?",
+      "optional": "true",
+      "choices": [
+        {"name":"separation"},
+        {"name":"domestic violence"},
+        {"name":"unemployment"},
+        {"name":"bereavement"},
+        {"name":"migration"},
+        {"name":"other"}
+      ]
+    },
+    {
+      "id":"qOtherAbuseDetails",
+      "type":"singlechoice",
+      "question":"You previously indicated that you had experienced sexual or physical abuse. Which?",
+      "optional": "true",
+      "choices": [
+        {"name":"sexual abuse"},
+        {"name":"physical abuse"},
+        {"name":"both"}
+      ]
+    },
+    {
+      "id":"pSummary",
+      "type":"pageBreak"
+    },
+    {
+      "id":"iSummary",
+      "type":"instruction",
+      "text":"**Summary**"
+    },
+    {
+      "id":"sPersonality",
+      "type":"score",
+      "sources":[
+        {"id":"qWorrier"},
+        {"id":"qNeedOrder"}
+      ]
+    },
+    {
+      "id":"sBaby",
+      "type":"score",
+      "sources":[
+        {"id":"qBirthExperience"},
+        {"id":"qParentingExperience"},
+        {"id":"qUnsettled"}
+      ]
+    },
+    {
+      "id":"sSupport",
+      "type":"score",
+      "sources":[
+        {"id":"qSupport"},
+        {"id":"qPartnerPresent"},
+        {"id":"qPartnerSupportive"}
+      ]
+    },
+    {
+      "id":"sStory",
+      "type":"score",
+      "sources":[
+        {"id":"qStresses"},
+        {"id":"qStressesRating"},
+        {"id":"qMotherPresent"},
+        {"id":"qMotherSupportive"},
+        {"id":"qEmotionAbuse"},
+        {"id":"qOtherAbuse"}
+      ]
+    },
+    {
+      "id":"sMentalhealth",
+      "type":"score",
+      "sources":[
+        {"id":"qDepressionEpisodes"},
+        {"id":"qDepressionImpact"},
+        {"id":"qDepressionHelpseeking"},
+        {"id":"qMedicineUse"},
+        {"id":"qHistory"}
+      ]
+    }
+  ],
+  "fieldRules": [
+    {
+      "trigger": {
+        "questionId": "qMotherPresent",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qMotherSupportive"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qPartnerPresent",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qPartnerSupportive"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qDepressionEpisodes",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qDepressionImpact"
+        },
+        {
+          "action": "show",
+          "fieldId": "qDepressionHelpseeking"
+        },
+        {
+          "action": "show",
+          "fieldId": "qMedicineUse"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qDepressionHelpseeking",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qDepressionHelper"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qDepressionHelper",
+        "condition": "contains",
+        "choice": "Psychiatrist"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qPsychiatrist"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qDepressionHelper",
+        "condition": "contains",
+        "choice": "Psychologist"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qPsychologist"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qDepressionHelper",
+        "condition": "contains",
+        "choice": "Counsellor"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qCounsellor"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qDepressionHelper",
+        "condition": "contains",
+        "choice": "GP"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qGP"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qMedicineUse",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qMedicineDetails"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qHistory",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qHistoryDetails"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qStresses",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qStressesDetails"
+        },
+        {
+          "action": "show",
+          "fieldId": "qStressesRating"
+        }
+      ]
+    },
+    {
+      "trigger": {
+        "questionId": "qOtherAbuse",
+        "condition": "is",
+        "choice": "Yes"
+      },
+      "actions": [
+        {
+          "action": "show",
+          "fieldId": "qOtherAbuseDetails"
+        }
+      ]
+    }
+  ]
+}

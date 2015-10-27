@@ -4,7 +4,7 @@ describe('normalizer', function() {
 
 	beforeEach(function() {
 
-		module('ask-logic') ;
+		module('askjs.core') ;
 
 		inject(function ($injector) {
 			Normalizer = $injector.get('Normalizer') ;

@@ -1,0 +1,118 @@
+{
+  "fields": [
+    {
+      "id": "iPrompt",
+      "type": "instruction",
+      "text": "During the past **30 days**, about how often did you feel..."
+    },
+    {
+      "id": "qNervous",
+      "type": "rating",
+      "widget": "radioList",
+      "question": "... **nervous**?",
+      "length": 5,
+      "descriptions": [
+        "None of the time",
+        "A little of the time",
+        "Some of the time",
+        "Most of the time",
+        "All of the time"
+      ],
+      "weights": [5,1]
+    },
+    {
+      "id": "qHopeless",
+      "type": "rating",
+      "widget": "radioList",
+      "question": "... **hopeless**?",
+      "length": 5,
+      "descriptions": [
+        "None of the time",
+        "A little of the time",
+        "Some of the time",
+        "Most of the time",
+        "All of the time"
+      ],
+      "weights": [5,1]
+    },
+    {
+      "id": "qRestless",
+      "type": "rating",
+      "widget": "radioList",
+      "question": "... **restless** or **fidgety**?",
+      "length": 5,
+      "descriptions": [
+        "None of the time",
+        "A little of the time",
+        "Some of the time",
+        "Most of the time",
+        "All of the time"
+      ],
+      "weights": [5,1]
+    },
+    {
+      "id": "qDepressed",
+      "type": "rating",
+      "widget": "radioList",
+      "question": "... so **depressed** that nothing could cheer you up?",
+      "length": 5,
+      "descriptions": [
+        "None of the time",
+        "A little of the time",
+        "Some of the time",
+        "Most of the time",
+        "All of the time"
+      ],
+      "weights": [5,1]
+    },
+    {
+      "id": "qEffort",
+      "type": "rating",
+      "widget": "radioList",
+      "question": "... that **everything was an effort**?",
+      "length": 5,
+      "descriptions": [
+        "None of the time",
+        "A little of the time",
+        "Some of the time",
+        "Most of the time",
+        "All of the time"
+      ],
+      "weights": [5,1]
+    },
+    {
+      "id": "qWorthless",
+      "type": "rating",
+      "widget": "radioList",
+      "question": "... **worthless**?",
+      "length": 5,
+      "descriptions": [
+        "None of the time",
+        "A little of the time",
+        "Some of the time",
+        "Most of the time",
+        "All of the time"
+      ],
+      "weights": [5,1]
+    },
+    {
+      "id":"sDepression",
+      "type":"score",
+      "sources": [
+        {"id":"qNervous"},
+        {"id":"qHopeless"},
+        {"id":"qRestless"},
+        {"id":"qDepressed"},
+        {"id":"qEffort"},
+        {"id":"qWorthless"}
+      ],
+      "range":[6,30],
+      "categories": [
+        { "id":"poor", "range":[6,18], "color":"red" },
+        { "id":"good", "range":[19,30], "color":"green" }
+      ]
+    }
+  ],
+  "fieldRules": [],
+  "pageRules": []
+}

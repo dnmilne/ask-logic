@@ -3,7 +3,7 @@ describe('chatVisitorFeedback', function() {
 	var SurveyStates ;
 
 
-	beforeEach(module('ask-logic', function($provide) {
+	beforeEach(module('askjs.core', function($provide) {
 
 	  	$provide.value('$log', console);
 
@@ -25,11 +25,11 @@ describe('chatVisitorFeedback', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			expect(state.fields.length).toEqual(10) ;
-			expect(state.fieldsById["qGender"].question).toEqual("What gender are you?") ;
-			expect(state.fieldsById["qGender2"].question).toEqual("What best describes you?") ;
-			expect(state.fieldsById["qGender"].affectedFieldRules.length).toEqual(1) ;
-			expect(state.fieldsById["qWorthwhile"].affectedFieldRules.length).toEqual(1) ;
+			expect(state.schema.fields.length).toEqual(10) ;
+			expect(state.schema.fieldsById["qGender"].question).toEqual("What gender are you?") ;
+			expect(state.schema.fieldsById["qGender2"].question).toEqual("What best describes you?") ;
+			expect(state.schema.fieldsById["qGender"].affectedFieldRules.length).toEqual(1) ;
+			expect(state.schema.fieldsById["qWorthwhile"].affectedFieldRules.length).toEqual(1) ;
 		})
 
 		it ("Should have an unnamed page for all fields", function() {
@@ -37,8 +37,8 @@ describe('chatVisitorFeedback', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			expect(state.pages.length).toEqual(1) ;
-			expect(state.pages[0].relevantFields.length).toEqual(10) ;
+			expect(state.schema.pages.length).toEqual(1) ;
+			expect(state.schema.pages[0].relevantFields.length).toEqual(10) ;
 		})
 
 		it ("Should clone all field rules in schema", function() {
@@ -46,9 +46,9 @@ describe('chatVisitorFeedback', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			console.log(state.fieldRules) ;
+			console.log(state.schema.fieldRules) ;
 
-			expect(state.fieldRules.length).toEqual(2) ;
+			expect(state.schema.fieldRules.length).toEqual(2) ;
 		})
 
 		
@@ -63,19 +63,19 @@ describe('chatVisitorFeedback', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			expect(state.fieldsById["qGender2"].visible).toEqual(false) ; 
+			expect(state.schema.fieldsById["qGender2"].visible).toEqual(false) ; 
 
 			response.answers["qGender"] = {choice:"Male"} ;
 			state.handleAnswerChanged("qGender") ;
-			expect(state.fieldsById["qGender2"].visible).toEqual(false) ; 
+			expect(state.schema.fieldsById["qGender2"].visible).toEqual(false) ; 
 
 			response.answers["qGender"] = {choice:"Female"} ;
 			state.handleAnswerChanged("qGender") ;
-			expect(state.fieldsById["qGender2"].visible).toEqual(false) ; 
+			expect(state.schema.fieldsById["qGender2"].visible).toEqual(false) ; 
 
 			response.answers["qGender"] = {choice:"More options"} ;
 			state.handleAnswerChanged("qGender") ;
-			expect(state.fieldsById["qGender2"].visible).toEqual(true) ; 
+			expect(state.schema.fieldsById["qGender2"].visible).toEqual(true) ; 
 		}) ;
 
 		it("Should manage visibility of qSuggestions", function() {
@@ -83,15 +83,15 @@ describe('chatVisitorFeedback', function() {
 			var response = {answers:{}} ;
 			var state = SurveyStates.init(schema, response) ;
 
-			expect(state.fieldsById["qSuggestions"].visible).toEqual(false) ; 
+			expect(state.schema.fieldsById["qSuggestions"].visible).toEqual(false) ; 
 
 			response.answers["qWorthwhile"] = {choice:"Yes"} ;
 			state.handleAnswerChanged("qWorthwhile") ;
-			expect(state.fieldsById["qSuggestions"].visible).toEqual(false) ;
+			expect(state.schema.fieldsById["qSuggestions"].visible).toEqual(false) ;
 
 			response.answers["qWorthwhile"] = {choice:"No"} ;
 			state.handleAnswerChanged("qWorthwhile") ;
-			expect(state.fieldsById["qSuggestions"].visible).toEqual(true) ;  
+			expect(state.schema.fieldsById["qSuggestions"].visible).toEqual(true) ;  
 		})
 	}) ;
 

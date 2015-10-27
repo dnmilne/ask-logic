@@ -16,10 +16,10 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'bower_components/angular/angular.js',
-      'bower_components/lodash/dist/lodash.js',
+      'bower_components/lodash/lodash.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-resource/angular-resource.js',
-      'ask-logic.js',
+      'dist/askjs-core.js',
       'test/*.js',
 
       {pattern: 'test/schemas/*.json', watched: true, served: true, included: false}

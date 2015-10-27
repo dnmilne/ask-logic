@@ -3,7 +3,7 @@ describe('genderAndParenthood', function() {
 	var Logger ;
 	var SurveyStates ;
 
-	beforeEach(module('ask-logic', function($provide) {
+	beforeEach(module('askjs.core', function($provide) {
 
 	  $provide.value('$log', console);
 
@@ -20,6 +20,8 @@ describe('genderAndParenthood', function() {
 		}) 
 	);
 
+	/*
+
 	it ("Should inject blank answers for question fields", function() {
 
 		var response = {} ;
@@ -32,12 +34,11 @@ describe('genderAndParenthood', function() {
 		expect(response.answers.iMales).toBeUndefined() ;
 
 	}) ;
-
 	
 
 	it("Should handle no gender (skip to end)", function() {
 
-		Logger.setLogLevel('debug', 'ask.logic.state.pageRules') ;
+		//Logger.setLogLevel('debug', 'ask.logic.state.pageRules') ;
 		//Logger.setLogLevel('info', 'ask.logic.triggers') ;
 
 		//can skip right to end if user doesn't give a gender,
@@ -50,23 +51,26 @@ describe('genderAndParenthood', function() {
 		} ;
 		var state = SurveyStates.init(schema, response) ;
 
-		console.log(state.pageRules[0]) ;
-		console.log(state.pages[1].pageRuleStates) ;
+
+		debugger ;
+
+		//console.log(state.schema.pageRules[0]) ;
+		//console.log(state.schema.pages[1].pageRuleStates) ;
 
 		state.handleContinue() ;
 
-		console.log("PAGE INDEX " + response.pageIndex) ;
+		//console.log("PAGE INDEX " + response.pageIndex) ;
 		
-		expect(response.completed).toEqual(true) ;
+		expect(response.completedAt).toBeDefined() ;
 
 		state.handleBack() ;
 		expect(response.pageIndex).toEqual(0) ;
-		expect(response.completed).toEqual(false) ;
+		expect(response.completed).not.toBeDefined() ;
 	}) ;
 
 	it("Should handle male with no dependents", function() {
 
-		Logger.setLogLevel('debug', 'ask.logic.state.pageRules') ;
+		//Logger.setLogLevel('debug', 'ask.logic.state.pageRules') ;
 
 		var response = {
 			answers:{
@@ -78,22 +82,22 @@ describe('genderAndParenthood', function() {
 
 		state.handleContinue()
 
-		console.log(response.pageIndex) ;
-		console.log(state.page.id) ;
+		//console.log(response.pageIndex) ;
+		//console.log(state.schema.page.id) ;
 
-		expect(state.page.id).toEqual('pMales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pMales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleContinue() ;
-		expect(response.completed).toEqual(true) ;
+		expect(response.completedAt).toBeDefined() ;
 
 		state.handleBack()
-		expect(state.page.id).toEqual('pMales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pMales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleBack()
 		expect(response.pageIndex).toEqual(0) ;
-		expect(response.completed).toEqual(false) ;
+		expect(response.completedAt).not.toBeDefined() ;
 	}) ;
 
 	
@@ -108,27 +112,27 @@ describe('genderAndParenthood', function() {
 		var state = SurveyStates.init(schema, response) ;
 
 		state.handleContinue()
-		expect(state.page.id).toEqual('pMales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pMales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleContinue() ;
-		expect(state.page.id).toEqual('pFathers') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pFathers') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleContinue() ;
-		expect(response.completed).toEqual(true) ;
+		expect(response.completedAt).toBeDefined() ;
 
 		state.handleBack()
-		expect(state.page.id).toEqual('pFathers') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pFathers') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleBack()
-		expect(state.page.id).toEqual('pMales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pMales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleBack()
 		expect(response.pageIndex).toEqual(0) ;
-		expect(response.completed).toEqual(false) ;
+		expect(response.completedAt).not.toBeDefined() ;
 	}) ;
 
 	it("Should handle female with no dependents", function() {
@@ -142,19 +146,19 @@ describe('genderAndParenthood', function() {
 		var state = SurveyStates.init(schema, response) ;
 
 		state.handleContinue()
-		expect(state.page.id).toEqual('pFemales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pFemales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleContinue() ;
-		expect(response.completed).toEqual(true) ;
+		expect(response.completedAt).toBeDefined() ;
 
 		state.handleBack()
-		expect(state.page.id).toEqual('pFemales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pFemales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleBack()
 		expect(response.pageIndex).toEqual(0) ;
-		expect(response.completed).toEqual(false) ;
+		expect(response.completedAt).not.toBeDefined() ;
 	}) ;
 
 	it("Should handle female with dependents", function() {
@@ -168,28 +172,51 @@ describe('genderAndParenthood', function() {
 		var state = SurveyStates.init(schema, response) ;
 
 		state.handleContinue()
-		expect(state.page.id).toEqual('pFemales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pFemales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleContinue() ;
-		expect(state.page.id).toEqual('pMothers') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pMothers') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleContinue() ;
-		expect(response.completed).toEqual(true) ;
+		expect(response.completedAt).toBeDefined() ;
 
 		state.handleBack()
-		expect(state.page.id).toEqual('pMothers') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pMothers') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleBack()
-		expect(state.page.id).toEqual('pFemales') ;
-		expect(response.completed).toEqual(false) ;
+		expect(state.schema.page.id).toEqual('pFemales') ;
+		expect(response.completedAt).not.toBeDefined() ;
 
 		state.handleBack()
 		expect(response.pageIndex).toEqual(0) ;
-		expect(response.completed).toEqual(false) ;
+		expect(response.completedAt).not.toBeDefined() ;
 	}) ;
+
+	*/
+
+	it("Should handle autoAdvance", function() {
+
+		var response = {} ;
+		var config = {autoAdvance:true} ;
+
+		var state = SurveyStates.init(schema, response, config) ;
+
+		response.answers["qGender"] = {choice:"Male"} ;
+		state.handleFieldChanged("qGender") ;
+
+		expect(state.schema.page.id).toEqual('pIntro') ;
+
+		response.answers["qDependents"] = {number:0} ;
+		state.handleFieldChanged("qDependents") ;
+
+		expect(state.schema.page.id).toEqual('pMales') ;
+
+	}) ;
+
+
 
 
 }) ;
