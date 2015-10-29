@@ -183,6 +183,40 @@ askjs_core.factory('ScoreCalculator', ['Logger','AnswerStates', 'Normalizer', fu
         return ((normScore - field.range[0]) / (field.range[1] - field.range[0])) * 100 ;
     }
 
+    function getCategoryNormalizedPercent(score, field) {
+
+        if (!field.categories || !field.categories.length)
+            return ;
+
+        var normScore = getNormalizedScore(score, field) ;
+
+        var categoryPercent = 1/ field.categories.length ;
+
+        var categoryNormalizedPercent = 0 ;
+
+        _.each(field.categories, function(category, index) {
+
+            //console.log(score + " [" + )
+
+            var catWidth = category.range[1] - category.range[0] ;
+
+            if (index < (field.categories.length-1))
+                catWidth = catWidth+1;
+
+            if (score <= category.range[0]) {
+                return;
+            } else if (score > category.range[1]) {
+                categoryNormalizedPercent = categoryNormalizedPercent + categoryPercent ;
+            } else {
+                var withinCategoryPercentage = (score - category.range[0]) / catWidth ;
+                categoryNormalizedPercent = categoryNormalizedPercent + (withinCategoryPercentage * categoryPercent) ;
+            }
+
+        }, this) ;
+
+        return categoryNormalizedPercent * 100 ;
+    }
+
     function getCategory(score, field) {
 
         if (!field.categories || !field.categories.length)
@@ -217,6 +251,7 @@ askjs_core.factory('ScoreCalculator', ['Logger','AnswerStates', 'Normalizer', fu
                 case "rating":
                     return getForRating(field, answer) ;
             }
+
         },
 
         getScoreSummary: function(score, field) {
@@ -224,7 +259,8 @@ askjs_core.factory('ScoreCalculator', ['Logger','AnswerStates', 'Normalizer', fu
             var summary = {
                 score: score,
                 percent: getPercent(score, field),
-            }
+                categoryNormalizedPercent:getCategoryNormalizedPercent(score, field)
+            } ;
 
             var category = getCategory(score, field) ;
 
